@@ -6,25 +6,27 @@ window.__DC_REG={"SiteHeader":b64utf8("PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KP
 /* ------------------------------------------------------------------ *
  * dc-runtime.js — local preview runtime for Claude Design (.dc.html)
  * Interprets the design-handoff format so the prototypes render and
- * are clickable in a plain browser over file://. NOT production code —
- * it exists only to preview the committee-approved designs.
+ * are clickable in a plain browser over file:// or a static host.
+ * NOT production code — it exists only to preview the designs.
  *
  * Supports: <x-dc> root, <helmet> (head injection), <sc-if>, <sc-for>,
  * <dc-import> (component includes), {{ expr }} interpolation, style-hover,
  * on* event handlers, input/select value binding, and the DCLogic class
  * (state / renderVals / setState / componentDidMount lifecycle).
  *
+ * Re-renders MORPH the existing DOM in place (patch attributes/text,
+ * preserve node identity) rather than rebuilding it. This keeps one-shot
+ * CSS entrance animations from replaying, preserves input focus, and keeps
+ * IntersectionObserver targets alive across state changes.
+ *
  * The two shared components (SiteHeader, InquiryFooter) are embedded as
- * base64 by build-support.sh so no cross-file fetch is needed on file://.
+ * base64 by build-support.sh so no cross-file fetch is needed.
  * ------------------------------------------------------------------ */
 (function () {
   'use strict';
 
-  // Registry of shared component sources (raw .dc.html text), injected as
-  // window.__DC_REG = { SiteHeader: "...", InquiryFooter: "..." } before this runs.
   var REG = window.__DC_REG || {};
 
-  // Hide raw template until first render, and set sane base styles.
   try {
     document.write(
       '<style id="__dc_base">' +
@@ -35,7 +37,7 @@ window.__DC_REG={"SiteHeader":b64utf8("PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KP
     );
   } catch (e) { /* ignore */ }
 
-  // ---- DCLogic base class (React-like) ----------------------------------
+  // ---- DCLogic base class ----------------------------------------------
   function DCLogic(props) {
     this.props = props || {};
     this.state = {};
@@ -43,18 +45,14 @@ window.__DC_REG={"SiteHeader":b64utf8("PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KP
   DCLogic.prototype.setState = function (patch) {
     var next = (typeof patch === 'function') ? patch(this.state) : patch;
     for (var k in next) if (Object.prototype.hasOwnProperty.call(next, k)) this.state[k] = next[k];
-    if (this._host) this._host.rerender();
+    if (this._host) { this._host.rerender(); }
   };
   window.DCLogic = DCLogic;
 
   // ---- expression evaluation -------------------------------------------
   function evalExpr(expr, scope) {
-    try {
-      // scope keys become locals via `with`; handlers/values resolve here.
-      return (new Function('scope', 'with(scope){ return (' + expr + '); }'))(scope);
-    } catch (e) {
-      return undefined;
-    }
+    try { return (new Function('scope', 'with(scope){ return (' + expr + '); }'))(scope); }
+    catch (e) { return undefined; }
   }
   function stripBraces(v) {
     if (v == null) return '';
@@ -75,27 +73,25 @@ window.__DC_REG={"SiteHeader":b64utf8("PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KP
     onmousedown: 'mousedown', onmouseenter: 'mouseenter', onmouseleave: 'mouseleave'
   };
 
-  var pendingMounts = []; // hosts awaiting componentDidMount after DOM attach
+  var pendingMounts = [];
 
   // ---- Host: one mounted component instance ----------------------------
   function Host(name, spec, props) {
     this.name = name || '(page)';
-    this.frag = spec.frag;               // pristine template DocumentFragment
+    this.frag = spec.frag;
     this.dataProps = spec.dataProps || {};
-    this.container = null;               // live element we render into
-    this.children = [];                  // child Hosts (dc-imports), by index
-    this._ci = 0;                        // child counter during a render
+    this.container = null;
+    this.children = [];   // child Hosts (dc-imports) by index
+    this._ci = 0;
     this._mounted = false;
     this._helmetDone = false;
 
-    var defaults = {};
+    var merged = {};
     for (var key in this.dataProps) {
       if (key === '$preview') continue;
       var def = this.dataProps[key];
-      defaults[key] = (def && typeof def === 'object' && 'default' in def) ? def.default : undefined;
+      merged[key] = (def && typeof def === 'object' && 'default' in def) ? def.default : undefined;
     }
-    var merged = {};
-    for (var d in defaults) merged[d] = defaults[d];
     if (props) for (var p in props) merged[p] = props[p];
 
     var Comp = compileLogic(spec.scriptText);
@@ -111,19 +107,16 @@ window.__DC_REG={"SiteHeader":b64utf8("PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KP
     try { vals = this.logic.renderVals ? this.logic.renderVals() : {}; }
     catch (e) { console.error('[dc] renderVals error in', this.name, e); }
 
-    var out = document.createDocumentFragment();
+    var frag = document.createDocumentFragment();
     var kids = this.frag.childNodes;
-    for (var i = 0; i < kids.length; i++) {
-      appendResolved(out, kids[i], vals, this);
-    }
-    // trim child hosts that are no longer used
+    for (var i = 0; i < kids.length; i++) build(frag, kids[i], vals, this);
+
+    reconcile(container, frag);
+
     for (var j = this._ci; j < this.children.length; j++) {
       if (this.children[j]) this.children[j].destroy();
     }
     this.children.length = this._ci;
-
-    while (container.firstChild) container.removeChild(container.firstChild);
-    container.appendChild(out);
   };
 
   Host.prototype.rerender = function () {
@@ -137,14 +130,10 @@ window.__DC_REG={"SiteHeader":b64utf8("PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KP
     this.children.length = 0;
   };
 
-  // ---- template walk: append resolved node(s) into `out` ---------------
-  function appendResolved(out, node, scope, host) {
-    // text
-    if (node.nodeType === 3) {
-      out.appendChild(document.createTextNode(interp(node.nodeValue, scope)));
-      return;
-    }
-    if (node.nodeType !== 1) return; // skip comments etc.
+  // ---- build: template node -> detached DOM (dynamics stashed) ----------
+  function build(out, node, scope, host) {
+    if (node.nodeType === 3) { out.appendChild(document.createTextNode(interp(node.nodeValue, scope))); return; }
+    if (node.nodeType !== 1) return;
 
     var tag = node.tagName.toLowerCase();
 
@@ -152,16 +141,15 @@ window.__DC_REG={"SiteHeader":b64utf8("PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KP
       if (!host._helmetDone) {
         host._helmetDone = true;
         var hf = document.createDocumentFragment();
-        for (var h = 0; h < node.childNodes.length; h++) appendResolved(hf, node.childNodes[h], scope, host);
+        for (var h = 0; h < node.childNodes.length; h++) build(hf, node.childNodes[h], scope, host);
         document.head.appendChild(hf);
       }
       return;
     }
 
     if (tag === 'sc-if') {
-      var cond = evalExpr(stripBraces(node.getAttribute('value')), scope);
-      if (cond) {
-        for (var c = 0; c < node.childNodes.length; c++) appendResolved(out, node.childNodes[c], scope, host);
+      if (evalExpr(stripBraces(node.getAttribute('value')), scope)) {
+        for (var c = 0; c < node.childNodes.length; c++) build(out, node.childNodes[c], scope, host);
       }
       return;
     }
@@ -174,94 +162,156 @@ window.__DC_REG={"SiteHeader":b64utf8("PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KP
         var childScope = Object.create(scope);
         childScope[as] = list[it];
         childScope[idxName] = it;
-        for (var k = 0; k < node.childNodes.length; k++) appendResolved(out, node.childNodes[k], childScope, host);
+        for (var k = 0; k < node.childNodes.length; k++) build(out, node.childNodes[k], childScope, host);
       }
       return;
     }
 
     if (tag === 'dc-import') {
-      var cname = node.getAttribute('name');
+      var box = document.createElement('div');
+      box.setAttribute('style', 'display:contents');
+      box.setAttribute('data-dc-import', '');
       var cprops = {};
       for (var a = 0; a < node.attributes.length; a++) {
         var at = node.attributes[a];
         if (at.name === 'name' || at.name.indexOf('hint-') === 0) continue;
         cprops[at.name] = interp(at.value, scope);
       }
-      var box = document.createElement('div');
-      box.style.display = 'contents';
-      var idx = host._ci++;
-      var existing = host.children[idx];
-      var child;
-      if (existing && existing.name === cname) {
-        child = existing;
-        for (var cp in cprops) child.logic.props[cp] = cprops[cp];
-      } else {
-        if (existing) existing.destroy();
-        var src = REG[cname];
-        if (!src) {
-          box.appendChild(document.createTextNode('[missing component: ' + cname + ']'));
-          out.appendChild(box);
-          host.children[idx] = null;
-          return;
-        }
-        child = new Host(cname, parseSource(src), cprops);
-        host.children[idx] = child;
-      }
-      child.render(box);
+      box.__import = { name: node.getAttribute('name'), props: cprops, host: host, index: host._ci++ };
       out.appendChild(box);
       return;
     }
 
-    // ---- normal element ----
     var el = document.createElement(tag);
-    var hoverCss = null, pendingValue = null;
-
+    var hoverCss = null, val;
     for (var ai = 0; ai < node.attributes.length; ai++) {
       var attr = node.attributes[ai];
       var an = attr.name.toLowerCase();
-      var av = attr.value;
-
       if (EVENTS[an]) {
-        var fn = evalExpr(stripBraces(av), scope);
-        if (typeof fn === 'function') el.addEventListener(EVENTS[an], fn);
+        var fn = evalExpr(stripBraces(attr.value), scope);
+        if (typeof fn === 'function') { el.__ev = el.__ev || {}; el.__ev[EVENTS[an]] = fn; }
         continue;
       }
-      if (an === 'style-hover') { hoverCss = interp(av, scope); continue; }
-      if (an === 'value') { pendingValue = interp(av, scope); el.setAttribute('value', pendingValue); continue; }
-      el.setAttribute(attr.name, interp(av, scope));
+      if (an === 'style-hover') { hoverCss = interp(attr.value, scope); continue; }
+      if (an === 'value') { val = interp(attr.value, scope); el.setAttribute('value', val); continue; }
+      el.setAttribute(attr.name, interp(attr.value, scope));
     }
+    if (hoverCss != null) el.__hover = hoverCss;
+    if (val !== undefined) el.__val = val;
 
-    for (var ci = 0; ci < node.childNodes.length; ci++) appendResolved(el, node.childNodes[ci], scope, host);
-
-    if (pendingValue != null) { try { el.value = pendingValue; } catch (e) {} }
-
-    if (hoverCss != null) {
-      var base = el.getAttribute('style') || '';
-      el.addEventListener('mouseenter', function () { this.setAttribute('style', base + ';' + hoverCss); });
-      el.addEventListener('mouseleave', function () { this.setAttribute('style', base); });
-    }
-
+    for (var ci = 0; ci < node.childNodes.length; ci++) build(el, node.childNodes[ci], scope, host);
     out.appendChild(el);
   }
 
-  // ---- compile the <script type="text/x-dc"> class ---------------------
+  // ---- morph existing children to match freshly built ones -------------
+  function reconcile(parent, newParent) {
+    var oldKids = toArray(parent.childNodes);
+    var newKids = toArray(newParent.childNodes);
+    var n = Math.max(oldKids.length, newKids.length);
+    for (var i = 0; i < n; i++) {
+      var o = oldKids[i], nw = newKids[i];
+      if (!nw) { if (o) { destroyNode(o); parent.removeChild(o); } continue; }
+      if (!o) { activateTree(nw); parent.appendChild(nw); continue; }
+      morphNode(o, nw, parent);
+    }
+  }
+
+  function morphNode(o, nw, parent) {
+    if (o.nodeType !== nw.nodeType || (o.nodeType === 1 && o.tagName !== nw.tagName)) {
+      activateTree(nw); destroyNode(o); parent.replaceChild(nw, o); return;
+    }
+    if (o.nodeType === 3) { if (o.nodeValue !== nw.nodeValue) o.nodeValue = nw.nodeValue; return; }
+    if (o.nodeType !== 1) return;
+    syncAttrs(o, nw);
+    applyDynamics(o, nw);
+    if (o.hasAttribute('data-dc-import')) { o.__import = nw.__import; reconcileImport(o); return; }
+    reconcile(o, nw);
+  }
+
+  function activateTree(node) {
+    if (node.nodeType !== 1) return;
+    applyDynamics(node, node);
+    if (node.hasAttribute('data-dc-import')) { reconcileImport(node); return; }
+    var kids = toArray(node.childNodes);
+    for (var i = 0; i < kids.length; i++) activateTree(kids[i]);
+  }
+
+  function syncAttrs(o, nw) {
+    var na = nw.attributes, i, a;
+    for (i = 0; i < na.length; i++) {
+      a = na[i];
+      if (o.getAttribute(a.name) !== a.value) o.setAttribute(a.name, a.value);
+    }
+    var oa = toArray(o.attributes);
+    for (i = 0; i < oa.length; i++) {
+      if (!nw.hasAttribute(oa[i].name)) o.removeAttribute(oa[i].name);
+    }
+  }
+
+  function applyDynamics(live, nw) {
+    // events
+    if (live.__bound) { for (var b = 0; b < live.__bound.length; b++) live.removeEventListener(live.__bound[b].type, live.__bound[b].fn); }
+    live.__bound = [];
+    if (nw.__ev) {
+      for (var t in nw.__ev) { live.addEventListener(t, nw.__ev[t]); live.__bound.push({ type: t, fn: nw.__ev[t] }); }
+    }
+    // hover
+    if (live.__hoverBound) {
+      live.removeEventListener('mouseenter', live.__hoverBound.enter);
+      live.removeEventListener('mouseleave', live.__hoverBound.leave);
+      live.__hoverBound = null;
+    }
+    if (nw.__hover != null) {
+      var base = live.getAttribute('style') || '';
+      var hov = nw.__hover;
+      var enter = function () { live.setAttribute('style', base + ';' + hov); };
+      var leave = function () { live.setAttribute('style', base); };
+      live.addEventListener('mouseenter', enter);
+      live.addEventListener('mouseleave', leave);
+      live.__hoverBound = { enter: enter, leave: leave };
+    }
+    // value binding (don't clobber identical values / active typing)
+    if (nw.__val !== undefined) { try { if (live.value !== nw.__val) live.value = nw.__val; } catch (e) {} }
+  }
+
+  function reconcileImport(live) {
+    var info = live.__import;
+    if (!info) return;
+    var host = info.host, idx = info.index, name = info.name, props = info.props;
+    var child = host.children[idx];
+    if (child && child.name === name) {
+      for (var k in props) child.logic.props[k] = props[k];
+    } else {
+      if (child) child.destroy();
+      var src = REG[name];
+      if (!src) { live.textContent = '[missing component: ' + name + ']'; host.children[idx] = null; return; }
+      child = new Host(name, parseSource(src), props);
+      host.children[idx] = child;
+    }
+    live.__childHost = child;
+    child.render(live);
+  }
+
+  function destroyNode(node) {
+    if (node.nodeType !== 1) return;
+    if (node.__childHost) { node.__childHost.destroy(); node.__childHost = null; }
+    var kids = node.childNodes;
+    for (var i = 0; i < kids.length; i++) destroyNode(kids[i]);
+  }
+
+  function toArray(coll) { return Array.prototype.slice.call(coll); }
+
+  // ---- compile <script type="text/x-dc"> class -------------------------
   function compileLogic(scriptText) {
     if (!scriptText || !/class\s+Component/.test(scriptText)) {
       return function () { DCLogic.apply(this, arguments); };
     }
-    try {
-      return (new Function('DCLogic', scriptText + '\n; return Component;'))(DCLogic);
-    } catch (e) {
-      console.error('[dc] failed to compile component logic', e);
-      return function () { DCLogic.apply(this, arguments); };
-    }
+    try { return (new Function('DCLogic', scriptText + '\n; return Component;'))(DCLogic); }
+    catch (e) { console.error('[dc] failed to compile component logic', e); return function () { DCLogic.apply(this, arguments); }; }
   }
 
-  // ---- parse a raw .dc.html source string into a spec ------------------
-  function parseSource(src) {
-    var doc = new DOMParser().parseFromString(src, 'text/html');
-    return extract(doc);
-  }
+  // ---- parse a raw .dc.html source into a spec -------------------------
+  function parseSource(src) { return extract(new DOMParser().parseFromString(src, 'text/html')); }
   function extract(doc) {
     var xdc = doc.querySelector('x-dc');
     var scriptEl = doc.querySelector('script[type="text/x-dc"]');
@@ -275,7 +325,6 @@ window.__DC_REG={"SiteHeader":b64utf8("PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KP
     return { frag: frag, scriptText: scriptEl ? scriptEl.textContent : '', dataProps: dp };
   }
 
-  // ---- mount lifecycle --------------------------------------------------
   function flushMounts() {
     var list = pendingMounts.slice();
     pendingMounts.length = 0;
@@ -288,20 +337,17 @@ window.__DC_REG={"SiteHeader":b64utf8("PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KP
     }
   }
 
-  // ---- boot -------------------------------------------------------------
   function boot() {
     var xdc = document.querySelector('x-dc');
     if (!xdc) { console.error('[dc] no <x-dc> root found'); return; }
     var spec = extract(document);
+    while (xdc.firstChild) xdc.removeChild(xdc.firstChild); // clear raw template
     var page = new Host('(page)', spec, null);
     page.render(xdc);
     xdc.style.visibility = 'visible';
     flushMounts();
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
-  } else {
-    boot();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
 })();
