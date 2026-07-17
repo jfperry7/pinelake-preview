@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>a{color:#5C6A3A;text-decoration:none}a:hover{color:#C4A45A}</style>
+</helmet>
+<header style="position:sticky;top:0;z-index:50;background:{{ headerBg }};backdrop-filter:blur(10px);border-bottom:1px solid rgba(30,43,20,.1);font-family:'Montserrat',sans-serif;transition:background .4s ease">
+<div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:{{ headerPad }} clamp(18px,4vw,40px);transition:padding .4s ease">
+  <a href="Home.dc.html" style="display:flex;align-items:center;gap:12px;color:#1E2B14">
+    <img src="uploads/company_logo.png" alt="Pine Lake Country Club" style="height:52px;width:auto;display:block">
+    <span style="display:flex;flex-direction:column;line-height:1.1">
+      <span style="font-family:'Playfair Display',serif;font-weight:600;font-size:19px;letter-spacing:.02em">Pine Lake</span>
+      <span style="font-size:8.5px;letter-spacing:.3em;text-transform:uppercase;color:#5C6A3A;font-weight:600">Country Club · Est. 1902</span>
+    </span>
+  </a>
+  <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+  <nav style="display:flex;gap:clamp(14px,2vw,26px);align-items:center;font-size:12.5px;letter-spacing:.04em">
+    <sc-for list="{{ links }}" as="l" hint-placeholder-count="8">
+      <a href="{{ l.href }}" style="color:{{ l.color }};font-weight:{{ l.weight }}" style-hover="color:#C4A45A">{{ l.label }}</a>
+    </sc-for>
+  </nav>
+  <div style="display:flex;gap:10px;align-items:center">
+    <a href="https://members.pinelakecc.com" target="_blank" rel="noopener" style="color:#5C6A3A;padding:9px 6px;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase" style-hover="color:#C4A45A">Member Login</a>
+    <a href="#inquire" style="border:1px solid #5C6A3A;color:#1E2B14;padding:9px 16px;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:2px" style-hover="background:#5C6A3A;color:#F0EDE6">Request Info</a>
+    <a href="#inquire" style="background:#C4A45A;color:#1E2B14;padding:10px 16px;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:2px" style-hover="background:#E8D090">Schedule a Private Tour</a>
+  </div>
+  </sc-if>
+  <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ toggleMenu }}" aria-label="Menu" style="background:none;border:1px solid rgba(30,43,20,.25);border-radius:2px;padding:9px 12px;cursor:pointer;display:flex;flex-direction:column;gap:4px">
+      <span style="display:block;width:18px;height:2px;background:#1E2B14"></span>
+      <span style="display:block;width:18px;height:2px;background:#1E2B14"></span>
+      <span style="display:block;width:18px;height:2px;background:#1E2B14"></span>
+    </button>
+  </sc-if>
+</div>
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+  <nav style="display:flex;flex-direction:column;background:#F0EDE6;border-top:1px solid rgba(30,43,20,.1);padding:12px clamp(18px,4vw,40px) 20px;gap:2px">
+    <sc-for list="{{ links }}" as="l" hint-placeholder-count="8">
+      <a href="{{ l.href }}" style="color:{{ l.color }};padding:11px 4px;font-size:14px;font-weight:{{ l.weight }};border-bottom:1px solid rgba(30,43,20,.07)">{{ l.label }}</a>
+    </sc-for>
+    <a href="https://members.pinelakecc.com" target="_blank" rel="noopener" style="color:#5C6A3A;padding:11px 4px;font-size:14px;font-weight:600;border-bottom:1px solid rgba(30,43,20,.07)">Member Login ↗</a>
+    <a href="#inquire" onClick="{{ closeMenu }}" style="margin-top:12px;background:#C4A45A;color:#1E2B14;padding:14px;text-align:center;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:2px">Schedule a Private Tour</a>
+  </nav>
+</sc-if>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;80px&quot;},&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;&quot;,&quot;Membership&quot;,&quot;Golf&quot;,&quot;Tennis&quot;,&quot;Dining &amp; Social&quot;,&quot;Family &amp; Aquatics&quot;,&quot;Events&quot;,&quot;About&quot;,&quot;Contact&quot;]}}">
+class Component extends DCLogic {
+  state = { isMobile: false, menuOpen: false, compact: false };
+  componentDidMount() {
+    this._r = () => { const m = window.innerWidth < 1080; if (m !== this.state.isMobile) this.setState({ isMobile: m, menuOpen: false }); };
+    this._r(); window.addEventListener('resize', this._r);
+    this._s = () => { const c = window.scrollY > 80; if (c !== this.state.compact) this.setState({ compact: c }); };
+    window.addEventListener('scroll', this._s, { passive: true });
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._r); window.removeEventListener('scroll', this._s); }
+  renderVals() {
+    const act = this.props.active ?? '';
+    const links = [['Membership','Membership.dc.html'],['Golf','Golf.dc.html'],['Tennis','Tennis.dc.html'],['Dining & Social','Dining.dc.html'],['Family & Aquatics','Family.dc.html'],['Events','Events.dc.html'],['About','About.dc.html'],['Contact','Contact.dc.html']];
+    return {
+      isMobile: this.state.isMobile, isDesktop: !this.state.isMobile, menuOpen: this.state.menuOpen,
+      headerBg: this.state.compact ? 'rgba(240,237,230,.82)' : 'rgba(240,237,230,.94)',
+      headerPad: this.state.compact ? '8px' : '14px',
+      toggleMenu: () => this.setState({ menuOpen: !this.state.menuOpen }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      links: links.map(([label, href]) => ({ label, href, color: label === act ? '#C4A45A' : '#1E2B14', weight: label === act ? 700 : 500 }))
+    };
+  }
+}
+</script>
+</body>
+</html>

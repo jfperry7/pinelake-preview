@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F0EDE6;color:#1E2B14;font-family:'Montserrat',sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#5C6A3A;text-decoration:none}a:hover{color:#C4A45A}
+input,select,button,textarea{font-family:'Montserrat',sans-serif}
+@keyframes heroPan{0%{transform:scale(1.06) translate(0,0)}50%{transform:scale(1.12) translate(-1.5%,-1%)}100%{transform:scale(1.06) translate(0,0)}}
+@keyframes shimmer{0%,100%{opacity:.55}50%{opacity:.85}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes reveal{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes heroPara{from{transform:translateY(0) scale(1.18)}to{transform:translateY(10vh) scale(1.18)}}
+
+html{scroll-behavior:smooth}
+@keyframes kenburns{0%{transform:scale(1)}100%{transform:scale(1.07)}}
+@keyframes lineDraw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.gold-cta{position:relative;overflow:hidden}
+.gold-cta::after{content:'';position:absolute;top:0;left:-80%;width:50%;height:100%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);transition:left .7s ease}
+.gold-cta:hover::after{left:130%}
+.kb-img{transition:transform 6s ease}
+a:hover .kb-img,.kb-host:hover .kb-img{transform:scale(1.07)}
+.draw-line{transform-origin:left center;animation:lineDraw 1.1s cubic-bezier(.25,.6,.3,1) both;animation-timeline:view(block 92% 8%)}
+
+@keyframes heroDrift{0%{transform:scale(1.08)}50%{transform:scale(1.16) translate(-1.2%,-.8%)}100%{transform:scale(1.08)}}
+@keyframes duotoneIn{from{filter:grayscale(1) sepia(.4) hue-rotate(45deg) saturate(1.6) brightness(.85)}to{filter:grayscale(0) sepia(0) hue-rotate(0deg) saturate(1) brightness(1)}}
+</style>
+</helmet>
+
+<sc-if value="{{ showAnnouncement }}" hint-placeholder-val="{{ true }}">
+<div style="background:#1E2B14;color:#E8D090;text-align:center;padding:9px 18px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:500">Now welcoming new member families for 2026 &nbsp;·&nbsp; <a href="#inquire" style="color:#C4A45A;text-decoration:underline;text-underline-offset:3px">Begin the conversation</a></div>
+</sc-if>
+
+<header style="position:sticky;top:0;z-index:50;background:{{ headerBg }};backdrop-filter:blur(10px);border-bottom:1px solid rgba(30,43,20,.1);transition:background .4s ease">
+<div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:{{ headerPad }} clamp(18px,4vw,40px);transition:padding .4s ease">
+  <a href="Home.dc.html" style="display:flex;align-items:center;gap:12px;color:#1E2B14">
+    <img src="uploads/company_logo.png" alt="Pine Lake Country Club" style="height:52px;width:auto;display:block">
+    <span style="display:flex;flex-direction:column;line-height:1.1">
+      <span style="font-family:'Playfair Display',serif;font-weight:600;font-size:19px;letter-spacing:.02em">Pine Lake</span>
+      <span style="font-size:8.5px;letter-spacing:.3em;text-transform:uppercase;color:#5C6A3A;font-weight:600">Country Club · Est. 1902</span>
+    </span>
+  </a>
+  <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+  <nav style="display:flex;gap:clamp(14px,2vw,26px);align-items:center;font-size:12.5px;font-weight:500;letter-spacing:.04em">
+    <a href="Membership.dc.html" style="color:#1E2B14" style-hover="color:#C4A45A">Membership</a>
+    <a href="Golf.dc.html" style="color:#1E2B14" style-hover="color:#C4A45A">Golf</a>
+    <a href="Tennis.dc.html" style="color:#1E2B14" style-hover="color:#C4A45A">Tennis</a>
+    <a href="Dining.dc.html" style="color:#1E2B14" style-hover="color:#C4A45A">Dining &amp; Social</a>
+    <a href="Family.dc.html" style="color:#1E2B14" style-hover="color:#C4A45A">Family &amp; Aquatics</a>
+    <a href="Events.dc.html" style="color:#1E2B14" style-hover="color:#C4A45A">Events</a>
+    <a href="About.dc.html" style="color:#1E2B14" style-hover="color:#C4A45A">About</a>
+    <a href="Contact.dc.html" style="color:#1E2B14" style-hover="color:#C4A45A">Contact</a>
+  </nav>
+  <div style="display:flex;gap:10px;align-items:center">
+    <a href="https://members.pinelakecc.com" target="_blank" rel="noopener" style="color:#5C6A3A;padding:9px 6px;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase" style-hover="color:#C4A45A">Member Login</a>
+    <a href="#inquire" style="border:1px solid #5C6A3A;color:#1E2B14;padding:9px 16px;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:2px" style-hover="background:#5C6A3A;color:#F0EDE6">Request Info</a>
+    <a href="#inquire" onClick="{{ wantTour }}" class="gold-cta" style="background:#C4A45A;color:#1E2B14;padding:10px 16px;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:2px" style-hover="background:#E8D090">Schedule a Private Tour</a>
+  </div>
+  </sc-if>
+  <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ toggleMenu }}" aria-label="Menu" style="background:none;border:1px solid rgba(30,43,20,.25);border-radius:2px;padding:9px 12px;cursor:pointer;display:flex;flex-direction:column;gap:4px">
+      <span style="display:block;width:18px;height:2px;background:#1E2B14"></span>
+      <span style="display:block;width:18px;height:2px;background:#1E2B14"></span>
+      <span style="display:block;width:18px;height:2px;background:#1E2B14"></span>
+    </button>
+  </sc-if>
+</div>
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+  <nav style="display:flex;flex-direction:column;background:#F0EDE6;border-top:1px solid rgba(30,43,20,.1);padding:12px clamp(18px,4vw,40px) 20px;gap:2px">
+    <a href="Membership.dc.html" style="color:#1E2B14;padding:11px 4px;font-size:14px;font-weight:500;border-bottom:1px solid rgba(30,43,20,.07)">Membership</a>
+    <a href="Golf.dc.html" style="color:#1E2B14;padding:11px 4px;font-size:14px;font-weight:500;border-bottom:1px solid rgba(30,43,20,.07)">Golf</a>
+    <a href="Tennis.dc.html" style="color:#1E2B14;padding:11px 4px;font-size:14px;font-weight:500;border-bottom:1px solid rgba(30,43,20,.07)">Tennis</a>
+    <a href="Dining.dc.html" style="color:#1E2B14;padding:11px 4px;font-size:14px;font-weight:500;border-bottom:1px solid rgba(30,43,20,.07)">Dining &amp; Social</a>
+    <a href="Family.dc.html" style="color:#1E2B14;padding:11px 4px;font-size:14px;font-weight:500;border-bottom:1px solid rgba(30,43,20,.07)">Family &amp; Aquatics</a>
+    <a href="Events.dc.html" style="color:#1E2B14;padding:11px 4px;font-size:14px;font-weight:500;border-bottom:1px solid rgba(30,43,20,.07)">Events</a>
+    <a href="About.dc.html" style="color:#1E2B14;padding:11px 4px;font-size:14px;font-weight:500;border-bottom:1px solid rgba(30,43,20,.07)">About</a>
+    <a href="Contact.dc.html" style="color:#1E2B14;padding:11px 4px;font-size:14px;font-weight:500">Contact</a>
+    <a href="https://members.pinelakecc.com" target="_blank" rel="noopener" style="color:#5C6A3A;padding:11px 4px;font-size:14px;font-weight:600;border-bottom:1px solid rgba(30,43,20,.07)">Member Login ↗</a>
+    <a href="#inquire" onClick="{{ closeMenu }}" style="margin-top:12px;background:#C4A45A;color:#1E2B14;padding:14px;text-align:center;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:2px">Schedule a Private Tour</a>
+  </nav>
+</sc-if>
+</header>
+
+<!-- HERO -->
+<section data-screen-label="Hero" style="position:relative;min-height:88vh;display:flex;align-items:flex-end;overflow:hidden;background:#1E2B14">
+  <div style="position:absolute;inset:-4%;background:linear-gradient(158deg,#26351A 0%,#3A4A24 34%,#5C6A3A 62%,#8A9460 84%,#C9C39A 100%);animation:{{ heroAnim }}"><img src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=1600&q=80" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:heroPara 1s linear both;animation-timeline:scroll();animation-range:0vh 120vh"></div>
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 120% 70% at 70% 100%,rgba(232,208,144,.30) 0%,rgba(232,208,144,0) 55%),radial-gradient(ellipse 140% 100% at 50% 40%,transparent 55%,rgba(20,30,12,.5) 100%),linear-gradient(0deg,rgba(20,30,12,.72) 0%,transparent 45%)"></div>
+  <div style="position:absolute;top:0;right:0;margin:14px 18px;display:flex;align-items:center;gap:8px;color:rgba(240,237,230,.55);font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;animation:shimmer 5s ease-in-out infinite"><span style="display:inline-block;width:22px;height:1px;background:rgba(240,237,230,.5)"></span>Video — drone over Pine Lake at golden hour</div>
+  <div style="position:relative;max-width:1280px;margin:0 auto;width:100%;padding:0 clamp(18px,4vw,40px) clamp(48px,8vh,96px)">
+    <p style="margin:0 0 14px;color:#E8D090;font-size:12px;letter-spacing:.32em;text-transform:uppercase;font-weight:600;animation:fadeUp .9s ease .15s both">Creating Family Traditions Since 1902</p>
+    <h1 style="margin:0 0 18px;font-family:'Playfair Display',serif;font-weight:500;color:#F0EDE6;font-size:clamp(34px,5.4vw,68px);line-height:1.08;max-width:15ch;text-wrap:pretty;animation:fadeUp 1s ease .55s both">Private Family Country Club in Orchard Lake, Michigan.</h1>
+    <p style="margin:0 0 30px;color:rgba(240,237,230,.85);font-size:clamp(15px,1.5vw,18px);line-height:1.65;max-width:52ch;font-weight:300;animation:fadeUp 1s ease .95s both">Life on the lake. Championship golf. Seven waterfront dining rooms. And a place your whole family belongs — summer after summer, generation after generation.</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp 1s ease 1.3s both">
+      <a href="#inquire" onClick="{{ wantTour }}" class="gold-cta" style="background:#C4A45A;color:#1E2B14;padding:16px 28px;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:2px" style-hover="background:#E8D090">Schedule a Private Tour</a>
+      <a href="#inquire" style="border:1px solid rgba(240,237,230,.55);color:#F0EDE6;padding:16px 28px;font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:2px" style-hover="background:rgba(240,237,230,.12);color:#F0EDE6">Request Membership Info</a>
+    </div>
+  </div>
+</section>
+
+<!-- LIFESTYLE TILES -->
+<section data-screen-label="Lifestyle tiles" style="max-width:1280px;margin:0 auto;padding:clamp(56px,9vw,110px) clamp(18px,4vw,40px) clamp(40px,6vw,72px)">
+  <p style="margin:0 0 10px;color:#5C6A3A;font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:600;text-align:center">One Club · Every Season</p>
+  <h2 style="margin:0 auto 46px;font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(28px,3.4vw,44px);line-height:1.15;text-align:center;max-width:22ch;text-wrap:pretty">Everything your family needs for a lifetime of summers — and winters, too.</h2>
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin:-28px 0 40px"><span style="width:60px;height:1px;background:linear-gradient(90deg,transparent,rgba(196,164,90,.7))"></span><span style="font-family:'Playfair Display',serif;color:#C4A45A;font-size:14px">❦</span><span style="width:60px;height:1px;background:linear-gradient(90deg,rgba(196,164,90,.7),transparent)"></span></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:18px;animation:reveal .9s ease both;animation-timeline:view(block 95% 5%)">
+    <sc-for list="{{ tiles }}" as="tile" hint-placeholder-count="5">
+      <a href="{{ tile.href }}" style="position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:380px;border-radius:3px;overflow:hidden;padding:26px;color:#F0EDE6;background:{{ tile.bg }}" style-hover="transform:translateY(-4px);box-shadow:0 18px 40px -18px rgba(30,43,20,.5);color:#F0EDE6">
+        <div class="kb-img" style="position:absolute;inset:0;background:url({{ tile.img }}) center/cover no-repeat"></div><span style="position:absolute;top:16px;left:20px;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(240,237,230,.55);font-weight:600">Photo — {{ tile.photo }}</span>
+        <span style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,30,12,.72) 0%,rgba(20,30,12,0) 55%)"></span>
+        <span style="position:relative;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:#E8D090;font-weight:600;margin-bottom:8px">{{ tile.kicker }}</span>
+        <span style="position:relative;font-family:'Playfair Display',serif;font-size:26px;font-weight:500;line-height:1.15;margin-bottom:8px">{{ tile.title }}</span>
+        <span style="position:relative;font-size:13px;line-height:1.55;color:rgba(240,237,230,.85);font-weight:300;max-width:38ch">{{ tile.copy }}</span>
+        <span style="position:relative;margin-top:14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#C4A45A">Explore →</span>
+      </a>
+    </sc-for>
+  </div>
+</section>
+
+<!-- HERITAGE BAND -->
+<section data-screen-label="Heritage band" style="background:#171F0F;padding:clamp(40px,6vw,64px) 0">
+  <div style="max-width:1280px;margin:0 auto;padding:0 clamp(18px,4vw,40px);animation:reveal .9s ease both;animation-timeline:view(block 92% 8%)">
+    <div style="display:flex;align-items:center;gap:18px;margin-bottom:30px">
+      <span style="font-family:'Playfair Display',serif;color:#C4A45A;font-size:clamp(22px,2.4vw,30px);font-weight:600">1902</span>
+      <span style="flex:1;height:1px;background:linear-gradient(90deg,#C4A45A,rgba(196,164,90,.15))"></span>
+      <span style="font-family:'Playfair Display',serif;color:#E8D090;font-size:clamp(22px,2.4vw,30px);font-weight:600">2024</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:20px">
+      <div><div style="position:relative;height:120px;border-radius:2px;overflow:hidden;background:linear-gradient(160deg,#3A4A24,#26351A);filter:sepia(.5)"><span style="position:absolute;bottom:8px;left:10px;font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,230,.55);font-weight:600">Archival photo — c. 1910</span></div><div style="font-size:12px;color:rgba(240,237,230,.7);margin-top:9px;line-height:1.5">Founded as the Automobile Club of Detroit — Dodge, Olds, and Ford among its discoverers.</div></div>
+      <div><div style="position:relative;height:120px;border-radius:2px;overflow:hidden;background:linear-gradient(160deg,#4A5A2C,#2B3A1B);filter:sepia(.35)"><span style="position:absolute;bottom:8px;left:10px;font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,230,.55);font-weight:600">Archival photo — 1921</span></div><div style="font-size:12px;color:rgba(240,237,230,.7);margin-top:9px;line-height:1.5">Renamed Pine Lake Country Club — a place for families, sport, and summers on the water.</div></div>
+      <div><div style="position:relative;height:120px;border-radius:2px;overflow:hidden"><div style="position:absolute;inset:0;background:url(https://images.unsplash.com/photo-1592919505780-303950717480?auto=format&fit=crop&w=600&q=70) center/cover"></div><span style="position:absolute;bottom:8px;left:10px;font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,230,.8);font-weight:600">The Park course</span></div><div style="font-size:12px;color:rgba(240,237,230,.7);margin-top:9px;line-height:1.5">Eighteen championship holes by two-time British Open champion Willie Park Jr.</div></div>
+      <div><div style="position:relative;height:120px;border-radius:2px;overflow:hidden"><div style="position:absolute;inset:0;background:url(https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=600&q=70) center/cover"></div><span style="position:absolute;bottom:8px;left:10px;font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,237,230,.8);font-weight:600">Renovated 2024</span></div><div style="font-size:12px;color:rgba(240,237,230,.7);margin-top:9px;line-height:1.5">The $22M renewal — the most significant investment in club history.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY PINE LAKE -->
+<section data-screen-label="Why Pine Lake" style="background:#FFFFFF;border-top:1px solid rgba(30,43,20,.08);border-bottom:1px solid rgba(30,43,20,.08);position:relative;overflow:hidden">
+  <div style="position:absolute;right:-50px;top:50%;transform:translateY(-50%);font-family:'Playfair Display',serif;font-size:min(22vw,300px);font-weight:600;color:rgba(196,164,90,.09);line-height:1;user-select:none;pointer-events:none">1902</div>
+  <div style="position:relative;max-width:1280px;margin:0 auto;padding:clamp(56px,8vw,100px) clamp(18px,4vw,40px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:clamp(32px,5vw,72px);align-items:center;animation:reveal .9s ease both;animation-timeline:view(block 92% 8%)">
+      <div>
+        <p style="margin:0 0 10px;color:#5C6A3A;font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:600;display:flex;align-items:center;gap:14px"><span class="draw-line" style="width:44px;height:1px;background:#C4A45A;flex:none"></span>Why Pine Lake</p>
+        <h2 style="margin:0 0 20px;font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(28px,3.2vw,42px);line-height:1.15;text-wrap:pretty">A 120-year legacy, renewed for the next generation.</h2>
+        <p style="margin:0 0 30px;font-size:15px;line-height:1.75;color:rgba(30,43,20,.75);font-weight:300;max-width:56ch">Founded in 1902 as the Automobile Club of Detroit — discovered by John Dodge, Ransom Olds, and Henry Ford — Pine Lake has spent more than a century perfecting one idea: a club where families come first. In 2024, we completed a $22 million clubhouse and course renovation, the most significant investment in our history. And when the season turns, indoor tennis and TrackMan golf keep the club going all winter.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:26px 28px">
+          <div><div style="font-family:'Playfair Display',serif;font-size:34px;color:#1E2B14;font-weight:600"><span class="cnt" data-to="1902">1902</span></div><div style="font-size:12.5px;line-height:1.5;color:rgba(30,43,20,.65);margin-top:4px">Founded by Detroit's automotive pioneers</div></div>
+          <div><div style="font-family:'Playfair Display',serif;font-size:34px;color:#1E2B14;font-weight:600">$<span class="cnt" data-to="22">22</span>M</div><div style="font-size:12.5px;line-height:1.5;color:rgba(30,43,20,.65);margin-top:4px">Clubhouse &amp; course renovation, completed 2024</div></div>
+          <div><div style="font-family:'Playfair Display',serif;font-size:34px;color:#1E2B14;font-weight:600"><span class="cnt" data-to="395">395</span><span style="font-size:20px"> acres</span></div><div style="font-size:12.5px;line-height:1.5;color:rgba(30,43,20,.65);margin-top:4px">Of Pine Lake at your doorstep — beach, marina, boat slips</div></div>
+          <div><div style="font-family:'Playfair Display',serif;font-size:34px;color:#1E2B14;font-weight:600"><span class="cnt" data-to="4">4</span><span style="font-size:20px"> seasons</span></div><div style="font-size:12.5px;line-height:1.5;color:rgba(30,43,20,.65);margin-top:4px">Summer on the lake, winter indoors — the club never closes</div></div>
+        </div>
+      </div>
+      <div class="kb-host" style="position:relative;min-height:460px;border-radius:3px;overflow:hidden;background:linear-gradient(200deg,#5C6A3A 0%,#3A4A24 55%,#26351A 100%)">
+        <img class="kb-img" src="https://images.unsplash.com/photo-1592919505780-303950717480?auto=format&fit=crop&w=1600&q=80" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span style="position:absolute;top:16px;left:20px;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(240,237,230,.55);font-weight:600">Photo — the Park course from above</span>
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse 90% 55% at 50% 100%,rgba(232,208,144,.28),transparent 60%)"></div>
+        <div style="position:absolute;left:24px;bottom:24px;right:24px;background:rgba(240,237,230,.96);border-radius:3px;padding:18px 20px;display:flex;gap:14px;align-items:center">
+          <div style="width:44px;height:44px;border-radius:50%;background:#1E2B14;color:#E8D090;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:18px;flex:none">W</div>
+          <div><div style="font-size:13px;font-weight:600;color:#1E2B14">Willie Park Jr. Championship Course</div><div style="font-size:12px;color:rgba(30,43,20,.65);line-height:1.5">18 holes by the two-time British Open champion</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RARE WINDOW -->
+<section data-screen-label="Why now" style="background:#1E2B14;position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 90% at 85% 20%,rgba(92,106,58,.5),transparent 60%)"></div>
+  <div style="position:relative;max-width:900px;margin:0 auto;padding:clamp(64px,10vw,120px) clamp(18px,4vw,40px);text-align:center;animation:reveal .9s ease both;animation-timeline:view(block 92% 8%)">
+    <div class="draw-line" style="width:48px;height:1px;background:#C4A45A;margin:0 auto 26px"></div>
+    <h2 style="margin:0 0 22px;font-family:'Playfair Display',serif;font-weight:500;color:#F0EDE6;font-size:clamp(28px,3.8vw,48px);line-height:1.22;text-wrap:pretty">There has never been a better time<br><em style="color:#E8D090">to make Pine Lake your family's club.</em></h2>
+    <p style="margin:0 auto 34px;color:rgba(240,237,230,.8);font-size:15.5px;line-height:1.75;max-width:54ch;font-weight:300">Fresh off the most ambitious renovation in club history, Pine Lake is welcoming new member families for the season ahead. Join a club in ascent — and become part of something that has mattered for over 120 years.</p>
+    <a href="#inquire" onClick="{{ wantTour }}" style="display:inline-block;background:#C4A45A;color:#1E2B14;padding:17px 34px;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:2px" style-hover="background:#E8D090">Schedule a Private Tour</a>
+  </div>
+</section>
+
+<!-- MEMBER VOICES -->
+<section data-screen-label="Member voices" style="max-width:1280px;margin:0 auto;padding:clamp(56px,9vw,110px) clamp(18px,4vw,40px)">
+  <p style="margin:0 0 10px;color:#5C6A3A;font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:600;text-align:center">Member Voices</p>
+  <h2 style="margin:0 auto 46px;font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(28px,3.2vw,42px);text-align:center;max-width:20ch;line-height:1.15">Belonging, in their words.</h2>
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin:-28px 0 40px"><span style="width:60px;height:1px;background:linear-gradient(90deg,transparent,rgba(196,164,90,.7))"></span><span style="font-family:'Playfair Display',serif;color:#C4A45A;font-size:14px">❦</span><span style="width:60px;height:1px;background:linear-gradient(90deg,rgba(196,164,90,.7),transparent)"></span></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:18px;animation:reveal .9s ease both;animation-timeline:view(block 95% 5%)">
+    <sc-for list="{{ voices }}" as="v" hint-placeholder-count="3">
+      <figure style="margin:0;background:#FFFFFF;border:1px solid rgba(30,43,20,.09);border-radius:3px;padding:30px 28px;display:flex;flex-direction:column;gap:18px">
+        <div style="font-family:'Playfair Display',serif;font-size:44px;line-height:.6;color:#C4A45A">“</div>
+        <blockquote style="margin:0;font-family:'Playfair Display',serif;font-size:18px;line-height:1.55;font-style:italic;color:rgba(30,43,20,.85)">{{ v.quote }}</blockquote>
+        <figcaption style="margin-top:auto"><div style="font-size:12.5px;font-weight:600;color:#1E2B14">{{ v.who }}</div><div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#5C6A3A;margin-top:3px;font-weight:600">{{ v.tag }}</div></figcaption>
+      </figure>
+    </sc-for>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section data-screen-label="Location" style="background:#FFFFFF;border-top:1px solid rgba(30,43,20,.08)">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(56px,8vw,96px) clamp(18px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr));gap:clamp(32px,5vw,64px);align-items:center">
+    <div style="position:relative;min-height:340px;border-radius:3px;overflow:hidden;background:linear-gradient(140deg,#EAE6DA 0%,#D9D4C2 100%)">
+      <span style="position:absolute;top:16px;left:20px;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(30,43,20,.4);font-weight:600">Map — Orchard Lake &amp; surrounds</span>
+      <div style="position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);text-align:center">
+        <div style="width:14px;height:14px;border-radius:50%;background:#C4A45A;border:3px solid #1E2B14;margin:0 auto 8px"></div>
+        <div style="font-family:'Playfair Display',serif;font-size:17px;color:#1E2B14;font-weight:600">Pine Lake Country Club</div>
+        <div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#5C6A3A;font-weight:600;margin-top:2px">Orchard Lake, Michigan</div>
+      </div>
+    </div>
+    <div>
+      <p style="margin:0 0 10px;color:#5C6A3A;font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:600">Close to Home</p>
+      <h2 style="margin:0 0 18px;font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(26px,3vw,38px);line-height:1.18;text-wrap:pretty">Wherever home is, the club is minutes away.</h2>
+      <p style="margin:0 0 26px;font-size:15px;line-height:1.75;color:rgba(30,43,20,.75);font-weight:300;max-width:52ch">A club only matters if you actually use it. Pine Lake sits within an easy drive of communities across Oakland County and Metro Detroit — close enough for a Tuesday swim lesson, a Thursday client dinner, and everything in between.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 28px;border-top:1px solid rgba(30,43,20,.1)">
+        <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 2px;border-bottom:1px solid rgba(30,43,20,.1);font-size:13.5px"><span style="font-weight:500">West Bloomfield</span><span style="color:#5C6A3A;font-weight:600">5 min</span></div>
+        <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 2px;border-bottom:1px solid rgba(30,43,20,.1);font-size:13.5px"><span style="font-weight:500">Commerce</span><span style="color:#5C6A3A;font-weight:600">10 min</span></div>
+        <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 2px;border-bottom:1px solid rgba(30,43,20,.1);font-size:13.5px"><span style="font-weight:500">Walled Lake</span><span style="color:#5C6A3A;font-weight:600">10 min</span></div>
+        <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 2px;border-bottom:1px solid rgba(30,43,20,.1);font-size:13.5px"><span style="font-weight:500">Bloomfield Hills</span><span style="color:#5C6A3A;font-weight:600">15 min</span></div>
+        <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 2px;border-bottom:1px solid rgba(30,43,20,.1);font-size:13.5px"><span style="font-weight:500">Birmingham</span><span style="color:#5C6A3A;font-weight:600">20 min</span></div>
+        <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 2px;border-bottom:1px solid rgba(30,43,20,.1);font-size:13.5px"><span style="font-weight:500">Novi</span><span style="color:#5C6A3A;font-weight:600">20 min</span></div>
+        <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 2px;font-size:13.5px"><span style="font-weight:500">Troy</span><span style="color:#5C6A3A;font-weight:600">25 min</span></div>
+        <div style="display:flex;justify-content:space-between;gap:16px;padding:13px 2px;font-size:13.5px"><span style="font-weight:500">Downtown Detroit</span><span style="color:#5C6A3A;font-weight:600">~35 min</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INQUIRY FORM -->
+<section id="inquire" data-screen-label="Inquiry form" style="background:linear-gradient(180deg,#26351A 0%,#1E2B14 100%);position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 15% 100%,rgba(196,164,90,.14),transparent 60%)"></div>
+  <div style="position:relative;max-width:1100px;margin:0 auto;padding:clamp(56px,9vw,110px) clamp(18px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr));gap:clamp(32px,5vw,72px);align-items:center">
+    <div>
+      <p style="margin:0 0 12px;color:#C4A45A;font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:600">Begin the Conversation</p>
+      <h2 style="margin:0 0 18px;font-family:'Playfair Display',serif;font-weight:500;color:#F0EDE6;font-size:clamp(28px,3.4vw,44px);line-height:1.15;text-wrap:pretty">We'd love to show you around.</h2>
+      <p style="margin:0 0 22px;color:rgba(240,237,230,.8);font-size:15px;line-height:1.75;font-weight:300;max-width:48ch">Share a little about your family and what you're looking for. Our Membership Director will reach out personally — no pressure, no paperwork, just a conversation and an invitation to see the club for yourself.</p>
+      <a href="tel:+12486821300" style="color:#E8D090;font-size:14px;font-weight:600;letter-spacing:.04em">Prefer to talk? Call (248) 682-1300</a>
+    </div>
+    <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+    <form onSubmit="{{ onSubmit }}" style="background:rgba(240,237,230,.06);border:1px solid rgba(240,237,230,.16);border-radius:3px;padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;gap:14px">
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,237,230,.7);font-weight:600">Name
+        <input value="{{ fName }}" onChange="{{ onName }}" placeholder="Your full name" style="background:rgba(240,237,230,.95);border:none;border-radius:2px;padding:13px 14px;font-size:14px;color:#1E2B14;outline:none"></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,237,230,.7);font-weight:600">Email
+        <input value="{{ fEmail }}" onChange="{{ onEmail }}" type="email" placeholder="you@example.com" style="background:rgba(240,237,230,.95);border:none;border-radius:2px;padding:13px 14px;font-size:14px;color:#1E2B14;outline:none"></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,237,230,.7);font-weight:600">Phone
+        <input value="{{ fPhone }}" onChange="{{ onPhone }}" type="tel" placeholder="(248) 555-0100" style="background:rgba(240,237,230,.95);border:none;border-radius:2px;padding:13px 14px;font-size:14px;color:#1E2B14;outline:none"></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,237,230,.7);font-weight:600">What interests you most?
+        <select value="{{ fInterest }}" onChange="{{ onInterest }}" style="background:rgba(240,237,230,.95);border:none;border-radius:2px;padding:13px 14px;font-size:14px;color:#1E2B14;outline:none;appearance:none">
+          <option value="">Select one…</option>
+          <option value="family">Family &amp; junior programs</option>
+          <option value="golf">Golf</option>
+          <option value="lake">Lake life — beach, marina, pool</option>
+          <option value="tennis">Tennis &amp; racquets</option>
+          <option value="dining">Dining &amp; social</option>
+          <option value="tour">I'd like a private tour</option>
+        </select></label>
+      <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+        <p style="margin:0;color:#E8D090;font-size:12.5px;line-height:1.5">{{ formError }}</p>
+      </sc-if>
+      <button type="submit" class="gold-cta" style="margin-top:6px;background:#C4A45A;color:#1E2B14;border:none;padding:16px;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:2px;cursor:pointer" style-hover="background:#E8D090">Request Membership Info</button>
+      <p style="margin:0;font-size:11px;color:rgba(240,237,230,.5);line-height:1.5;text-align:center">Your inquiry goes directly to our Membership Director. We never share your information.</p>
+    </form>
+    </sc-if>
+    <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+      <div style="background:rgba(240,237,230,.06);border:1px solid rgba(196,164,90,.5);border-radius:3px;padding:clamp(32px,4vw,48px);text-align:center">
+        <div style="width:54px;height:54px;border-radius:50%;background:#C4A45A;color:#1E2B14;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 20px">✓</div>
+        <h3 style="margin:0 0 12px;font-family:'Playfair Display',serif;font-weight:500;color:#F0EDE6;font-size:26px">Welcome — we're so glad you reached out.</h3>
+        <p style="margin:0;color:rgba(240,237,230,.8);font-size:14.5px;line-height:1.7;font-weight:300">{{ confirmName }} our Membership Director will be in touch within one business day to say hello and arrange your private tour of the club.</p>
+      </div>
+    </sc-if>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#171F0F;color:rgba(240,237,230,.7)">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,64px) clamp(18px,4vw,40px) 96px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:32px">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:20px;color:#F0EDE6;font-weight:600">Pine Lake</div>
+      <div style="font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:#C4A45A;font-weight:600;margin-top:2px">Country Club · Est. 1902</div>
+      <p style="font-size:12.5px;line-height:1.7;margin:16px 0 0;max-width:32ch">Creating family traditions since 1902. Life on the lake — a legacy for the next generation.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px;font-size:12.5px">
+      <span style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#C4A45A;font-weight:600;margin-bottom:4px">The Club</span>
+      <a href="Membership.dc.html" style="color:rgba(240,237,230,.7)">Membership</a>
+      <a href="Golf.dc.html" style="color:rgba(240,237,230,.7)">Golf</a>
+      <a href="Tennis.dc.html" style="color:rgba(240,237,230,.7)">Tennis</a>
+      <a href="Dining.dc.html" style="color:rgba(240,237,230,.7)">Dining &amp; Social</a>
+      <a href="Family.dc.html" style="color:rgba(240,237,230,.7)">Family &amp; Aquatics</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px;font-size:12.5px">
+      <span style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#C4A45A;font-weight:600;margin-bottom:4px">More</span>
+      <a href="Events.dc.html" style="color:rgba(240,237,230,.7)">Events &amp; Weddings</a>
+      <a href="About.dc.html" style="color:rgba(240,237,230,.7)">About &amp; Heritage</a>
+      <a href="Contact.dc.html" style="color:rgba(240,237,230,.7)">Contact</a>
+      <a href="#inquire" style="color:rgba(240,237,230,.7)">Schedule a Tour</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px;font-size:12.5px">
+      <span style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#C4A45A;font-weight:600;margin-bottom:4px">Visit</span>
+      <span>3300 Pine Lake Road<br>Orchard Lake, MI 48324</span>
+      <a href="tel:+12486821300" style="color:#E8D090;font-weight:600">(248) 682-1300</a>
+      <span style="font-size:11px;color:rgba(240,237,230,.4);margin-top:8px">© 2026 Pine Lake Country Club</span>
+    </div>
+  </div>
+</footer>
+
+<!-- STICKY MOBILE CTA -->
+<sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;gap:1px;background:#171F0F;box-shadow:0 -8px 24px rgba(20,30,12,.35)">
+    <a href="tel:+12486821300" style="flex:1;text-align:center;padding:16px 8px;color:#F0EDE6;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:#26351A">Call the Club</a>
+    <a href="#inquire" onClick="{{ wantTour }}" style="flex:1.4;text-align:center;padding:16px 8px;background:#C4A45A;color:#1E2B14;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Schedule a Tour</a>
+  </div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;showAnnouncement&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Header&quot;}}">
+class Component extends DCLogic {
+  state = { isMobile: false, menuOpen: false, compact: false, name: '', email: '', phone: '', interest: '', submitted: false, error: '' };
+  componentDidMount() {
+    this._onResize = () => {
+      const m = window.innerWidth < 1080;
+      if (m !== this.state.isMobile) this.setState({ isMobile: m, menuOpen: false });
+    };
+    this._onResize();
+    window.addEventListener('resize', this._onResize);
+    this._onScroll = () => { const c = window.scrollY > 80; if (c !== this.state.compact) this.setState({ compact: c }); };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    // count-up stats (1b)
+    setTimeout(() => {
+      const els = document.querySelectorAll('.cnt');
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (!en.isIntersecting || en.target._counted) return;
+          en.target._counted = true;
+          const to = +en.target.dataset.to, t0 = performance.now(), dur = 1400;
+          const step = now => {
+            const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+            en.target.textContent = String(Math.round(to * e));
+            if (p < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+      }, { threshold: 0.6 });
+      els.forEach(el => io.observe(el));
+      this._cntIo = io;
+    }, 100);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._onResize); window.removeEventListener('scroll', this._onScroll); if (this._cntIo) this._cntIo.disconnect(); }
+  renderVals() {
+    const s = this.state;
+    const heroMotion = this.props.heroMotion ?? true;
+    return {
+      showAnnouncement: this.props.showAnnouncement ?? true,
+      heroAnim: heroMotion ? 'heroPan 45s ease-in-out infinite' : 'none',
+      isMobile: s.isMobile, isDesktop: !s.isMobile, menuOpen: s.menuOpen,
+      headerBg: s.compact ? 'rgba(240,237,230,.82)' : 'rgba(240,237,230,.94)',
+      headerPad: s.compact ? '8px' : '14px',
+      toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      wantTour: () => this.setState({ interest: s.interest || 'tour', menuOpen: false }),
+      fName: s.name, fEmail: s.email, fPhone: s.phone, fInterest: s.interest,
+      onName: e => this.setState({ name: e.target.value }),
+      onEmail: e => this.setState({ email: e.target.value }),
+      onPhone: e => this.setState({ phone: e.target.value }),
+      onInterest: e => this.setState({ interest: e.target.value }),
+      formError: s.error, submitted: s.submitted, notSubmitted: !s.submitted,
+      confirmName: s.name ? s.name.split(' ')[0] + ',' : '',
+      onSubmit: e => {
+        e.preventDefault();
+        if (!s.name.trim() || !s.email.trim() || !/.+@.+\..+/.test(s.email)) {
+          this.setState({ error: 'Please share your name and a valid email so we can reach you.' });
+          return;
+        }
+        this.setState({ error: '', submitted: true });
+      },
+      tiles: [
+        { img: 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&w=1200&q=80', href: 'Golf.dc.html', kicker: 'Golf', title: 'A Willie Park Jr. masterpiece', copy: '18 championship holes by the two-time British Open champion — plus TrackMan simulators for the off-season.', photo: 'fairway morning mist, hole 14', bg: 'linear-gradient(165deg,#4A5A2C 0%,#31401E 60%,#223015 100%)' },
+        { img: 'https://images.unsplash.com/photo-1600965962361-9035dbfd1c50?auto=format&fit=crop&w=1200&q=80', href: 'Family.dc.html', kicker: 'Lake Life', title: 'Summers on Pine Lake', copy: 'Private beach, members-only marina, Olympic-sized pool, floating swim platform, and sunset cruises.', photo: 'kids leaping off the swim platform', bg: 'linear-gradient(165deg,#6E7C4A 0%,#43522A 55%,#28371A 100%)' },
+        { img: 'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=1200&q=80', href: 'Tennis.dc.html', kicker: 'Tennis & Racquets', title: 'Clay courts, stadium court, pickleball', copy: '4 Har-Tru clay courts, a stadium court, and pickleball — plus indoor Deco-Turf courts that keep the game going all winter.', photo: 'stadium court, evening match', bg: 'linear-gradient(165deg,#3D4C26 0%,#2B3A1B 60%,#1E2B14 100%)' },
+        { img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80', href: 'Dining.dc.html', kicker: 'Table & Taste', title: 'Seven rooms, one view', copy: 'Every indoor dining room looks out on the water. From white-tablecloth evenings to burgers at the beach.', photo: 'waterfront terrace dinner at dusk', bg: 'linear-gradient(165deg,#5C6A3A 0%,#3A4A24 55%,#26351A 100%)' },
+        { img: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=1200&q=80', href: 'Family.dc.html', kicker: 'Family & Juniors', title: 'Where kids grow up', copy: 'Junior golf from age 3, junior swim and tennis, 120+ annual golf events — a summer-long answer for the kids.', photo: 'junior clinic on the practice green', bg: 'linear-gradient(165deg,#55632F 0%,#37461F 60%,#233114 100%)' }
+      ],
+      voices: [
+        { quote: '[TESTIMONIAL — TO BE COLLECTED] A growing-family member on what summers at the lake mean for their kids.', who: 'The Growing Family', tag: 'Member since — · West Bloomfield' },
+        { quote: '[TESTIMONIAL — TO BE COLLECTED] An established professional on the course, the renovation, and entertaining clients.', who: 'The Established Professional', tag: 'Member since — · Bloomfield Hills' },
+        { quote: '[TESTIMONIAL — TO BE COLLECTED] A longtime member on three generations of family traditions at Pine Lake.', who: 'The Legacy Family', tag: 'Member since — · Orchard Lake' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

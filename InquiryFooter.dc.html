@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>a{color:#5C6A3A;text-decoration:none}a:hover{color:#C4A45A}input,select,button{font-family:'Montserrat',sans-serif}</style>
+</helmet>
+<div style="font-family:'Montserrat',sans-serif">
+<section id="inquire" data-screen-label="Inquiry form" style="background:linear-gradient(180deg,#26351A 0%,#1E2B14 100%);position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 15% 100%,rgba(196,164,90,.14),transparent 60%)"></div>
+  <div style="position:relative;max-width:1100px;margin:0 auto;padding:clamp(56px,9vw,110px) clamp(18px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr));gap:clamp(32px,5vw,72px);align-items:center">
+    <div>
+      <p style="margin:0 0 12px;color:#C4A45A;font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:600">Begin the Conversation</p>
+      <h2 style="margin:0 0 18px;font-family:'Playfair Display',serif;font-weight:500;color:#F0EDE6;font-size:clamp(28px,3.4vw,44px);line-height:1.15;text-wrap:pretty">We'd love to show you around.</h2>
+      <p style="margin:0 0 22px;color:rgba(240,237,230,.8);font-size:15px;line-height:1.75;font-weight:300;max-width:48ch">Share a little about your family and what you're looking for. Our Membership Director will reach out personally — no pressure, no paperwork, just a conversation and an invitation to see the club for yourself.</p>
+      <a href="tel:+12486821300" style="color:#E8D090;font-size:14px;font-weight:600;letter-spacing:.04em">Prefer to talk? Call (248) 682-1300</a>
+    </div>
+    <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+    <form onSubmit="{{ onSubmit }}" style="background:rgba(240,237,230,.06);border:1px solid rgba(240,237,230,.16);border-radius:3px;padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;gap:14px">
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,237,230,.7);font-weight:600">Name
+        <input value="{{ fName }}" onChange="{{ onName }}" placeholder="Your full name" style="background:rgba(240,237,230,.95);border:none;border-radius:2px;padding:13px 14px;font-size:14px;color:#1E2B14;outline:none"></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,237,230,.7);font-weight:600">Email
+        <input value="{{ fEmail }}" onChange="{{ onEmail }}" type="email" placeholder="you@example.com" style="background:rgba(240,237,230,.95);border:none;border-radius:2px;padding:13px 14px;font-size:14px;color:#1E2B14;outline:none"></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,237,230,.7);font-weight:600">Phone
+        <input value="{{ fPhone }}" onChange="{{ onPhone }}" type="tel" placeholder="(248) 555-0100" style="background:rgba(240,237,230,.95);border:none;border-radius:2px;padding:13px 14px;font-size:14px;color:#1E2B14;outline:none"></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,237,230,.7);font-weight:600">What interests you most?
+        <select value="{{ fInterest }}" onChange="{{ onInterest }}" style="background:rgba(240,237,230,.95);border:none;border-radius:2px;padding:13px 14px;font-size:14px;color:#1E2B14;outline:none;appearance:none">
+          <option value="">Select one…</option>
+          <option value="family">Family &amp; junior programs</option>
+          <option value="golf">Golf</option>
+          <option value="lake">Lake life — beach, marina, pool</option>
+          <option value="tennis">Tennis &amp; racquets</option>
+          <option value="dining">Dining &amp; social</option>
+          <option value="tour">I'd like a private tour</option>
+        </select></label>
+      <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+        <p style="margin:0;color:#E8D090;font-size:12.5px;line-height:1.5">{{ formError }}</p>
+      </sc-if>
+      <button type="submit" style="margin-top:6px;background:#C4A45A;color:#1E2B14;border:none;padding:16px;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:2px;cursor:pointer" style-hover="background:#E8D090">Request Membership Info</button>
+      <p style="margin:0;font-size:11px;color:rgba(240,237,230,.5);line-height:1.5;text-align:center">Your inquiry goes directly to our Membership Director. We never share your information.</p>
+    </form>
+    </sc-if>
+    <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+      <div style="background:rgba(240,237,230,.06);border:1px solid rgba(196,164,90,.5);border-radius:3px;padding:clamp(32px,4vw,48px);text-align:center">
+        <div style="width:54px;height:54px;border-radius:50%;background:#C4A45A;color:#1E2B14;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 20px">✓</div>
+        <h3 style="margin:0 0 12px;font-family:'Playfair Display',serif;font-weight:500;color:#F0EDE6;font-size:26px">Welcome — we're so glad you reached out.</h3>
+        <p style="margin:0;color:rgba(240,237,230,.8);font-size:14.5px;line-height:1.7;font-weight:300">{{ confirmName }} our Membership Director will be in touch within one business day to say hello and arrange your private tour of the club.</p>
+      </div>
+    </sc-if>
+  </div>
+</section>
+<footer style="background:#171F0F;color:rgba(240,237,230,.7)">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,64px) clamp(18px,4vw,40px) 96px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:32px">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:20px;color:#F0EDE6;font-weight:600">Pine Lake</div>
+      <div style="font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:#C4A45A;font-weight:600;margin-top:2px">Country Club · Est. 1902</div>
+      <p style="font-size:12.5px;line-height:1.7;margin:16px 0 0;max-width:32ch">Creating family traditions since 1902. Life on the lake — a legacy for the next generation.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px;font-size:12.5px">
+      <span style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#C4A45A;font-weight:600;margin-bottom:4px">The Club</span>
+      <a href="Membership.dc.html" style="color:rgba(240,237,230,.7)">Membership</a>
+      <a href="Golf.dc.html" style="color:rgba(240,237,230,.7)">Golf</a>
+      <a href="Tennis.dc.html" style="color:rgba(240,237,230,.7)">Tennis</a>
+      <a href="Dining.dc.html" style="color:rgba(240,237,230,.7)">Dining &amp; Social</a>
+      <a href="Family.dc.html" style="color:rgba(240,237,230,.7)">Family &amp; Aquatics</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px;font-size:12.5px">
+      <span style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#C4A45A;font-weight:600;margin-bottom:4px">More</span>
+      <a href="Events.dc.html" style="color:rgba(240,237,230,.7)">Events &amp; Weddings</a>
+      <a href="About.dc.html" style="color:rgba(240,237,230,.7)">About &amp; Heritage</a>
+      <a href="Contact.dc.html" style="color:rgba(240,237,230,.7)">Contact</a>
+      <a href="#inquire" style="color:rgba(240,237,230,.7)">Schedule a Tour</a>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px;font-size:12.5px">
+      <span style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#C4A45A;font-weight:600;margin-bottom:4px">Visit</span>
+      <span>3300 Pine Lake Road<br>Orchard Lake, MI 48324</span>
+      <a href="tel:+12486821300" style="color:#E8D090;font-weight:600">(248) 682-1300</a>
+      <span style="font-size:11px;color:rgba(240,237,230,.4);margin-top:8px">© 2026 Pine Lake Country Club</span>
+    </div>
+  </div>
+</footer>
+<sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;gap:1px;background:#171F0F;box-shadow:0 -8px 24px rgba(20,30,12,.35)">
+    <a href="tel:+12486821300" style="flex:1;text-align:center;padding:16px 8px;color:#F0EDE6;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;background:#26351A">Call the Club</a>
+    <a href="#inquire" style="flex:1.4;text-align:center;padding:16px 8px;background:#C4A45A;color:#1E2B14;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Schedule a Tour</a>
+  </div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;900px&quot;}}">
+class Component extends DCLogic {
+  state = { isMobile: false, name: '', email: '', phone: '', interest: '', submitted: false, error: '' };
+  componentDidMount() {
+    this._r = () => { const m = window.innerWidth < 1080; if (m !== this.state.isMobile) this.setState({ isMobile: m }); };
+    this._r(); window.addEventListener('resize', this._r);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this._r); }
+  renderVals() {
+    const s = this.state;
+    return {
+      isMobile: s.isMobile,
+      fName: s.name, fEmail: s.email, fPhone: s.phone, fInterest: s.interest,
+      onName: e => this.setState({ name: e.target.value }),
+      onEmail: e => this.setState({ email: e.target.value }),
+      onPhone: e => this.setState({ phone: e.target.value }),
+      onInterest: e => this.setState({ interest: e.target.value }),
+      formError: s.error, submitted: s.submitted, notSubmitted: !s.submitted,
+      confirmName: s.name ? s.name.split(' ')[0] + ',' : '',
+      onSubmit: e => {
+        e.preventDefault();
+        if (!s.name.trim() || !s.email.trim() || !/.+@.+\..+/.test(s.email)) {
+          this.setState({ error: 'Please share your name and a valid email so we can reach you.' });
+          return;
+        }
+        this.setState({ error: '', submitted: true });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
