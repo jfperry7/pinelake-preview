@@ -1,6 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": false,
+  "rewrites": [
+    { "source": "/", "destination": "/Home.dc.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
