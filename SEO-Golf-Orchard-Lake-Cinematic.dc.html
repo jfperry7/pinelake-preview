@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#F0EDE6;color:#1E2B14;font-family:Montserrat,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p{margin:0;text-wrap:pretty}
+a{color:#5C6A3A;text-decoration:none}
+a:hover{color:#C4A45A}
+input,select,button{font-family:inherit}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+@keyframes slowPan{0%{transform:scale(1.08)}50%{transform:scale(1.18) translate(-1.6%,-1%)}100%{transform:scale(1.08)}}
+@keyframes reveal{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.rv{animation:reveal .9s ease both;animation-timeline:view(block 92% 6%)}
+.kb{overflow:hidden;border-radius:3px}
+.kb img{transition:transform 6s ease}
+.kb:hover img{transform:scale(1.06)}
+.wrap{max-width:1180px;margin:0 auto;padding:clamp(40px,6vw,84px) clamp(18px,4vw,40px)}
+.row{display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0}
+.row b{font-weight:500;text-align:right}
+</style>
+</helmet>
+
+<div style="max-width:100%;overflow-x:hidden">
+
+<header style="position:sticky;top:0;z-index:60;background:rgba(240,237,230,.94);backdrop-filter:blur(10px);border-bottom:1px solid rgba(30,43,20,.1)">
+  <div style="max-width:1180px;margin:0 auto;padding:11px clamp(18px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:13px;color:#1E2B14;flex:0 0 auto">
+      <img src="img/company_logo.png" alt="Pine Lake Country Club" style="height:44px;width:auto;display:block" />
+      <div style="line-height:1.15"><div style="font-family:'Playfair Display',serif;font-size:18px;letter-spacing:.06em">Pine Lake</div><div style="font-size:8.5px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.55);white-space:nowrap">Country Club · Est. 1902</div></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <a href="tel:+12486821300" style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#1E2B14">(248) 682-1300</a>
+      <a href="#inquire" style="background:#C4A45A;color:#1E2B14;font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:12px 20px;border-radius:2px" style-hover="background:#E8D090">Schedule a Private Tour</a>
+    </div>
+  </div>
+</header>
+
+<section data-screen-label="SEO hero" style="position:relative;min-height:74vh;overflow:hidden;display:flex;align-items:flex-end">
+  <img src="img/golf-course.jpg" alt="The Park course at first light" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:slowPan 46s ease-in-out infinite" />
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 140% 100% at 50% 40%,transparent 50%,rgba(20,30,12,.5) 100%)"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,30,12,.92) 0%,rgba(20,30,12,.66) 45%,rgba(20,30,12,.44) 75%,rgba(20,30,12,.3) 100%)"></div>
+  <div style="position:absolute;top:0;right:0;margin:14px 18px;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.5);text-align:right">Photo — the Park course at first light</div>
+  <div style="position:relative;padding:clamp(56px,9vw,110px) clamp(18px,4vw,40px) clamp(44px,7vw,84px);width:100%;color:#F0EDE6">
+    <div style="max-width:1180px;margin:0 auto">
+      <div style="display:inline-block;font-size:11px;letter-spacing:.34em;text-transform:uppercase;font-weight:700;color:#C4A45A;background:rgba(20,30,12,.9);padding:7px 13px;border-radius:2px;animation:fadeUp 1s .15s ease both">Est. 1902 · Orchard Lake, Michigan</div>
+      <h1 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(32px,5vw,68px);line-height:1.05;letter-spacing:-.015em;max-width:22ch;margin-top:clamp(16px,2.2vw,28px);animation:fadeUp 1s .5s ease both">The Private Golf Club in Orchard Lake With a Champion's Signature.</h1>
+      <p style="font-size:15px;line-height:1.8;font-weight:300;color:rgba(240,237,230,.88);margin-top:20px;max-width:58ch;animation:fadeUp 1s .9s ease both">Eighteen championship holes by Willie Park Jr. — two-time British Open champion — restored in a $22M renovation completed in 2024, on the shores of 395-acre Pine Lake.</p>
+      <a href="#inquire" style="display:inline-block;margin-top:clamp(24px,3.6vw,36px);background:#C4A45A;color:#1E2B14;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;padding:17px 30px;border-radius:2px;animation:fadeUp 1s 1.1s ease both" style-hover="background:#E8D090">Schedule a Private Tour</a>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Course credentials" style="background:#FFFFFF;border-bottom:1px solid rgba(30,43,20,.09)">
+  <div class="wrap">
+    <div class="rv" style="max-width:56ch">
+      <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#5C6A3A">Course Credentials</div>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(25px,3vw,40px);line-height:1.12;margin-top:14px">Golden-age architecture. 2024 conditions.</h2>
+      <p style="font-size:15px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:16px">Willie Park Jr. won the Open twice before he ever drew a routing. His design at Pine Lake rewards thought over muscle — and the 2024 course renovation restored his character, tee to green.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:clamp(20px,3vw,30px);margin-top:clamp(28px,4vw,48px)">
+      <div class="rv">
+        <div class="kb" style="aspect-ratio:3/2"><img src="img/golf-green.jpg" alt="A green along the lake" style="width:100%;height:100%;object-fit:cover" /></div>
+        <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:20px;line-height:1.2;margin-top:16px">Eighteen Holes</h3>
+        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:9px">A classic Park routing that follows the land along the lake.</p>
+      </div>
+      <div class="rv">
+        <div class="kb" style="aspect-ratio:3/2"><img src="img/flagstick.jpg" alt="The club flag on the green" style="width:100%;height:100%;object-fit:cover" /></div>
+        <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:20px;line-height:1.2;margin-top:16px">A Champion's Design</h3>
+        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:9px">Willie Park Jr., among the most celebrated architects of golf's golden age.</p>
+      </div>
+      <div class="rv">
+        <div class="kb" style="aspect-ratio:3/2"><img src="img/golf-junior-clinic.jpg" alt="A junior clinic" style="width:100%;height:100%;object-fit:cover" /></div>
+        <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:20px;line-height:1.2;margin-top:16px">A Full Calendar</h3>
+        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:9px">Member-guests, couples' nights, junior tournaments — golf from age 3 up.</p>
+      </div>
+      <div class="rv">
+        <div class="kb" style="aspect-ratio:3/2"><img src="img/golf-range.jpg" alt="The practice range" style="width:100%;height:100%;object-fit:cover" /></div>
+        <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:20px;line-height:1.2;margin-top:16px">Practice Year-Round</h3>
+        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:9px">Driving range and practice areas all season; two TrackMan simulators all winter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Beyond golf" style="background:linear-gradient(160deg,#26351A 0%,#1E2B14 55%,#171F0F 100%);color:#F0EDE6">
+  <div class="wrap">
+    <div class="rv" style="max-width:56ch">
+      <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#C4A45A">Beyond Golf</div>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(25px,3.2vw,44px);line-height:1.1;margin-top:14px">A golf club your whole family will fight you for.</h2>
+      <p style="font-size:15px;line-height:1.8;font-weight:300;color:rgba(240,237,230,.82);margin-top:16px">While you play the Park course, they have 395 acres of private lake, an Olympic-sized pool, nine tennis courts, and seven waterfront dining areas. Nobody waits in the car at Pine Lake.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:clamp(18px,3vw,36px);margin-top:clamp(28px,4.2vw,50px);border-top:1px solid rgba(240,237,230,.16);padding-top:clamp(22px,3vw,34px)">
+      <div><div style="font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,52px);color:#C4A45A;line-height:1">18</div><div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.72);margin-top:10px">Championship holes</div></div>
+      <div><div style="font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,52px);color:#C4A45A;line-height:1">2×</div><div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.72);margin-top:10px">Open champion designer</div></div>
+      <div><div style="font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,52px);color:#C4A45A;line-height:1">2024</div><div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.72);margin-top:10px">Renovation complete</div></div>
+      <div><div style="font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,52px);color:#C4A45A;line-height:1">395</div><div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.72);margin-top:10px">Acres on Pine Lake</div></div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="At a glance">
+  <div class="wrap">
+    <div class="rv">
+      <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#5C6A3A">Detail</div>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(25px,3vw,40px);line-height:1.12;margin-top:14px;max-width:26ch">The course, at a glance</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(24px,4vw,56px);margin-top:clamp(24px,3.4vw,40px)">
+      <div class="rv">
+        <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.55)">The course</div>
+        <ul style="list-style:none;margin:14px 0 0;padding:0">
+          <li class="row"><span>Designer</span><b>Willie Park Jr.</b></li>
+          <li class="row"><span>Holes</span><b>18</b></li>
+          <li class="row"><span>Renovation</span><b>2024</b></li>
+          <li class="row"><span>Practice</span><b>Range with TrackMan</b></li>
+          <li class="row"><span>Winter play</span><b>Two indoor simulators</b></li>
+          <li class="row"><span>Junior instruction</span><b>From age 3</b></li>
+          <li class="row"><span>Annual golf events</span><b>120+</b></li>
+        </ul>
+      </div>
+      <div class="rv">
+        <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.55)">Getting here</div>
+        <ul style="list-style:none;margin:14px 0 0;padding:0">
+          <li class="row"><span>West Bloomfield</span><b>5 min</b></li>
+          <li class="row"><span>Bloomfield Hills</span><b>15 min</b></li>
+          <li class="row"><span>Birmingham</span><b>20 min</b></li>
+          <li class="row"><span>Detroit</span><b>~35 min</b></li>
+        </ul>
+        <p style="font-size:12.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.6);margin-top:18px">3300 Pine Lake Road, Orchard Lake, MI 48324 · <a href="tel:+12486821300">(248) 682-1300</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="SEO voice" style="background:#171F0F;color:#F0EDE6">
+  <div style="max-width:900px;margin:0 auto;padding:clamp(52px,8vw,96px) clamp(18px,4vw,40px);text-align:center">
+    <div style="font-family:'Playfair Display',serif;font-size:40px;color:#C4A45A;line-height:1">&ldquo;</div>
+    <p style="font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:clamp(20px,2.5vw,32px);line-height:1.42;margin-top:8px">[TESTIMONIAL — TO BE COLLECTED] A member on the course, the renovation, and what it's like to play here in every season.</p>
+    <div style="width:44px;height:1px;background:rgba(196,164,90,.7);margin:clamp(24px,4vw,36px) auto 0"></div>
+    <div style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:rgba(240,237,230,.8);margin-top:18px">Member name</div>
+    <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.5);margin-top:8px">Member since — · Orchard Lake</div>
+  </div>
+</section>
+
+<section id="inquire" data-screen-label="Inquiry" style="background:#FFFFFF">
+  <div class="wrap" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(28px,5vw,64px)">
+    <div>
+      <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#5C6A3A">Begin the Conversation</div>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(27px,3.4vw,46px);line-height:1.1;margin-top:16px">We'd love to show you the course.</h2>
+      <p style="font-size:15px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:18px;max-width:42ch">Share a little about your family and what you're looking for. Our Membership Director will reach out personally — no pressure, no paperwork, just a conversation and an invitation to see the club for yourself.</p>
+      <a href="tel:+12486821300" style="display:inline-block;margin-top:22px;font-family:'Playfair Display',serif;font-size:clamp(24px,2.6vw,34px);color:#1E2B14;border-bottom:1px solid #C4A45A;padding-bottom:6px">(248) 682-1300</a>
+      <p style="font-size:12.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.6);margin-top:20px">3300 Pine Lake Road, Orchard Lake, MI 48324</p>
+    </div>
+    <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+      <div style="border:1px solid rgba(196,164,90,.5);border-radius:3px;padding:clamp(26px,3.6vw,42px);background:#F0EDE6">
+        <div style="width:52px;height:52px;border-radius:50%;border:1px solid #C4A45A;display:flex;align-items:center;justify-content:center;color:#C4A45A;font-size:23px">✓</div>
+        <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(23px,2.5vw,31px);line-height:1.2;margin-top:20px">Welcome{{ greetName }} — we're so glad you reached out.</h3>
+        <p style="font-size:14px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.7);margin-top:14px">Our Membership Director will be in touch within one business day to say hello and arrange your private tour of the club.</p>
+      </div>
+    </sc-if>
+    <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+      <form onSubmit="{{ onSubmit }}" style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Name</span><input value="{{ name }}" onChange="{{ onName }}" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" /></label>
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Email</span><input value="{{ email }}" onChange="{{ onEmail }}" type="email" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" /></label>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Phone</span><input value="{{ phone }}" onChange="{{ onPhone }}" type="tel" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" /></label>
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">What interests you most?</span><select value="{{ interest }}" onChange="{{ onInterest }}" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none">
+            <option value="golf">Golf</option>
+            <option value="tour">I'd like a private tour</option>
+            <option value="family">Family &amp; junior programs</option>
+            <option value="lake">Lake life — beach, marina, pool</option>
+            <option value="tennis">Tennis &amp; racquets</option>
+            <option value="dining">Dining &amp; social</option>
+          </select></label>
+        </div>
+        <sc-if value="{{ error }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:13px;color:#8A3B22">Please share your name and a valid email so we can reach you.</div>
+        </sc-if>
+        <button type="submit" style="align-self:flex-start;margin-top:4px;background:#C4A45A;color:#1E2B14;border:0;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;padding:17px 32px;border-radius:2px;cursor:pointer" style-hover="background:#E8D090">Request Membership Info</button>
+        <p style="font-size:11.5px;line-height:1.6;font-weight:300;color:rgba(30,43,20,.55)">Your inquiry goes directly to our Membership Director. We never share your information.</p>
+      </form>
+    </sc-if>
+  </div>
+</section>
+
+<footer style="background:#171F0F;color:rgba(240,237,230,.7)">
+  <div style="max-width:1180px;margin:0 auto;padding:clamp(28px,4vw,44px) clamp(18px,4vw,40px);display:flex;flex-wrap:wrap;gap:16px 40px;align-items:center;justify-content:space-between">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:18px;color:#F0EDE6;letter-spacing:.06em">Pine Lake Country Club</div>
+      <p style="font-size:12.5px;line-height:1.7;font-weight:300;margin-top:8px">3300 Pine Lake Road, Orchard Lake, MI 48324 · <a href="tel:+12486821300" style="color:#C4A45A">(248) 682-1300</a></p>
+    </div>
+    <div style="font-size:11px;font-weight:300;color:rgba(240,237,230,.5)">Creating Family Traditions Since 1902.</div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  state = { name: '', email: '', phone: '', interest: 'golf', error: false, submitted: false };
+  set(k) { return e => this.setState({ [k]: e.target.value, error: false }); }
+  renderVals() {
+    const s = this.state;
+    const validEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.email.trim());
+    return {
+      name: s.name, email: s.email, phone: s.phone, interest: s.interest,
+      onName: this.set('name'), onEmail: this.set('email'), onPhone: this.set('phone'), onInterest: this.set('interest'),
+      error: s.error, submitted: s.submitted, notSubmitted: !s.submitted,
+      greetName: s.name.trim() ? ', ' + s.name.trim().split(' ')[0] : '',
+      onSubmit: e => {
+        e.preventDefault();
+        if (!s.name.trim() || !validEmail) { this.setState({ error: true }); return; }
+        this.setState({ submitted: true });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
