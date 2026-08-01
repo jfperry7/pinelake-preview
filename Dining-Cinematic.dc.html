@@ -26,6 +26,8 @@ input,select,button{font-family:inherit}
 .kb{overflow:hidden;border-radius:3px}
 .kb img{transition:transform 6s ease}
 .kb:hover img{transform:scale(1.06)}
+.row{display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0}
+.row b{font-weight:500;text-align:right}
 </style>
 </helmet>
 
@@ -42,9 +44,9 @@ input,select,button{font-family:inherit}
     </a>
     <nav style="flex:1 1 340px;display:flex;align-items:center;gap:clamp(10px,1.5vw,20px);flex-wrap:wrap;justify-content:flex-end">
       <a href="Membership-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">Membership</a>
-      <span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#C4A45A">Golf</span>
+      <a href="Golf-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">Golf</a>
       <a href="Tennis-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">Tennis</a>
-      <a href="Dining-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">Dining</a>
+      <span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#C4A45A">Dining</span>
       <a href="Family-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">Family</a>
       <a href="Events-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">Events</a>
       <a href="About-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">About</a>
@@ -55,94 +57,88 @@ input,select,button{font-family:inherit}
   </div>
 </header>
 
-<!-- 1 · CINEMATIC HERO -->
-<section data-screen-label="Golf hero" style="position:relative;min-height:72vh;overflow:hidden;display:flex;align-items:flex-end">
-  <img src="img/golf-course.jpg" alt="The Pine Lake course from above" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:slowPan 46s ease-in-out infinite" />
+<section data-screen-label="Dining hero" style="position:relative;min-height:72vh;overflow:hidden;display:flex;align-items:flex-end">
+  <img src="img/events-terrace.jpg" alt="Dinner on the terrace over Pine Lake" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:slowPan 46s ease-in-out infinite" />
   <div style="position:absolute;inset:0;background:radial-gradient(ellipse 140% 100% at 50% 40%,transparent 50%,rgba(20,30,12,.5) 100%)"></div>
   <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,30,12,.9) 0%,rgba(20,30,12,.62) 45%,rgba(20,30,12,.42) 75%,rgba(20,30,12,.3) 100%)"></div>
-  <div style="position:absolute;top:0;right:0;margin:14px 18px;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.5)">Photo — hole 14 at first light, mist on the fairway</div>
+  <div style="position:absolute;top:0;right:0;margin:14px 18px;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.5)">Photo — terrace dinner at sunset over Pine Lake</div>
   <div style="position:relative;padding:clamp(56px,9vw,110px) clamp(18px,4vw,44px) clamp(48px,7vw,88px);width:100%;color:#F0EDE6">
     <div style="max-width:1280px;margin:0 auto">
-      <div style="display:inline-block;font-size:11px;letter-spacing:.34em;text-transform:uppercase;font-weight:700;color:#C4A45A;background:rgba(20,30,12,.9);padding:7px 13px;border-radius:2px;animation:fadeUp 1s .15s ease both">Golf</div>
-      <h1 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(34px,5.4vw,74px);line-height:1.03;letter-spacing:-.015em;max-width:20ch;margin-top:clamp(16px,2.2vw,28px);animation:fadeUp 1s .5s ease both">A championship course with a champion's signature.</h1>
-      <p style="font-size:15px;line-height:1.8;font-weight:300;color:rgba(240,237,230,.88);margin-top:20px;max-width:54ch;animation:fadeUp 1s .9s ease both">Eighteen holes by Willie Park Jr., two-time British Open champion — restored and refined in our 2024 course renovation.</p>
+      <div style="display:inline-block;font-size:11px;letter-spacing:.34em;text-transform:uppercase;font-weight:700;color:#C4A45A;background:rgba(20,30,12,.9);padding:7px 13px;border-radius:2px;animation:fadeUp 1s .15s ease both">Dining &amp; Social</div>
+      <h1 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(34px,5.4vw,74px);line-height:1.03;letter-spacing:-.015em;max-width:20ch;margin-top:clamp(16px,2.2vw,28px);animation:fadeUp 1s .5s ease both">Seven rooms. One extraordinary view.</h1>
+      <p style="font-size:15px;line-height:1.8;font-weight:300;color:rgba(240,237,230,.88);margin-top:20px;max-width:54ch;animation:fadeUp 1s .9s ease both">Every indoor dining room at Pine Lake looks out on the water. The only question is what kind of evening you're in the mood for.</p>
     </div>
   </div>
 </section>
 
-<!-- 2 · THE STORY -->
-<section data-screen-label="Course story">
-  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,84px) clamp(18px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,60px);align-items:center">
-    <div class="kb rv" style="order:1;aspect-ratio:4/3"><img src="img/golf-green.jpg" alt="A green at last light" style="width:100%;height:100%;object-fit:cover" /></div>
-    <div class="rv" style="order:2">
-      <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#5C6A3A">The Course</div>
-      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(25px,3vw,40px);line-height:1.12;margin-top:14px;max-width:22ch">Designed in the golden age. Renewed for this one.</h2>
-      <p style="font-size:15px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:16px;max-width:46ch">Willie Park Jr. won the Open Championship twice before he ever drew a routing — and his design instincts are everywhere at Pine Lake: greens that reward thought over muscle, fairways that follow the land, and lake views that make you forget your scorecard.</p>
-      <p style="font-size:15px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:14px;max-width:46ch">The 2024 renovation — part of the club's $22 million investment — restored Park's character while modernizing conditions, tee to green.</p>
-      <div style="display:flex;gap:clamp(20px,3vw,38px);flex-wrap:wrap;margin-top:24px;padding-top:20px;border-top:1px solid rgba(30,43,20,.12)">
-        <div><div style="font-family:'Playfair Display',serif;font-size:30px">18</div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.55);margin-top:5px">Championship holes</div></div>
-        <div><div style="font-family:'Playfair Display',serif;font-size:30px">2×</div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.55);margin-top:5px">Open champion designer</div></div>
-        <div><div style="font-family:'Playfair Display',serif;font-size:30px">2024</div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.55);margin-top:5px">Renovation complete</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 3 · DETAIL BLOCK — Beyond the First Tee -->
-<section data-screen-label="Practice and winter" style="background:#FFFFFF;border-top:1px solid rgba(30,43,20,.09);border-bottom:1px solid rgba(30,43,20,.09)">
+<section data-screen-label="Seven waterfront settings" style="background:#FFFFFF;border-bottom:1px solid rgba(30,43,20,.09)">
   <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,84px) clamp(18px,4vw,40px)">
     <div class="rv">
-      <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#5C6A3A">Beyond the First Tee</div>
-      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(25px,3vw,40px);line-height:1.12;margin-top:14px;max-width:24ch">Sharpen your game in every season.</h2>
+      <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#5C6A3A">Seven Waterfront Settings</div>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(25px,3vw,40px);line-height:1.12;margin-top:14px;max-width:24ch">From white tablecloths to bare feet in the sand.</h2>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:clamp(20px,3vw,34px);margin-top:clamp(28px,4vw,48px)">
       <div class="rv">
-        <div class="kb" style="aspect-ratio:3/2"><img src="img/golf-range.jpg" alt="The practice range" style="width:100%;height:100%;object-fit:cover" /></div>
-        <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:21px;line-height:1.2;margin-top:18px">The Practice Ground</h3>
-        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:10px">A full practice ground for warming up, working on your swing, or an evening bucket with the kids.</p>
+        <div class="kb" style="aspect-ratio:3/2;position:relative"><img src="img/dining-formal.jpg" alt="The formal dining room" style="width:100%;height:100%;object-fit:cover" /><div style="position:absolute;left:12px;bottom:12px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.85);background:rgba(20,30,12,.6);padding:5px 8px;border-radius:2px">Photo — formal dining room, evening</div></div>
+        <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:21px;line-height:1.2;margin-top:18px">The Occasion</h3>
+        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:10px">Fine dining over the water.</p>
       </div>
       <div class="rv">
-        <div class="kb" style="aspect-ratio:3/2;position:relative"><img src="img/flagstick.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /><div style="position:absolute;left:12px;bottom:12px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.85);background:rgba(20,30,12,.6);padding:5px 8px;border-radius:2px">Photo — TrackMan simulator bay</div></div>
-        <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:21px;line-height:1.2;margin-top:18px">TrackMan Golf, All Winter</h3>
-        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:10px">Two indoor TrackMan simulators keep your game sharp from November to April — leagues, lessons, and practice included.</p>
+        <div class="kb" style="aspect-ratio:3/2;position:relative"><img src="img/dining-charcuterie.jpg" alt="A casual terrace dinner" style="width:100%;height:100%;object-fit:cover" /><div style="position:absolute;left:12px;bottom:12px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.85);background:rgba(20,30,12,.6);padding:5px 8px;border-radius:2px">Photo — family dinner on the casual terrace</div></div>
+        <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:21px;line-height:1.2;margin-top:18px">The Everyday</h3>
+        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:10px">Family dinners that feel easy.</p>
       </div>
       <div class="rv">
-        <div class="kb" style="aspect-ratio:3/2"><img src="img/golf-junior-clinic.jpg" alt="A junior clinic on the practice green" style="width:100%;height:100%;object-fit:cover" /></div>
-        <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:21px;line-height:1.2;margin-top:18px">Golf From Age Three</h3>
-        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:10px">Clinics, camps, and a junior calendar that grows with your kids — part of 120+ golf events every year.</p>
-        <a href="Family-Cinematic.dc.html" style="display:inline-block;margin-top:16px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#1E2B14;border-bottom:1px solid #C4A45A;padding-bottom:4px" style-hover="color:#5C6A3A">Family &amp; Juniors →</a>
+        <div class="kb" style="aspect-ratio:3/2;position:relative"><img src="img/beach.jpg" alt="Lunch at the beach" style="width:100%;height:100%;object-fit:cover" /><div style="position:absolute;left:12px;bottom:12px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.85);background:rgba(20,30,12,.6);padding:5px 8px;border-radius:2px">Photo — beachside lunch, swimsuits welcome</div></div>
+        <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:21px;line-height:1.2;margin-top:18px">The Summer</h3>
+        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:10px">Lunch at the beach.</p>
       </div>
     </div>
+    <p style="font-size:13px;line-height:1.8;font-weight:400;color:rgba(30,43,20,.5);margin-top:clamp(22px,3vw,32px);letter-spacing:.02em">[VENUE NAMES &amp; MENUS — TO BE PROVIDED BY THE CLUB]</p>
   </div>
 </section>
 
-<!-- 4 · AT A GLANCE -->
-<section data-screen-label="At a glance">
+<section data-screen-label="Social calendar">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,84px) clamp(18px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,60px);align-items:center">
+    <div class="rv">
+      <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#5C6A3A">The Social Calendar</div>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(25px,3vw,40px);line-height:1.12;margin-top:14px;max-width:22ch">There's always something on at the lake.</h2>
+      <ul style="list-style:none;margin:24px 0 0;padding:0">
+        <li class="row"><span>Sunset cruises</span><b>Golden hour on Pine Lake, drink in hand.</b></li>
+        <li class="row"><span>Holiday traditions</span><b>Fourth of July, Easter brunch, New Year's.</b></li>
+        <li class="row"><span>Themed evenings</span><b>Wine dinners, live music, movie nights.</b></li>
+        <li class="row"><span>Winter warmth</span><b>The rooms and the calendar stay open.</b></li>
+      </ul>
+      <a href="Events-Cinematic.dc.html" style="display:inline-block;margin-top:20px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#1E2B14;border-bottom:1px solid #C4A45A;padding-bottom:4px" style-hover="color:#5C6A3A">Events &amp; Weddings →</a>
+    </div>
+    <div class="rv kb" style="aspect-ratio:4/3"><img src="img/dining-plated.jpg" alt="A plated course" style="width:100%;height:100%;object-fit:cover" /></div>
+  </div>
+</section>
+
+<section data-screen-label="At a glance" style="background:#FFFFFF;border-top:1px solid rgba(30,43,20,.09)">
   <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,84px) clamp(18px,4vw,40px)">
     <div class="rv">
       <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#5C6A3A">Detail</div>
-      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(25px,3vw,40px);line-height:1.12;margin-top:14px;max-width:26ch">The course, at a glance</h2>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(25px,3vw,40px);line-height:1.12;margin-top:14px;max-width:26ch">Dining, at a glance</h2>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(24px,4vw,56px);margin-top:clamp(24px,3.4vw,40px)">
       <div class="rv">
-        <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.55)">The course</div>
+        <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.55)">The rooms</div>
         <ul style="list-style:none;margin:14px 0 0;padding:0">
-          <li style="display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0"><span>Designer</span><span style="font-weight:500;text-align:right">Willie Park Jr.</span></li>
-          <li style="display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0"><span>Holes</span><span style="font-weight:500;text-align:right">18</span></li>
-          <li style="display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0"><span>Renovation</span><span style="font-weight:500;text-align:right">2024</span></li>
-          <li style="display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0"><span>Practice</span><span style="font-weight:500;text-align:right">Range with TrackMan</span></li>
-          <li style="display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0"><span>Winter play</span><span style="font-weight:500;text-align:right">Two indoor simulators</span></li>
-          <li style="display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0"><span>Junior instruction</span><span style="font-weight:500;text-align:right">From age 3</span></li>
-          <li style="display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0"><span>Annual golf events</span><span style="font-weight:500;text-align:right">120+</span></li>
+          <li class="row"><span>Dining rooms</span><b>Seven</b></li>
+          <li class="row"><span>Waterfront views</span><b>Every indoor room</b></li>
+          <li class="row"><span>Settings</span><b>Formal, everyday, beach</b></li>
+          <li class="row"><span>Season</span><b>Open all year</b></li>
+          <li class="row"><span>Venue names &amp; menus</span><b>To be provided</b></li>
         </ul>
       </div>
       <div class="rv">
         <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.55)">Minutes away</div>
         <ul style="list-style:none;margin:14px 0 0;padding:0">
-          <li style="display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0"><span>West Bloomfield</span><span style="font-weight:500;text-align:right">5 min</span></li>
-          <li style="display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0"><span>Bloomfield Hills</span><span style="font-weight:500;text-align:right">15 min</span></li>
-          <li style="display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0"><span>Birmingham</span><span style="font-weight:500;text-align:right">20 min</span></li>
-          <li style="display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0"><span>Detroit</span><span style="font-weight:500;text-align:right">~35 min</span></li>
+          <li class="row"><span>West Bloomfield</span><b>5 min</b></li>
+          <li class="row"><span>Bloomfield Hills</span><b>15 min</b></li>
+          <li class="row"><span>Birmingham</span><b>20 min</b></li>
+          <li class="row"><span>Detroit</span><b>~35 min</b></li>
         </ul>
         <p style="font-size:12.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.6);margin-top:18px">3300 Pine Lake Road, Orchard Lake, MI 48324 · <a href="tel:+12486821300">(248) 682-1300</a></p>
       </div>
@@ -150,69 +146,47 @@ input,select,button{font-family:inherit}
   </div>
 </section>
 
-<!-- 5 · MEMBER VOICE -->
-<section data-screen-label="Golf voice" style="background:#171F0F;color:#F0EDE6">
+<section data-screen-label="Dining voice" style="background:#171F0F;color:#F0EDE6">
   <div style="max-width:900px;margin:0 auto;padding:clamp(56px,9vw,104px) clamp(18px,4vw,40px);text-align:center">
     <div style="font-family:'Playfair Display',serif;font-size:40px;color:#C4A45A;line-height:1">&ldquo;</div>
-    <p style="font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:clamp(20px,2.5vw,32px);line-height:1.42;margin-top:8px">[TESTIMONIAL — TO BE COLLECTED] A member on the course, the renovation, and what it's like to play here in every season.</p>
+    <p style="font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:clamp(20px,2.5vw,32px);line-height:1.42;margin-top:8px">[TESTIMONIAL — TO BE COLLECTED] A member on dinner over the water, and the evenings that turn into traditions.</p>
     <div style="width:44px;height:1px;background:rgba(196,164,90,.7);margin:clamp(24px,4vw,36px) auto 0"></div>
     <div style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:rgba(240,237,230,.8);margin-top:18px">Member name</div>
     <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.5);margin-top:8px">Member since —</div>
   </div>
 </section>
 
-<!-- 6 · A COURSE IN ASCENT -->
-<section data-screen-label="Course in ascent" style="background:linear-gradient(160deg,#26351A 0%,#1E2B14 55%,#171F0F 100%);color:#F0EDE6">
-  <div style="max-width:1280px;margin:0 auto;padding:clamp(44px,7vw,92px) clamp(18px,4vw,40px)">
-    <div class="rv" style="display:flex;flex-wrap:wrap;gap:14px 40px;align-items:baseline;justify-content:space-between">
-      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(25px,3.2vw,44px);line-height:1.1;max-width:24ch">A course in ascent.</h2>
-      <p style="font-size:14px;line-height:1.8;font-weight:300;color:rgba(240,237,230,.8);max-width:34ch">Renovated in 2024 as part of a $22 million investment in the club.</p>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:clamp(18px,3vw,36px);margin-top:clamp(28px,4.2vw,50px);border-top:1px solid rgba(240,237,230,.16);padding-top:clamp(22px,3vw,34px)">
-      <div><div style="font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,52px);color:#C4A45A;line-height:1">1902</div><div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.72);margin-top:10px">Founded</div></div>
-      <div><div style="font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,52px);color:#C4A45A;line-height:1">$22M</div><div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.72);margin-top:10px">Invested in the club</div></div>
-      <div><div style="font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,52px);color:#C4A45A;line-height:1">18</div><div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.72);margin-top:10px">Holes</div></div>
-      <div><div style="font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,52px);color:#C4A45A;line-height:1">4</div><div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.72);margin-top:10px">Seasons open</div></div>
-    </div>
-    <a href="Membership-Cinematic.dc.html" style="display:inline-block;margin-top:26px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#F0EDE6;border-bottom:1px solid #C4A45A;padding-bottom:4px" style-hover="color:#C4A45A">How joining works →</a>
-  </div>
-</section>
-
-<!-- 7 · EXPLORE NEXT (cross-promotion) -->
 <section data-screen-label="Explore next">
   <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,84px) clamp(18px,4vw,40px)">
-    <div class="rv" style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:12px">
-      <div>
-        <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#5C6A3A">Explore Next</div>
-        <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(23px,2.8vw,36px);line-height:1.12;margin-top:12px">There's more to the club than the course.</h2>
-      </div>
+    <div class="rv">
+      <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#5C6A3A">Explore Next</div>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(23px,2.8vw,36px);line-height:1.12;margin-top:12px">There's more to the club than the table.</h2>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:clamp(16px,2.4vw,26px);margin-top:clamp(26px,4vw,42px)">
+      <a href="Events-Cinematic.dc.html" class="rv" style="display:block;color:#1E2B14">
+        <div class="kb" style="aspect-ratio:4/3"><img src="img/events-terrace.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Events &amp; Weddings</div>
+        <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">The moments that deserve the lake</div>
+      </a>
       <a href="Family-Cinematic.dc.html" class="rv" style="display:block;color:#1E2B14">
         <div class="kb" style="aspect-ratio:4/3"><img src="img/pool.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
         <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Family &amp; Aquatics</div>
         <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">Beach, marina, and the Olympic pool</div>
+      </a>
+      <a href="Golf-Cinematic.dc.html" class="rv" style="display:block;color:#1E2B14">
+        <div class="kb" style="aspect-ratio:4/3"><img src="img/golf-green.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Golf</div>
+        <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">A Willie Park Jr. masterpiece</div>
       </a>
       <a href="Tennis-Cinematic.dc.html" class="rv" style="display:block;color:#1E2B14">
         <div class="kb" style="aspect-ratio:4/3"><img src="img/tennis-outdoor2.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
         <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Tennis &amp; Racquets</div>
         <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">Clay in summer, courts all year</div>
       </a>
-      <a href="Dining-Cinematic.dc.html" class="rv" style="display:block;color:#1E2B14">
-        <div class="kb" style="aspect-ratio:4/3"><img src="img/dining-formal.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
-        <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Dining &amp; Social</div>
-        <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">Seven rooms, one extraordinary view</div>
-      </a>
-      <a href="Events-Cinematic.dc.html" class="rv" style="display:block;color:#1E2B14">
-        <div class="kb" style="aspect-ratio:4/3"><img src="img/events-terrace.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
-        <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Events &amp; Weddings</div>
-        <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">The moments that deserve the lake</div>
-      </a>
     </div>
   </div>
 </section>
 
-<!-- 8 · INQUIRY -->
 <section id="inquire" data-screen-label="Inquiry" style="background:#FFFFFF;border-top:1px solid rgba(30,43,20,.09)">
   <div style="max-width:1280px;margin:0 auto;padding:clamp(44px,7vw,92px) clamp(18px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(28px,5vw,68px)">
     <div>
@@ -238,11 +212,11 @@ input,select,button{font-family:inherit}
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
           <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Phone</span><input value="{{ phone }}" onChange="{{ onPhone }}" type="tel" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" /></label>
           <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">What interests you most?</span><select value="{{ interest }}" onChange="{{ onInterest }}" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none">
+            <option value="dining">Dining &amp; social</option>
             <option value="golf">Golf</option>
+            <option value="tennis">Tennis &amp; racquets</option>
             <option value="family">Family &amp; junior programs</option>
             <option value="lake">Lake life — beach, marina, pool</option>
-            <option value="tennis">Tennis &amp; racquets</option>
-            <option value="dining">Dining &amp; social</option>
             <option value="events">Events &amp; weddings</option>
             <option value="tour">I'd like a private tour</option>
           </select></label>
@@ -277,7 +251,7 @@ input,select,button{font-family:inherit}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
 class Component extends DCLogic {
-  state = { name: '', email: '', phone: '', interest: 'golf', error: false, submitted: false };
+  state = { name: '', email: '', phone: '', interest: 'dining', error: false, submitted: false };
   set(k) { return e => this.setState({ [k]: e.target.value, error: false }); }
   renderVals() {
     const s = this.state;

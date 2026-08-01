@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#F0EDE6;color:#1E2B14;font-family:Montserrat,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p{margin:0;text-wrap:pretty}
+a{color:#5C6A3A;text-decoration:none}
+a:hover{color:#C4A45A}
+input,select,button,textarea{font-family:inherit}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+@keyframes slowPan{0%{transform:scale(1.08)}50%{transform:scale(1.18) translate(-1.6%,-1%)}100%{transform:scale(1.08)}}
+@keyframes reveal{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.rv{animation:reveal .9s ease both;animation-timeline:view(block 92% 6%)}
+.kb{overflow:hidden;border-radius:3px}
+.kb img{transition:transform 6s ease}
+.kb:hover img{transform:scale(1.06)}
+.row{display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:300;color:rgba(30,43,20,.8);border-top:1px solid rgba(30,43,20,.1);padding:12px 0}
+.row b{font-weight:500;text-align:right}
+.fld{border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none}
+.lbl{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)}
+</style>
+</helmet>
+
+<div style="max-width:100%;overflow-x:hidden">
+
+<header style="position:sticky;top:0;z-index:60;background:rgba(240,237,230,.94);backdrop-filter:blur(10px);border-bottom:1px solid rgba(30,43,20,.1)">
+  <div style="background:rgba(196,164,90,.16);border-bottom:1px solid rgba(196,164,90,.28);padding:7px clamp(18px,4vw,40px);text-align:center;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:#5C6A3A;line-height:1.6">
+    A rare window — membership openings available for 2026 · <a href="#note" style="color:#5C6A3A;border-bottom:1px solid rgba(92,106,58,.5)">Begin the conversation</a>
+  </div>
+  <div style="max-width:1280px;margin:0 auto;padding:11px clamp(18px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
+    <a href="Home-Cinematic.dc.html" style="display:flex;align-items:center;gap:13px;color:#1E2B14;flex:0 0 auto">
+      <img src="img/company_logo.png" alt="Pine Lake Country Club" style="height:44px;width:auto;display:block" />
+      <div style="line-height:1.15"><div style="font-family:'Playfair Display',serif;font-size:18px;letter-spacing:.06em">Pine Lake</div><div style="font-size:8.5px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.55);white-space:nowrap">Country Club · 1902</div></div>
+    </a>
+    <nav style="flex:1 1 340px;display:flex;align-items:center;gap:clamp(10px,1.5vw,20px);flex-wrap:wrap;justify-content:flex-end">
+      <a href="Membership-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">Membership</a>
+      <a href="Golf-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">Golf</a>
+      <a href="Tennis-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">Tennis</a>
+      <a href="Dining-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">Dining</a>
+      <a href="Family-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">Family</a>
+      <a href="Events-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">Events</a>
+      <a href="About-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">About</a>
+      <span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#C4A45A">Contact</span>
+      <a href="https://members.pinelakecc.com" target="_blank" rel="noopener" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#5C6A3A">Member Login</a>
+      <a href="#note" style="background:#C4A45A;color:#1E2B14;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:11px 18px;border-radius:2px" style-hover="background:#E8D090">Schedule a Private Tour</a>
+    </nav>
+  </div>
+</header>
+
+<section data-screen-label="Contact hero" style="position:relative;min-height:58vh;overflow:hidden;display:flex;align-items:flex-end">
+  <img src="img/events-club.jpg" alt="The clubhouse from Pine Lake" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:slowPan 46s ease-in-out infinite" />
+  <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,30,12,.92) 0%,rgba(20,30,12,.66) 45%,rgba(20,30,12,.45) 75%,rgba(20,30,12,.32) 100%)"></div>
+  <div style="position:relative;padding:clamp(48px,8vw,96px) clamp(18px,4vw,44px) clamp(40px,6vw,76px);width:100%;color:#F0EDE6">
+    <div style="max-width:1280px;margin:0 auto">
+      <div style="display:inline-block;font-size:11px;letter-spacing:.34em;text-transform:uppercase;font-weight:700;color:#C4A45A;background:rgba(20,30,12,.9);padding:7px 13px;border-radius:2px;animation:fadeUp 1s .15s ease both">Contact</div>
+      <h1 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(34px,5.4vw,70px);line-height:1.03;letter-spacing:-.015em;max-width:20ch;margin-top:clamp(16px,2.2vw,28px);animation:fadeUp 1s .5s ease both">Let's start with hello.</h1>
+      <p style="font-size:15px;line-height:1.8;font-weight:300;color:rgba(240,237,230,.88);margin-top:20px;max-width:56ch;animation:fadeUp 1s .9s ease both">Whether you're curious about membership, planning an event, or ready for a tour — reach out and a real person will reach back.</p>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Contact details" style="background:#FFFFFF;border-bottom:1px solid rgba(30,43,20,.09)">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,84px) clamp(18px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(24px,4vw,60px);align-items:start">
+    <div class="rv">
+      <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#5C6A3A">Getting Here</div>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(24px,2.8vw,36px);line-height:1.14;margin-top:14px">3300 Pine Lake Road<br />Orchard Lake, MI 48324</h2>
+      <a href="tel:+12486821300" style="display:inline-block;margin-top:20px;font-family:'Playfair Display',serif;font-size:clamp(24px,2.6vw,34px);color:#1E2B14;border-bottom:1px solid #C4A45A;padding-bottom:6px">(248) 682-1300</a>
+      <ul style="list-style:none;margin:26px 0 0;padding:0">
+        <li class="row"><span>Membership enquiries</span><b>Membership Director</b></li>
+        <li class="row"><span>Events &amp; weddings</span><b>Events team</b></li>
+        <li class="row"><span>Response time</span><b>One business day</b></li>
+        <li class="row"><span>Members</span><b><a href="https://members.pinelakecc.com" target="_blank" rel="noopener">Member Login ↗</a></b></li>
+      </ul>
+      <div style="display:flex;gap:clamp(18px,3vw,34px);flex-wrap:wrap;margin-top:26px;padding-top:20px;border-top:1px solid rgba(30,43,20,.12)">
+        <div><div style="font-family:'Playfair Display',serif;font-size:26px">5</div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.55);margin-top:5px">Min · West Bloomfield</div></div>
+        <div><div style="font-family:'Playfair Display',serif;font-size:26px">15</div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.55);margin-top:5px">Min · Bloomfield Hills</div></div>
+        <div><div style="font-family:'Playfair Display',serif;font-size:26px">20</div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.55);margin-top:5px">Min · Birmingham</div></div>
+        <div><div style="font-family:'Playfair Display',serif;font-size:26px">~35</div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.55);margin-top:5px">Min · Detroit</div></div>
+      </div>
+    </div>
+    <div class="rv" style="border:1px solid rgba(30,43,20,.14);border-radius:3px;background:#F0EDE6;min-height:340px;display:flex;align-items:center;justify-content:center;text-align:center;padding:clamp(24px,4vw,44px)">
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:30px;color:#C4A45A;line-height:1">✦</div>
+        <div style="font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Map — 3300 Pine Lake Road</div>
+        <p style="font-size:13.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.6);margin-top:12px;max-width:34ch">[ INTERACTIVE MAP TO BE EMBEDDED — Orchard Lake, Michigan ]</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="note" data-screen-label="Send us a note">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,84px) clamp(18px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(28px,5vw,68px)">
+    <div class="rv">
+      <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#5C6A3A">Send Us a Note</div>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(27px,3.4vw,46px);line-height:1.1;margin-top:14px">Tell us a little about yourself — we'll take it from there.</h2>
+      <p style="font-size:15px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:18px;max-width:42ch">No application portal, no fine print. Share what you're curious about and our Membership Director will reach out personally.</p>
+      <p style="font-size:12.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.6);margin-top:20px">Prefer to talk? Call <a href="tel:+12486821300">(248) 682-1300</a>.</p>
+    </div>
+    <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+      <div class="rv" style="border:1px solid rgba(196,164,90,.5);border-radius:3px;padding:clamp(26px,3.6vw,42px);background:#FFFFFF">
+        <div style="width:52px;height:52px;border-radius:50%;border:1px solid #C4A45A;display:flex;align-items:center;justify-content:center;color:#C4A45A;font-size:23px">✓</div>
+        <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(23px,2.5vw,31px);line-height:1.2;margin-top:20px">Thank you — we'll be in touch.</h3>
+        <p style="font-size:14px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.7);margin-top:14px">{{ confirmName }} expect a personal note from our Membership Director within one business day.</p>
+      </div>
+    </sc-if>
+    <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+      <form onSubmit="{{ onSubmit }}" style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
+          <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">Name</span><input class="fld" value="{{ name }}" onChange="{{ onName }}" /></label>
+          <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">Email</span><input class="fld" value="{{ email }}" onChange="{{ onEmail }}" type="email" /></label>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
+          <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">Phone</span><input class="fld" value="{{ phone }}" onChange="{{ onPhone }}" type="tel" /></label>
+          <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">What can we help with?</span><select class="fld" value="{{ interest }}" onChange="{{ onInterest }}">
+            <option value="tour">I'd like a private tour</option>
+            <option value="membership">Membership enquiry</option>
+            <option value="events">Events &amp; weddings</option>
+            <option value="family">Family &amp; junior programs</option>
+            <option value="golf">Golf</option>
+            <option value="tennis">Tennis &amp; racquets</option>
+            <option value="dining">Dining &amp; social</option>
+          </select></label>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">Message <span style="text-transform:none;letter-spacing:0;font-weight:400;color:rgba(30,43,20,.45)">(optional)</span></span><textarea class="fld" value="{{ message }}" onChange="{{ onMessage }}" rows="4" style="resize:vertical"></textarea></label>
+        <sc-if value="{{ error }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:13px;color:#8A3B22">Please share your name and a valid email so we can reach you.</div>
+        </sc-if>
+        <button type="submit" style="align-self:flex-start;margin-top:4px;background:#C4A45A;color:#1E2B14;border:0;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;padding:17px 32px;border-radius:2px;cursor:pointer" style-hover="background:#E8D090">Send Your Note</button>
+        <p style="font-size:11.5px;line-height:1.6;font-weight:300;color:rgba(30,43,20,.55)">Your note goes directly to our Membership Director. We never share your information.</p>
+      </form>
+    </sc-if>
+  </div>
+</section>
+
+<section data-screen-label="Explore next" style="background:#FFFFFF;border-top:1px solid rgba(30,43,20,.09)">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,84px) clamp(18px,4vw,40px)">
+    <div class="rv">
+      <div style="font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:#5C6A3A">Explore Next</div>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(23px,2.8vw,36px);line-height:1.12;margin-top:12px">While you're here.</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:clamp(16px,2.4vw,26px);margin-top:clamp(26px,4vw,42px)">
+      <a href="Membership-Cinematic.dc.html" class="rv" style="display:block;color:#1E2B14">
+        <div class="kb" style="aspect-ratio:4/3"><img src="img/lake-sunset.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Membership</div>
+        <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">How joining works</div>
+      </a>
+      <a href="Golf-Cinematic.dc.html" class="rv" style="display:block;color:#1E2B14">
+        <div class="kb" style="aspect-ratio:4/3"><img src="img/golf-course.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Golf</div>
+        <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">A Willie Park Jr. masterpiece</div>
+      </a>
+      <a href="Events-Cinematic.dc.html" class="rv" style="display:block;color:#1E2B14">
+        <div class="kb" style="aspect-ratio:4/3"><img src="img/events-terrace.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Events &amp; Weddings</div>
+        <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">The moments that deserve the lake</div>
+      </a>
+      <a href="About-Cinematic.dc.html" class="rv" style="display:block;color:#1E2B14">
+        <div class="kb" style="aspect-ratio:4/3"><img src="img/entrance-sign.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">About &amp; Heritage</div>
+        <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">Our story since 1902</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer style="background:#171F0F;color:rgba(240,237,230,.7)">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(34px,5vw,64px) clamp(18px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:clamp(22px,3.4vw,44px)">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:19px;color:#F0EDE6;letter-spacing:.06em">Pine Lake Country Club</div>
+      <p style="font-size:13px;line-height:1.8;font-weight:300;margin-top:12px">3300 Pine Lake Road<br />Orchard Lake, MI 48324<br /><a href="tel:+12486821300" style="color:#C4A45A">(248) 682-1300</a></p>
+    </div>
+    <div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#F0EDE6">The Club</div>
+      <ul style="list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:300"><li><a href="Golf-Cinematic.dc.html" style="color:rgba(240,237,230,.7)">Golf</a></li><li><a href="Tennis-Cinematic.dc.html" style="color:rgba(240,237,230,.7)">Tennis</a></li><li><a href="Dining-Cinematic.dc.html" style="color:rgba(240,237,230,.7)">Dining &amp; Social</a></li><li><a href="Family-Cinematic.dc.html" style="color:rgba(240,237,230,.7)">Family &amp; Aquatics</a></li><li><a href="Events-Cinematic.dc.html" style="color:rgba(240,237,230,.7)">Events &amp; Weddings</a></li></ul></div>
+    <div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#F0EDE6">Visit</div>
+      <ul style="list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:300"><li><a href="Membership-Cinematic.dc.html" style="color:rgba(240,237,230,.7)">Membership</a></li><li><a href="About-Cinematic.dc.html" style="color:rgba(240,237,230,.7)">About &amp; Heritage</a></li><li><a href="#note" style="color:rgba(240,237,230,.7)">Schedule a Private Tour</a></li><li><a href="Contact-Cinematic.dc.html" style="color:rgba(240,237,230,.7)">Getting Here</a></li></ul></div>
+    <div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#F0EDE6">Members</div>
+      <ul style="list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:300"><li><a href="https://members.pinelakecc.com" target="_blank" rel="noopener" style="color:rgba(240,237,230,.7)">Member Login</a></li></ul>
+      <div style="font-size:11px;font-weight:300;margin-top:16px;color:rgba(240,237,230,.5)">Creating Family Traditions Since 1902.</div></div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  state = { name: '', email: '', phone: '', interest: 'tour', message: '', error: false, submitted: false };
+  set(k) { return e => this.setState({ [k]: e.target.value, error: false }); }
+  renderVals() {
+    const s = this.state;
+    const validEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.email.trim());
+    return {
+      name: s.name, email: s.email, phone: s.phone, interest: s.interest, message: s.message,
+      onName: this.set('name'), onEmail: this.set('email'), onPhone: this.set('phone'),
+      onInterest: this.set('interest'), onMessage: this.set('message'),
+      error: s.error, submitted: s.submitted, notSubmitted: !s.submitted,
+      confirmName: s.name.trim() ? s.name.trim().split(' ')[0] + ',' : '',
+      onSubmit: e => {
+        e.preventDefault();
+        if (!s.name.trim() || !validEmail) { this.setState({ error: true }); return; }
+        this.setState({ submitted: true });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
