@@ -196,6 +196,11 @@ window.__DC_REG={"SiteHeader":b64utf8("PCFET0NUWVBFIGh0bWw+CjxodG1sPgo8aGVhZD4KP
       if (an === 'value') { val = interp(attr.value, scope); el.setAttribute('value', val); continue; }
       el.setAttribute(attr.name, interp(attr.value, scope));
     }
+    // The `muted` content attribute reflects defaultMuted, NOT the muted IDL
+    // property. On elements we build with createElement the property stays
+    // false, and Chrome then refuses to autoplay. Set it explicitly.
+    if (el.hasAttribute('muted') && 'muted' in el) el.muted = true;
+
     if (hoverCss != null) el.__hover = hoverCss;
     if (val !== undefined) el.__val = val;
 
