@@ -1,21 +1,78 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": false,
-  "rewrites": [
-    { "source": "/", "destination": "/Home-Cinematic.dc.html" }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
-      ]
-    },
-    {
-      "source": "/(.*)\\.dc\\.html",
-      "headers": [
-        { "key": "Content-Type", "value": "text/html; charset=utf-8" }
-      ]
-    }
-  ]
+﻿{
+    "$schema":  "https://openapi.vercel.sh/vercel.json",
+    "cleanUrls":  false,
+    "rewrites":  [
+                     {
+                         "source":  "/",
+                         "destination":  "/Home-Cinematic.dc.html"
+                     },
+                     {
+                         "source":  "/golf",
+                         "destination":  "/Golf-Cinematic.dc.html"
+                     },
+                     {
+                         "source":  "/tennis",
+                         "destination":  "/Tennis-Cinematic.dc.html"
+                     },
+                     {
+                         "source":  "/dining",
+                         "destination":  "/Dining-Cinematic.dc.html"
+                     },
+                     {
+                         "source":  "/family",
+                         "destination":  "/Family-Cinematic.dc.html"
+                     },
+                     {
+                         "source":  "/events",
+                         "destination":  "/Events-Cinematic.dc.html"
+                     },
+                     {
+                         "source":  "/membership",
+                         "destination":  "/Membership-Cinematic.dc.html"
+                     },
+                     {
+                         "source":  "/about",
+                         "destination":  "/About-Cinematic.dc.html"
+                     },
+                     {
+                         "source":  "/contact",
+                         "destination":  "/Contact-Cinematic.dc.html"
+                     },
+                     {
+                         "source":  "/private-golf-club-orchard-lake",
+                         "destination":  "/SEO-Golf-Orchard-Lake-Cinematic.dc.html"
+                     },
+                     {
+                         "source":  "/family-country-club-michigan",
+                         "destination":  "/SEO-Family-Michigan-Cinematic.dc.html"
+                     },
+                     {
+                         "source":  "/country-club-near-detroit",
+                         "destination":  "/SEO-Near-Detroit-Cinematic.dc.html"
+                     },
+                     {
+                         "source":  "/country-club-pool-tennis-michigan",
+                         "destination":  "/SEO-Pool-Tennis-Cinematic.dc.html"
+                     }
+                 ],
+    "headers":  [
+                    {
+                        "source":  "/(.*)",
+                        "headers":  [
+                                        {
+                                            "key":  "X-Robots-Tag",
+                                            "value":  "noindex, nofollow"
+                                        }
+                                    ]
+                    },
+                    {
+                        "source":  "/(.*)\\.dc\\.html",
+                        "headers":  [
+                                        {
+                                            "key":  "Content-Type",
+                                            "value":  "text/html; charset=utf-8"
+                                        }
+                                    ]
+                    }
+                ]
 }
