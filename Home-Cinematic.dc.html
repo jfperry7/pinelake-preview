@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- seo:start -->
 <title>Private Family Country Club in Orchard Lake, Michigan | Pine Lake Country Club</title>
-<meta name="description" content="Championship golf, nine tennis courts, a private beach and marina on 395-acre Pine Lake, and seven waterfront dining rooms. Creating family traditions since 1902." />
+<meta name="description" content="Championship golf, nine tennis courts, a private beach and marina on 395-acre Pine Lake, and seven waterfront dining settings. Family traditions since 1902." />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Pine Lake Country Club" />
 <meta property="og:title" content="Private Family Country Club in Orchard Lake, Michigan | Pine Lake Country Club" />
-<meta property="og:description" content="Championship golf, nine tennis courts, a private beach and marina on 395-acre Pine Lake, and seven waterfront dining rooms. Creating family traditions since 1902." />
+<meta property="og:description" content="Championship golf, nine tennis courts, a private beach and marina on 395-acre Pine Lake, and seven waterfront dining settings. Family traditions since 1902." />
 <meta property="og:image" content="https://pinelake-preview.vercel.app/img/hero-aerial.jpg" />
 <meta property="og:url" content="https://pinelake-preview.vercel.app/Home-Cinematic.dc.html" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -207,7 +207,7 @@ input,select,button{font-family:inherit}
         <div style="font-size:10px;letter-spacing:.26em;text-transform:uppercase;font-weight:700;color:#C4A45A">The story, briefly</div>
         <ul style="list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:12px">
           <li style="display:flex;gap:16px;font-size:13.5px;font-weight:300;color:rgba(240,237,230,.8);border-top:1px solid rgba(240,237,230,.14);padding-top:12px"><span style="font-family:'Playfair Display',serif;color:#F0EDE6;min-width:66px">1902</span><span>Founded on the shore of Pine Lake.</span></li>
-          <li style="display:flex;gap:16px;font-size:13.5px;font-weight:300;color:rgba(240,237,230,.8);border-top:1px solid rgba(240,237,230,.14);padding-top:12px"><span style="font-family:'Playfair Display',serif;color:#F0EDE6;min-width:66px">1921</span><span>[ Milestone detail — to be confirmed ]</span></li>
+          <li style="display:flex;gap:16px;font-size:13.5px;font-weight:300;color:rgba(240,237,230,.8);border-top:1px solid rgba(240,237,230,.14);padding-top:12px"><span style="font-family:'Playfair Display',serif;color:#F0EDE6;min-width:66px">1921</span><span>The club takes the name of its lake.</span></li>
           <li style="display:flex;gap:16px;font-size:13.5px;font-weight:300;color:rgba(240,237,230,.8);border-top:1px solid rgba(240,237,230,.14);padding-top:12px"><span style="font-family:'Playfair Display',serif;color:#F0EDE6;min-width:66px">2024</span><span>The Willie Park Jr. course renovated.</span></li>
           <li style="display:flex;gap:16px;font-size:13.5px;font-weight:300;color:rgba(240,237,230,.8);border-top:1px solid rgba(240,237,230,.14);padding-top:12px"><span style="font-family:'Playfair Display',serif;color:#F0EDE6;min-width:66px">Today</span><span>The premier family country club experience in Metro Detroit.</span></li>
         </ul>
@@ -318,7 +318,7 @@ class Component extends DCLogic {
         var lines = ['Name: ' + s.name.trim(), 'Email: ' + s.email.trim(), 'Phone: ' + (s.phone.trim() || 'not given'), 'Interested in: ' + interest];
         if (s.message && s.message.trim()) { lines.push('', 'Message:', s.message.trim()); }
         lines.push('', 'Sent from the ' + page + ' page.');
-        var subject = 'Website enquiry - ' + interest + ' - ' + s.name.trim();
+        var subject = 'Website inquiry - ' + interest + ' - ' + s.name.trim();
         window.location.href = 'mailto:melanie@pinelakecc.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
         this.setState({ submitted: true });
       }

@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- seo:start -->
-<title>Waterfront Dining &#8212; Seven Settings on Pine Lake | Pine Lake Country Club</title>
-<meta name="description" content="Every dining room looks out on the water, inside and out. From white-tablecloth evenings in the Formal Dining Room to lunch at the Snack Shack, March through December." />
+<title>Waterfront Dining &#8212; Seven Settings | Pine Lake Country Club</title>
+<meta name="description" content="Every dining room looks out on the water, inside and out &#8212; from white-tablecloth evenings to lunch at the Snack Shack. Open March through December." />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Pine Lake Country Club" />
-<meta property="og:title" content="Waterfront Dining &#8212; Seven Settings on Pine Lake | Pine Lake Country Club" />
-<meta property="og:description" content="Every dining room looks out on the water, inside and out. From white-tablecloth evenings in the Formal Dining Room to lunch at the Snack Shack, March through December." />
+<meta property="og:title" content="Waterfront Dining &#8212; Seven Settings | Pine Lake Country Club" />
+<meta property="og:description" content="Every dining room looks out on the water, inside and out &#8212; from white-tablecloth evenings to lunch at the Snack Shack. Open March through December." />
 <meta property="og:image" content="https://pinelake-preview.vercel.app/img/events-terrace.jpg" />
 <meta property="og:url" content="https://pinelake-preview.vercel.app/Dining-Cinematic.dc.html" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -325,7 +325,7 @@ class Component extends DCLogic {
         var lines = ['Name: ' + s.name.trim(), 'Email: ' + s.email.trim(), 'Phone: ' + (s.phone.trim() || 'not given'), 'Interested in: ' + interest];
         if (s.message && s.message.trim()) { lines.push('', 'Message:', s.message.trim()); }
         lines.push('', 'Sent from the ' + page + ' page.');
-        var subject = 'Website enquiry - ' + interest + ' - ' + s.name.trim();
+        var subject = 'Website inquiry - ' + interest + ' - ' + s.name.trim();
         window.location.href = 'mailto:melanie@pinelakecc.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
         this.setState({ submitted: true });
       }

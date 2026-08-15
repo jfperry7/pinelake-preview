@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- seo:start -->
-<title>Weddings &amp; Private Events on Pine Lake | Pine Lake Country Club</title>
+<title>Weddings &amp; Private Events | Pine Lake Country Club</title>
 <meta name="description" content="Weddings, private parties, showers and corporate events on Pine Lake. We customize the menu and the experience so that every occasion is extraordinary." />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Pine Lake Country Club" />
-<meta property="og:title" content="Weddings &amp; Private Events on Pine Lake | Pine Lake Country Club" />
+<meta property="og:title" content="Weddings &amp; Private Events | Pine Lake Country Club" />
 <meta property="og:description" content="Weddings, private parties, showers and corporate events on Pine Lake. We customize the menu and the experience so that every occasion is extraordinary." />
 <meta property="og:image" content="https://pinelake-preview.vercel.app/img/events-club.jpg" />
 <meta property="og:url" content="https://pinelake-preview.vercel.app/Events-Cinematic.dc.html" />
@@ -89,7 +89,7 @@ input,select,button{font-family:inherit}
       <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(25px,3vw,40px);line-height:1.12;margin-top:14px;max-width:22ch">Say it with the water behind you.</h2>
       <p style="font-size:15px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:16px;max-width:46ch">The renovated clubhouse and its waterfront rooms host weddings, rehearsal dinners, showers, corporate outings, and milestone celebrations — with our events team handling every detail.</p>
       <p style="font-size:15px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:14px;max-width:46ch">Every gathering is built around what you want it to be &#8212; we will customize the menu and the experience so that it is extraordinary.</p>
-      <a href="Contact-Cinematic.dc.html" style="display:inline-block;margin-top:22px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#1E2B14;border-bottom:1px solid #C4A45A;padding-bottom:4px" style-hover="color:#5C6A3A">Enquire about an event →</a>
+      <a href="Contact-Cinematic.dc.html" style="display:inline-block;margin-top:22px;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#1E2B14;border-bottom:1px solid #C4A45A;padding-bottom:4px" style-hover="color:#5C6A3A">Inquire about an event →</a>
     </div>
   </div>
 </section>
@@ -296,7 +296,7 @@ class Component extends DCLogic {
         var lines = ['Name: ' + s.name.trim(), 'Email: ' + s.email.trim(), 'Phone: ' + (s.phone.trim() || 'not given'), 'Interested in: ' + interest];
         if (s.message && s.message.trim()) { lines.push('', 'Message:', s.message.trim()); }
         lines.push('', 'Sent from the ' + page + ' page.');
-        var subject = 'Website enquiry - ' + interest + ' - ' + s.name.trim();
+        var subject = 'Website inquiry - ' + interest + ' - ' + s.name.trim();
         window.location.href = 'mailto:melanie@pinelakecc.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
         this.setState({ submitted: true });
       }

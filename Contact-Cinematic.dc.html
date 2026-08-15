@@ -144,7 +144,7 @@ input,select,button,textarea{font-family:inherit}
           <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">Phone</span><input class="fld" value="{{ phone }}" onChange="{{ onPhone }}" type="tel" /></label>
           <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">What can we help with?</span><select class="fld" value="{{ interest }}" onChange="{{ onInterest }}">
             <option value="tour">I'd like a private tour</option>
-            <option value="membership">Membership enquiry</option>
+            <option value="membership">Membership inquiry</option>
             <option value="events">Events &amp; weddings</option>
             <option value="family">Family &amp; junior programs</option>
             <option value="golf">Golf</option>
@@ -234,7 +234,7 @@ class Component extends DCLogic {
         var lines = ['Name: ' + s.name.trim(), 'Email: ' + s.email.trim(), 'Phone: ' + (s.phone.trim() || 'not given'), 'Interested in: ' + interest];
         if (s.message && s.message.trim()) { lines.push('', 'Message:', s.message.trim()); }
         lines.push('', 'Sent from the ' + page + ' page.');
-        var subject = 'Website enquiry - ' + interest + ' - ' + s.name.trim();
+        var subject = 'Website inquiry - ' + interest + ' - ' + s.name.trim();
         window.location.href = 'mailto:melanie@pinelakecc.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
         this.setState({ submitted: true });
       }

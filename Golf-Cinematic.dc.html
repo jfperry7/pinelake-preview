@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- seo:start -->
 <title>Championship Golf &#8212; The Willie Park Jr. Course | Pine Lake Country Club</title>
-<meta name="description" content="Eighteen championship holes by two-time British Open champion Willie Park Jr., restored in our 2024 renovation &#8212; plus a full practice ground and TrackMan simulators all winter." />
+<meta name="description" content="Eighteen championship holes by two-time British Open champion Willie Park Jr., restored in our 2024 renovation &#8212; plus TrackMan simulators all winter." />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Pine Lake Country Club" />
 <meta property="og:title" content="Championship Golf &#8212; The Willie Park Jr. Course | Pine Lake Country Club" />
-<meta property="og:description" content="Eighteen championship holes by two-time British Open champion Willie Park Jr., restored in our 2024 renovation &#8212; plus a full practice ground and TrackMan simulators all winter." />
+<meta property="og:description" content="Eighteen championship holes by two-time British Open champion Willie Park Jr., restored in our 2024 renovation &#8212; plus TrackMan simulators all winter." />
 <meta property="og:image" content="https://pinelake-preview.vercel.app/img/golf-course.jpg" />
 <meta property="og:url" content="https://pinelake-preview.vercel.app/Golf-Cinematic.dc.html" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -307,7 +307,7 @@ class Component extends DCLogic {
         var lines = ['Name: ' + s.name.trim(), 'Email: ' + s.email.trim(), 'Phone: ' + (s.phone.trim() || 'not given'), 'Interested in: ' + interest];
         if (s.message && s.message.trim()) { lines.push('', 'Message:', s.message.trim()); }
         lines.push('', 'Sent from the ' + page + ' page.');
-        var subject = 'Website enquiry - ' + interest + ' - ' + s.name.trim();
+        var subject = 'Website inquiry - ' + interest + ' - ' + s.name.trim();
         window.location.href = 'mailto:melanie@pinelakecc.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
         this.setState({ submitted: true });
       }
