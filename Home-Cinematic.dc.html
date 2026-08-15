@@ -69,6 +69,25 @@ input,select,button{font-family:inherit}
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
 @keyframes slowPan{0%{transform:scale(1.08)}50%{transform:scale(1.18) translate(-1.6%,-1%)}100%{transform:scale(1.08)}}
 @keyframes cueDrop{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(9px);opacity:1}}
+
+.navcb{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.navbtn{display:none}
+.navlinks{display:flex;align-items:center;gap:clamp(10px,1.5vw,20px);flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:900px){
+.navbtn{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;flex:0 0 auto;border:1px solid currentColor;border-radius:3px;color:inherit;opacity:.85;font-size:18px;line-height:1;cursor:pointer;user-select:none}
+.navcb:focus-visible ~ .navbtn{outline:2px solid #C4A45A;outline-offset:2px}
+.navlinks{display:none;order:99;flex:1 0 100%;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;margin-top:10px}
+.navcb:checked ~ .navlinks{display:flex}
+.navlinks a{padding:12px 2px;border-top:1px solid rgba(128,128,128,.32);font-size:11px}
+}
+
+@media (max-width:900px){
+header nav{flex:0 1 auto !important}
+header a img{height:26px !important}
+header a > div > div + div{display:none}
+header a > div > div:first-child{font-size:14px !important}
+header nav a[style*="background:#C4A45A"]{padding:9px 10px !important;font-size:8px !important;letter-spacing:.12em !important}
+}
 </style>
 </helmet>
 
@@ -87,7 +106,9 @@ input,select,button{font-family:inherit}
       </div>
     </a>
     <nav style="flex:1 1 340px;display:flex;align-items:center;gap:clamp(10px,1.5vw,20px);flex-wrap:wrap;justify-content:flex-end">
-      <a href="/membership" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.7)">Membership</a>
+        <input type="checkbox" id="navtoggle" class="navcb" aria-label="Show navigation menu" />
+        <div class="navlinks">
+          <a href="/membership" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.7)">Membership</a>
       <a href="/golf" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.7)">Golf</a>
       <a href="/tennis" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.7)">Tennis</a>
       <a href="/dining" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.7)">Dining</a>
@@ -95,8 +116,10 @@ input,select,button{font-family:inherit}
       <a href="/events" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.7)">Events</a>
       <a href="/about" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.7)">About</a>
       <a href="/contact" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(240,237,230,.7)">Contact</a>
-      <a href="#inquire" style="background:#C4A45A;color:#1E2B14;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:11px 18px;border-radius:2px;white-space:nowrap" style-hover="background:#E8D090">Schedule Tour</a>
-    </nav>
+        </div>
+        <a href="#inquire" style="background:#C4A45A;color:#1E2B14;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:11px 18px;border-radius:2px;white-space:nowrap" style-hover="background:#E8D090">Schedule Tour</a>
+        <label for="navtoggle" class="navbtn" aria-hidden="true">&#9776;</label>
+</nav>
   </div>
 </header>
 
