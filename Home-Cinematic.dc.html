@@ -236,7 +236,7 @@ input,select,button{font-family:inherit}
       <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(32px,4.6vw,62px);line-height:1.06;margin-top:16px">We'd love to show you around.</h2>
       <p style="font-size:15px;line-height:1.8;font-weight:300;color:rgba(240,237,230,.85);margin-top:22px;max-width:40ch">A conversation, a private tour, a warm welcome. Leave your details and we'll be in touch within one business day.</p>
       <a href="tel:+12486821300" style="display:inline-block;margin-top:24px;font-family:'Playfair Display',serif;font-size:clamp(24px,2.6vw,34px);color:#F0EDE6;border-bottom:1px solid rgba(196,164,90,.6);padding-bottom:6px" style-hover="color:#C4A45A">(248) 682-1300</a>
-      <p style="font-size:12px;line-height:1.8;font-weight:300;color:rgba(240,237,230,.6);margin-top:26px">3300 Pine Lake Road, Orchard Lake, MI 48324<br /><a href="https://members.pinelakecc.com" target="_blank" rel="noopener" style="color:rgba(240,237,230,.6)">Member Login</a> · Creating Family Traditions Since 1902.</p>
+      <p style="font-size:12px;line-height:1.8;font-weight:300;color:rgba(240,237,230,.6);margin-top:26px">3300 Pine Lake Road, Orchard Lake, MI 48324<br /><a href="https://pinelakecc.com/web/pages/login" target="_blank" rel="noopener" style="color:rgba(240,237,230,.6)">Member Login</a> · Creating Family Traditions Since 1902.</p>
     </div>
     <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
       <div style="border:1px solid rgba(196,164,90,.45);border-radius:3px;padding:clamp(28px,4vw,44px);background:rgba(20,30,12,.55);backdrop-filter:blur(6px)">
@@ -319,7 +319,8 @@ class Component extends DCLogic {
         if (s.message && s.message.trim()) { lines.push('', 'Message:', s.message.trim()); }
         lines.push('', 'Sent from the ' + page + ' page.');
         var subject = 'Website inquiry - ' + interest + ' - ' + s.name.trim();
-        window.location.href = 'mailto:melanie@pinelakecc.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
+        var to = /event|wedding/i.test(interest) ? 'aleksa@pinelakecc.com' : 'melanie@pinelakecc.com';
+        window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
         this.setState({ submitted: true });
       }
     };

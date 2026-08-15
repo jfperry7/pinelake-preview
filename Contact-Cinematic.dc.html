@@ -64,7 +64,7 @@ input,select,button,textarea{font-family:inherit}
       <a href="Events-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">Events</a>
       <a href="About-Cinematic.dc.html" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(30,43,20,.72)">About</a>
       <span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#C4A45A">Contact</span>
-      <a href="https://members.pinelakecc.com" target="_blank" rel="noopener" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#5C6A3A">Member Login</a>
+      <a href="https://pinelakecc.com/web/pages/login" target="_blank" rel="noopener" style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#5C6A3A">Member Login</a>
       <a href="#note" style="background:#C4A45A;color:#1E2B14;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:11px 18px;border-radius:2px" style-hover="background:#E8D090">Schedule a Private Tour</a>
     </nav>
   </div>
@@ -205,7 +205,7 @@ input,select,button,textarea{font-family:inherit}
     <div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#F0EDE6">Visit</div>
       <ul style="list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:300"><li><a href="Membership-Cinematic.dc.html" style="color:rgba(240,237,230,.7)">Membership</a></li><li><a href="About-Cinematic.dc.html" style="color:rgba(240,237,230,.7)">About &amp; Heritage</a></li><li><a href="#note" style="color:rgba(240,237,230,.7)">Schedule a Private Tour</a></li><li><a href="Contact-Cinematic.dc.html" style="color:rgba(240,237,230,.7)">Getting Here</a></li></ul></div>
     <div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#F0EDE6">Members</div>
-      <ul style="list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:300"><li><a href="https://members.pinelakecc.com" target="_blank" rel="noopener" style="color:rgba(240,237,230,.7)">Member Login</a></li></ul>
+      <ul style="list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:300"><li><a href="https://pinelakecc.com/web/pages/login" target="_blank" rel="noopener" style="color:rgba(240,237,230,.7)">Member Login</a></li></ul>
       <div style="font-size:11px;font-weight:300;margin-top:16px;color:rgba(240,237,230,.5)">Creating Family Traditions Since 1902.</div></div>
   </div>
 </footer>
@@ -235,7 +235,8 @@ class Component extends DCLogic {
         if (s.message && s.message.trim()) { lines.push('', 'Message:', s.message.trim()); }
         lines.push('', 'Sent from the ' + page + ' page.');
         var subject = 'Website inquiry - ' + interest + ' - ' + s.name.trim();
-        window.location.href = 'mailto:melanie@pinelakecc.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
+        var to = /event|wedding/i.test(interest) ? 'aleksa@pinelakecc.com' : 'melanie@pinelakecc.com';
+        window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
         this.setState({ submitted: true });
       }
     };

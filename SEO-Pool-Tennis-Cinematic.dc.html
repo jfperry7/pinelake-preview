@@ -236,7 +236,8 @@ class Component extends DCLogic {
         if (s.message && s.message.trim()) { lines.push('', 'Message:', s.message.trim()); }
         lines.push('', 'Sent from the ' + page + ' page.');
         var subject = 'Website inquiry - ' + interest + ' - ' + s.name.trim();
-        window.location.href = 'mailto:melanie@pinelakecc.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
+        var to = /event|wedding/i.test(interest) ? 'aleksa@pinelakecc.com' : 'melanie@pinelakecc.com';
+        window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
         this.setState({ submitted: true });
       }
     };
