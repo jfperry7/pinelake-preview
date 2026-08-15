@@ -274,6 +274,14 @@ class Component extends DCLogic {
       onSubmit: e => {
         e.preventDefault();
         if (!s.name.trim() || !validEmail) { this.setState({ error: true }); return; }
+        var sel = e.target.querySelector('select');
+        var interest = (sel && sel.selectedOptions && sel.selectedOptions.length) ? sel.selectedOptions[0].textContent.trim() : s.interest;
+        var page = (document.title || '').split('|')[0].trim() || 'the website';
+        var lines = ['Name: ' + s.name.trim(), 'Email: ' + s.email.trim(), 'Phone: ' + (s.phone.trim() || 'not given'), 'Interested in: ' + interest];
+        if (s.message && s.message.trim()) { lines.push('', 'Message:', s.message.trim()); }
+        lines.push('', 'Sent from the ' + page + ' page.');
+        var subject = 'Website enquiry - ' + interest + ' - ' + s.name.trim();
+        window.location.href = 'mailto:melanie@pinelakecc.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
         this.setState({ submitted: true });
       }
     };
