@@ -132,7 +132,7 @@ header nav a[style*="background:#C4A45A"]{padding:9px 10px !important;font-size:
 
 <section data-screen-label="Contact hero" style="position:relative;min-height:58vh;overflow:hidden;display:flex;align-items:flex-end">
   <img src="img/club-aerial.jpg" alt="Pine Lake Country Club from above" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:slowPan 46s ease-in-out infinite" />
-  <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,30,12,.92) 0%,rgba(20,30,12,.66) 45%,rgba(20,30,12,.45) 75%,rgba(20,30,12,.32) 100%)"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,30,12,.88) 0%,rgba(20,30,12,.54) 45%,rgba(20,30,12,.3) 75%,rgba(20,30,12,.16) 100%)"></div>
   <div style="position:relative;padding:clamp(48px,8vw,96px) clamp(18px,4vw,44px) clamp(40px,6vw,76px);width:100%;color:#F0EDE6">
     <div style="max-width:1280px;margin:0 auto">
       <div style="display:inline-block;font-size:11px;letter-spacing:.34em;text-transform:uppercase;font-weight:700;color:#C4A45A;background:rgba(20,30,12,.9);padding:7px 13px;border-radius:2px;animation:fadeUp 1s .15s ease both">Contact</div>
@@ -160,9 +160,9 @@ header nav a[style*="background:#C4A45A"]{padding:9px 10px !important;font-size:
         </div>
         <div>
           <div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#5C6A3A">Events &amp; Weddings</div>
-          <div style="font-size:15.5px;font-weight:400;color:#1E2B14;margin-top:5px">Aleksa Bissonette</div>
-          <div style="font-size:12.5px;font-weight:300;color:rgba(30,43,20,.6);margin-top:2px">Events &amp; Catering Manager</div>
-          <div style="margin-top:6px"><a href="mailto:aleksa@pinelakecc.com" style="font-size:13.5px;color:#5C6A3A;border-bottom:1px solid rgba(196,164,90,.65);padding-bottom:2px">aleksa@pinelakecc.com</a><span style="font-size:12.5px;font-weight:300;color:rgba(30,43,20,.5)"> &#183; ext. 149</span></div>
+          <div style="font-size:15.5px;font-weight:400;color:#1E2B14;margin-top:5px">Anna Zappa</div>
+          <div style="font-size:12.5px;font-weight:300;color:rgba(30,43,20,.6);margin-top:2px">Catering &amp; Sales Manager</div>
+          <div style="margin-top:6px"><a href="mailto:anna@pinelakecc.com" style="font-size:13.5px;color:#5C6A3A;border-bottom:1px solid rgba(196,164,90,.65);padding-bottom:2px">anna@pinelakecc.com</a><span style="font-size:12.5px;font-weight:300;color:rgba(30,43,20,.5)"> &#183; ext. 149</span></div>
         </div>
         <div>
           <div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#5C6A3A">The Club</div>
@@ -231,7 +231,7 @@ header nav a[style*="background:#C4A45A"]{padding:9px 10px !important;font-size:
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:clamp(16px,2.4vw,26px);margin-top:clamp(26px,4vw,42px)">
       <a href="/membership" class="rv" style="display:block;color:#1E2B14">
-        <div class="kb" style="aspect-ratio:4/3"><img src="img/golf-junior-clinic.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div class="kb" style="aspect-ratio:4/3"><img src="img/golf-junior-group.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
         <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Membership</div>
         <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">How joining works</div>
       </a>
@@ -295,7 +295,7 @@ class Component extends DCLogic {
         if (s.message && s.message.trim()) { lines.push('', 'Message:', s.message.trim()); }
         lines.push('', 'Sent from the ' + page + ' page.');
         var subject = 'Website inquiry - ' + interest + ' - ' + s.name.trim();
-        var to = /event|wedding/i.test(interest) ? 'aleksa@pinelakecc.com' : 'melanie@pinelakecc.com';
+        var to = /event|wedding/i.test(interest) ? 'anna@pinelakecc.com' : 'melanie@pinelakecc.com';
         window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
         this.setState({ submitted: true });
       }

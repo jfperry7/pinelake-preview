@@ -132,7 +132,7 @@ header nav a[style*="background:#C4A45A"]{padding:9px 10px !important;font-size:
 <section data-screen-label="Membership hero" style="position:relative;min-height:72vh;overflow:hidden;display:flex;align-items:flex-end">
   <img src="img/lake-sunset.jpg" alt="Sunset over Pine Lake" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:slowPan 46s ease-in-out infinite" />
   <div style="position:absolute;inset:0;background:radial-gradient(ellipse 140% 100% at 50% 40%,transparent 50%,rgba(20,30,12,.5) 100%)"></div>
-  <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,30,12,.9) 0%,rgba(20,30,12,.62) 45%,rgba(20,30,12,.42) 75%,rgba(20,30,12,.3) 100%)"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,30,12,.86) 0%,rgba(20,30,12,.52) 45%,rgba(20,30,12,.28) 75%,rgba(20,30,12,.14) 100%)"></div>
   <div style="position:relative;padding:clamp(56px,9vw,110px) clamp(18px,4vw,44px) clamp(48px,7vw,88px);width:100%;color:#F0EDE6">
     <div style="max-width:1280px;margin:0 auto">
       <div style="display:inline-block;font-size:11px;letter-spacing:.34em;text-transform:uppercase;font-weight:700;color:#C4A45A;background:rgba(20,30,12,.9);padding:7px 13px;border-radius:2px;animation:fadeUp 1s .15s ease both">Membership</div>
@@ -215,8 +215,14 @@ header nav a[style*="background:#C4A45A"]{padding:9px 10px !important;font-size:
   </div>
 </section>
 
-<section data-screen-label="Interlude band" style="position:relative;overflow:hidden;height:clamp(280px,40vh,440px)">
-  <img src="img/terrace-social.jpg" alt="Members on the terrace at Pine Lake" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 55%" />
+<section id="upnorth" data-screen-label="Up north band" style="background:#1E2B14;color:#F0EDE6;border-top:1px solid rgba(196,164,90,.28);border-bottom:1px solid rgba(196,164,90,.28)">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,96px) clamp(18px,4vw,40px);text-align:center">
+    <div class="rv" style="max-width:40ch;margin:0 auto">
+      <div style="font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;font-weight:700;color:#C4A45A">Up North, Close to Home</div>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(26px,3.4vw,44px);line-height:1.14;margin-top:16px">An up-north summer without the drive north.</h2>
+      <p style="font-size:15px;line-height:1.85;font-weight:300;color:rgba(240,237,230,.78);margin-top:18px">Three hundred and ninety-five acres of open water at the end of the workday. No Friday traffic, no cottage to open in May or close in October — just the lake, whenever you want it.</p>
+    </div>
+  </div>
 </section>
 <section data-screen-label="At a glance" style="background:#FFFFFF;border-top:1px solid rgba(30,43,20,.09)">
   <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,84px) clamp(18px,4vw,40px)">
@@ -377,7 +383,7 @@ class Component extends DCLogic {
         if (s.message && s.message.trim()) { lines.push('', 'Message:', s.message.trim()); }
         lines.push('', 'Sent from the ' + page + ' page.');
         var subject = 'Website inquiry - ' + interest + ' - ' + s.name.trim();
-        var to = /event|wedding/i.test(interest) ? 'aleksa@pinelakecc.com' : 'melanie@pinelakecc.com';
+        var to = /event|wedding/i.test(interest) ? 'anna@pinelakecc.com' : 'melanie@pinelakecc.com';
         window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
         this.setState({ submitted: true });
       }
