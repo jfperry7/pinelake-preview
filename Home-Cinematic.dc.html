@@ -333,6 +333,25 @@ header nav a[style*="background:#C4A45A"]{padding:9px 10px !important;font-size:
     </sc-if>
   </div>
 </section>
+
+<footer style="scroll-snap-align:end;background:#171F0F;color:rgba(240,237,230,.7)">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(34px,5vw,64px) clamp(18px,4vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:clamp(22px,3.4vw,44px)">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:19px;color:#F0EDE6;letter-spacing:.06em">Pine Lake Country Club</div>
+      <p style="font-size:13px;line-height:1.8;font-weight:300;margin-top:12px">3300 Pine Lake Road<br />Orchard Lake, MI 48324<br /><a href="tel:+12486821300" style="color:#C4A45A">(248) 682-1300</a></p>
+    </div>
+    <div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#F0EDE6">The Club</div>
+      <ul style="list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:300"><li><a href="/golf" style="color:rgba(240,237,230,.7)">Golf</a></li><li><a href="/tennis" style="color:rgba(240,237,230,.7)">Tennis</a></li><li><a href="/dining" style="color:rgba(240,237,230,.7)">Dining &amp; Social</a></li><li><a href="/family" style="color:rgba(240,237,230,.7)">Family &amp; Aquatics</a></li><li><a href="/events" style="color:rgba(240,237,230,.7)">Events &amp; Weddings</a></li></ul></div>
+    <div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#F0EDE6">Visit</div>
+      <ul style="list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:300"><li><a href="/membership" style="color:rgba(240,237,230,.7)">Membership</a></li><li><a href="/about" style="color:rgba(240,237,230,.7)">About &amp; Heritage</a></li><li><a href="#inquire" style="color:rgba(240,237,230,.7)">Schedule a Private Tour</a></li><li><a href="/contact" style="color:rgba(240,237,230,.7)">Getting Here</a></li></ul></div>
+    <div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#F0EDE6">Follow</div>
+        <ul style="list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:300"><li><a href="https://www.instagram.com/plcclife/" target="_blank" rel="noopener" style="color:rgba(240,237,230,.7)">Instagram <span style="color:rgba(240,237,230,.45)">@plcclife</span></a></li><li><a href="https://www.tiktok.com/@pine.lake.country.club" target="_blank" rel="noopener" style="color:rgba(240,237,230,.7)">TikTok <span style="color:rgba(240,237,230,.45)">@pine.lake.country.club</span></a></li><li><a href="https://www.facebook.com/PLCCLife/" target="_blank" rel="noopener" style="color:rgba(240,237,230,.7)">Facebook <span style="color:rgba(240,237,230,.45)">PLCCLife</span></a></li></ul></div>
+        <div><div style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:#F0EDE6">Members</div>
+      <ul style="list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:300"><li><a href="https://pinelakecc.com/web/pages/login" target="_blank" rel="noopener" style="color:rgba(240,237,230,.7)">Member Login</a></li></ul>
+      <div style="font-size:11px;font-weight:300;margin-top:16px;color:rgba(240,237,230,.5)">Creating Family Traditions Since 1902.</div></div>
+  </div>
+</footer>
+
 </div>
 
 </x-dc>
@@ -343,12 +362,39 @@ class Component extends DCLogic {
     const ids = ['c1','c2','c3','c4','c5','c6','c7'];
     const els = ids.map(id => document.getElementById(id)).filter(Boolean);
     if (!els.length) return;
-    this._io = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting && e.intersectionRatio > 0.5) this.setState({ active: e.target.id }); });
-    }, { threshold: [0.5] });
-    els.forEach(el => this._io.observe(el));
+    // The chapters scroll inside a height:100vh container, and on a phone a
+    // chapter can be taller than the visible viewport - so an intersection
+    // ratio is the wrong measure. Pick whichever chapter crosses the middle
+    // of the scroller instead; that is height-independent.
+    const scroller = els[0].parentElement;
+    const pick = () => {
+      const box = scroller.getBoundingClientRect();
+      const mid = box.top + box.height / 2;
+      let best = null, bestDist = Infinity;
+      for (let i = 0; i < els.length; i++) {
+        const r = els[i].getBoundingClientRect();
+        if (r.top <= mid && r.bottom >= mid) { best = els[i]; break; }
+        const d = Math.min(Math.abs(r.top - mid), Math.abs(r.bottom - mid));
+        if (d < bestDist) { bestDist = d; best = els[i]; }
+      }
+      if (best && best.id !== this.state.active) this.setState({ active: best.id });
+    };
+    this._pick = pick;
+    this._onScroll = () => {
+      if (this._raf) return;
+      this._raf = requestAnimationFrame(() => { this._raf = 0; pick(); });
+    };
+    this._scroller = scroller;
+    scroller.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('resize', this._onScroll, { passive: true });
+    pick();
   }
-  componentWillUnmount() { if (this._io) this._io.disconnect(); }
+  componentWillUnmount() {
+    if (this._scroller) this._scroller.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('resize', this._onScroll);
+  }
   set(k) { return e => this.setState({ [k]: e.target.value, error: false }); }
   renderVals() {
     const s = this.state;
