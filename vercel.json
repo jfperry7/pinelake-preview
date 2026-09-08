@@ -53,6 +53,10 @@
                      {
                          "source":  "/country-club-pool-tennis-michigan",
                          "destination":  "/SEO-Pool-Tennis-Cinematic.dc.html"
+                     },
+                     {
+                         "source":  "/privacy",
+                         "destination":  "/Privacy-Cinematic.dc.html"
                      }
                  ],
     "headers":  [

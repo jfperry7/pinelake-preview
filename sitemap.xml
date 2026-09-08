@@ -13,4 +13,9 @@
   <url><loc>https://pinelakecc.com/family-country-club-michigan</loc><priority>0.6</priority></url>
   <url><loc>https://pinelakecc.com/country-club-near-detroit</loc><priority>0.6</priority></url>
   <url><loc>https://pinelakecc.com/country-club-pool-tennis-michigan</loc><priority>0.6</priority></url>
+  <url>
+    <loc>https://pinelakecc.com/privacy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
 </urlset>
