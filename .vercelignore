@@ -9,3 +9,6 @@ InquiryFooter.dc.html
 # Cloudflare Pages config. Vercel reads vercel.json instead.
 _headers
 _redirects
+
+# Cloudflare Pages Functions. Vercel would serve these as static files.
+functions
