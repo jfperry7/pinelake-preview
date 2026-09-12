@@ -1,0 +1,94 @@
+# Cloudflare Pages redirects.
+#
+# ORDER MATTERS, and the rule is the opposite of Vercel's: Cloudflare
+# evaluates STATIC rules before DYNAMIC (splat) ones, and rules placed after
+# a splat can silently stop firing. So every one-to-one redirect is listed
+# first and the wildcard portal rules go at the very bottom.
+#
+# Limits: 2,000 static + 100 dynamic. We use ~45 and 4.
+
+# ---------------------------------------------------------------- golf
+/golf-shop                          /golf                     301
+/course-tour                        /golf                     301
+/driving-range                      /golf                     301
+/practice-area                      /golf                     301
+/instruction                        /golf                     301
+/caddie-program                     /golf                     301
+/golf-outing                        /events                   301
+
+# -------------------------------------------------------------- tennis
+/indoor                             /tennis                   301
+/outdoor                            /tennis                   301
+
+# -------------------------------------------------------------- dining
+/dining1                            /dining                   301
+/dining-events                      /dining                   301
+/formal-dining-room                 /dining                   301
+/member-s-grill                     /dining                   301
+/the-lake-room                      /dining                   301
+/terrace-patio-deck1                /dining                   301
+/lounge                             /dining                   301
+/snack-bar                          /dining                   301
+
+# ------------------------------------------------------ family and lake
+/lakefront                          /family                   301
+/beach-pool                         /family                   301
+/boats-docks                        /family                   301
+
+# -------------------------------------------------------------- events
+/weddings                           /events                   301
+/weddings-special-events            /events                   301
+/events-reservation                 /events                   301
+/event-request-form                 /events                   301
+/rooms-capacity                     /events                   301
+
+# ---------------------------------------------------------- membership
+/membership-categories              /membership               301
+/categories                         /membership               301
+/membershipprocess                  /membership               301
+/request-membership-information     /membership               301
+/club-amenities                     /membership               301
+/guest-information                  /membership               301
+
+# ---------------------------------------------------- about and contact
+/about-us                           /about                    301
+/history                            /about                    301
+/club-tour                          /about                    301
+/video-tour                         /about                    301
+/gallery                            /about                    301
+/picture-gallery                    /about                    301
+/staff                              /contact                  301
+/request-information                /contact                  301
+
+# --------------------------------------------------------------- legal
+/privacy-policy                     /privacy                  301
+
+# -------------------------------------------------------- housekeeping
+/en                                 /                         301
+/welcome                            /                         301
+/search                             /                         301
+/social-media                       /                         301
+/page-not-found                     /                         301
+/sample                             /                         301
+/test-page                          /                         301
+/old-pages                          /                         301
+/submittedinfo                      /                         301
+
+# ------------------------------------------------------- member portal
+# ENABLE AT CUTOVER, not before. These are dead until Northstar confirms
+# members.pinelakecc.com resolves; pointing at a host that does not exist
+# would strand every member who follows an old link.
+#
+# Dynamic (splat) rules MUST stay last — see the note at the top.
+#
+# /login          https://members.pinelakecc.com/web/pages/login  301
+# /web/*          https://members.pinelakecc.com/web/:splat       301
+# /c/*            https://members.pinelakecc.com/c/:splat         301
+# /documents/*    https://members.pinelakecc.com/documents/:splat 301
+# /o/*            https://members.pinelakecc.com/o/:splat         301
+
+# ------------------------------------------------------------ undecided
+# Live pages on the old site with nowhere to land yet. Leave them out
+# rather than sending someone to a page that does not answer the question:
+#   /employment  /employment-application  /scholarship-foundation
+#   /mobile-application  /christmas-fund-form

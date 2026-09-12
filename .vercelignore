@@ -1,12 +1,11 @@
 # Internal working documents - versioned in git, never served.
-# These describe the club's DNS, hosting and migration plan, plus internal
-# committee notes. They were publicly fetchable before this file existed.
 *.md
 
-# Dead components. Nothing references these; the runtime copies baked into
-# support.js are also unreferenced. Kept in git as the source for support.js.
+# Dead components. Nothing references these; the copies baked into
+# support.js are also unreferenced. Kept in git as support.js's source.
 SiteHeader.dc.html
 InquiryFooter.dc.html
 
-# Netlify-style headers file. Vercel ignores it; real headers live in vercel.json.
+# Cloudflare Pages config. Vercel reads vercel.json instead.
 _headers
+_redirects

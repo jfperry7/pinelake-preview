@@ -1,4 +1,12 @@
+# Cloudflare Pages headers.
+
+# Keep the site out of search until launch day.
+# REMOVE THIS BLOCK AT LAUNCH, together with the Disallow in robots.txt.
+# Either one left in place on its own keeps the site unindexed.
 /*
   X-Robots-Tag: noindex, nofollow
-/*.dc.html
-  Content-Type: text/html; charset=utf-8
+
+# Long cache on fingerprint-stable assets. Images are replaced by name when
+# they change, so keep this modest rather than immutable.
+/img/*
+  Cache-Control: public, max-age=86400
