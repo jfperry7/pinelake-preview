@@ -1,0 +1,24 @@
+# Files that live in the repo but must never be served.
+# Same format as .gitignore. Without this, Cloudflare uploads the entire repo
+# root as public static files - which is how LAUNCH.md, with the club's DNS
+# and migration plan in it, ended up readable on the .workers.dev URL.
+
+# Internal working documents
+*.md
+
+# Server-side code. Bundled into the Worker by the import in worker.js;
+# it must not also sit there as a readable static file.
+functions
+worker.js
+wrangler.jsonc
+
+# Dead components. No page references them.
+SiteHeader.dc.html
+InquiryFooter.dc.html
+
+# Other hosts' config
+vercel.json
+.vercelignore
+
+# 5MB of orphans - only the dead SiteHeader component references these.
+uploads

@@ -1,0 +1,17 @@
+{
+  // Cloudflare's Git integration creates a Worker with static assets, not a
+  // Pages project, so the site needs an explicit entry point for the one
+  // dynamic route. Everything else is served straight from the repo root.
+  "name": "pinelake-preview",
+  "main": "worker.js",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
