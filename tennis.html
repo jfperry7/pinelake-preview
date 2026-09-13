@@ -51,7 +51,39 @@
   "sameAs": ["https://www.facebook.com/PLCCLife/","https://www.instagram.com/plcclife/","https://www.tiktok.com/@pine.lake.country.club"]
 }
 </script>
+<!-- Analytics. Guarded to the live domain so preview and staging traffic never
+     reaches the property; append ?ga_test=1 to send a deliberate test hit. -->
+<script>
+(function () {
+  var h = location.hostname;
+  var live = (h === 'pinelakecc.com' || h === 'www.pinelakecc.com');
+  if (!live && location.search.indexOf('ga_test=1') === -1) return;
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  gtag('js', new Date());
+  gtag('config', 'G-SHF5ZLF3GT');
+
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-SHF5ZLF3GT';
+  document.head.appendChild(s);
+
+  // Delegated so it survives the runtime rebuilding the DOM.
+  document.addEventListener('click', function (e) {
+    var el = e.target && e.target.closest ? e.target.closest('a,button') : null;
+    if (!el) return;
+    var label = (el.textContent || '').trim();
+    if (/^schedule\s+(a\s+)?(private\s+)?(family\s+)?tour$/i.test(label)) {
+      gtag('event', 'tour_requested', {
+        source_page: (document.title || '').split('|')[0].trim()
+      });
+    }
+  }, true);
+})();
+</script>
 </head>
+
 <body>
 <x-dc>
 <helmet>
@@ -380,6 +412,15 @@ class Component extends DCLogic {
         }).then(function (r) {
           if (!r.ok) throw new Error('endpoint unavailable');
           settled = true;
+          // Only a confirmed send counts. Distinct event name and its own
+          // parameters, so this can never be confused with a portal login.
+          if (window.gtag) {
+            gtag('event', 'inquiry_submitted', {
+              inquiry_type: interest,
+              source_page: page,
+              routed_to: /event|wedding/i.test(interest) ? 'events' : 'membership'
+            });
+          }
           self.setState({ submitted: true });
         })['catch'](mailFallback);
       }
