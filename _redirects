@@ -48,7 +48,7 @@
 /membershipprocess                  /membership               301
 /request-membership-information     /membership               301
 /club-amenities                     /membership               301
-/guest-information                  /membership               301
+/guest-information                  /about                   301
 
 # ---------------------------------------------------- about and contact
 /about-us                           /about                    301
@@ -57,6 +57,7 @@
 /video-tour                         /about                    301
 /gallery                            /about                    301
 /picture-gallery                    /about                    301
+/employment                         /contact                  301
 /staff                              /contact                  301
 /request-information                /contact                  301
 
@@ -90,5 +91,5 @@
 # ------------------------------------------------------------ undecided
 # Live pages on the old site with nowhere to land yet. Leave them out
 # rather than sending someone to a page that does not answer the question:
-#   /employment  /employment-application  /scholarship-foundation
+#   /employment-application  /scholarship-foundation
 #   /mobile-application  /christmas-fund-form
