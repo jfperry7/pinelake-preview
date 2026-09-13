@@ -223,7 +223,7 @@ header nav a[style*="background:#C4A45A"]{padding:9px 10px !important;font-size:
       </div>
     </sc-if>
     <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
-      <form onSubmit="{{ onSubmit }}" style="display:flex;flex-direction:column;gap:16px">
+      <form onSubmit="{{ onSubmit }}" style="display:flex;flex-direction:column;gap:16px"><input name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" />
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
           <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">Name</span><input class="fld" value="{{ name }}" onChange="{{ onName }}" /></label>
           <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">Email</span><input class="fld" value="{{ email }}" onChange="{{ onEmail }}" type="email" /></label>
@@ -318,16 +318,44 @@ class Component extends DCLogic {
       onSubmit: e => {
         e.preventDefault();
         if (!s.name.trim() || !validEmail) { this.setState({ error: true }); return; }
-        var sel = e.target.querySelector('select');
+        var form = e.target;
+        var sel = form.querySelector('select');
         var interest = (sel && sel.selectedOptions && sel.selectedOptions.length) ? sel.selectedOptions[0].textContent.trim() : s.interest;
         var page = (document.title || '').split('|')[0].trim() || 'the website';
-        var lines = ['Name: ' + s.name.trim(), 'Email: ' + s.email.trim(), 'Phone: ' + (s.phone.trim() || 'not given'), 'Interested in: ' + interest];
-        if (s.message && s.message.trim()) { lines.push('', 'Message:', s.message.trim()); }
-        lines.push('', 'Sent from the ' + page + ' page.');
-        var subject = 'Website inquiry - ' + interest + ' - ' + s.name.trim();
-        var to = /event|wedding/i.test(interest) ? 'anna@pinelakecc.com' : 'melanie@pinelakecc.com';
-        window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
-        this.setState({ submitted: true });
+        var hp = form.querySelector('input[name="company"]');
+        var body = {
+          name: s.name.trim(),
+          email: s.email.trim(),
+          phone: (s.phone || '').trim(),
+          interest: interest,
+          message: (s.message || '').trim(),
+          page: page,
+          company: hp ? hp.value : ''
+        };
+        var self = this;
+        var settled = false;
+        // If the endpoint is not there - which is the case on any static host
+        // without the Pages function - fall back to opening a mail client, so
+        // the form never dead-ends on someone.
+        function mailFallback() {
+          if (settled) return; settled = true;
+          var lines = ['Name: ' + body.name, 'Email: ' + body.email, 'Phone: ' + (body.phone || 'not given'), 'Interested in: ' + interest];
+          if (body.message) { lines.push('', 'Message:', body.message); }
+          lines.push('', 'Sent from the ' + page + ' page.');
+          var to = /event|wedding/i.test(interest) ? 'anna@pinelakecc.com' : 'melanie@pinelakecc.com';
+          var subject = 'Website inquiry - ' + interest + ' - ' + body.name;
+          window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
+          self.setState({ submitted: true });
+        }
+        fetch('/api/inquiry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        }).then(function (r) {
+          if (!r.ok) throw new Error('endpoint unavailable');
+          settled = true;
+          self.setState({ submitted: true });
+        })['catch'](mailFallback);
       }
     };
   }

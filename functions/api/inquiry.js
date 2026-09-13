@@ -12,6 +12,9 @@
  *   MAIL_EVENTS      plain.   anna@pinelakecc.com
  *   MAIL_ARCHIVE     plain.   optional; BCC'd on everything so the club keeps
  *                             its own record independent of anyone's inbox.
+ *   MAIL_TEST_TO     plain.   OPTIONAL TEST SWITCH. While set, every message goes
+ *                             to this address instead of the club, and says who
+ *                             it would have reached. Delete it to go live.
  *
  * The visitor never chooses the recipient - routing happens here, so a crafted
  * request cannot turn the form into a relay.
@@ -88,12 +91,18 @@ export async function onRequestPost(context) {
 
   // Events and weddings go to catering; everything else to membership.
   var isEvent = /event|wedding|banquet|party|reception|corporate/i.test(interest);
-  var to = isEvent
+  var intendedTo = isEvent
     ? (env.MAIL_EVENTS || 'anna@pinelakecc.com')
     : (env.MAIL_MEMBERSHIP || 'melanie@pinelakecc.com');
 
+  // Test switch. Resend will only deliver to the account owner's own address
+  // until a domain is verified, so this lets the whole path be exercised with
+  // no DNS at all. Unset it and mail routes to the club for real.
+  var testTo = clean(env.MAIL_TEST_TO, 200);
+  var to = testTo || intendedTo;
+
   var from = env.MAIL_FROM || 'Pine Lake Website <forms@pinelakecc.com>';
-  var subject = 'Website inquiry - ' + interest + ' - ' + name;
+  var subject = (testTo ? '[TEST] ' : '') + 'Website inquiry - ' + interest + ' - ' + name;
 
   var rows = [
     ['Name', name],
@@ -102,6 +111,7 @@ export async function onRequestPost(context) {
     ['Interested in', interest],
     ['Sent from', page]
   ];
+  if (testTo) rows.push(['Would have gone to', intendedTo]);
 
   var text = rows.map(function (r) { return r[0] + ': ' + r[1]; }).join('\n');
   if (message) text += '\n\nMessage:\n' + message;
@@ -138,7 +148,7 @@ export async function onRequestPost(context) {
     text: text,
     html: html
   };
-  if (env.MAIL_ARCHIVE) payload.bcc = [env.MAIL_ARCHIVE];
+  if (env.MAIL_ARCHIVE && !testTo) payload.bcc = [env.MAIL_ARCHIVE];
 
   var res;
   try {
