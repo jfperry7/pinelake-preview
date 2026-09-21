@@ -28,3 +28,6 @@ dns-check.ps1
 
 # Cutover tooling. Contains the club's full DNS inventory.
 cutover-missing-records.zone
+
+# Any BIND import file - all carry the club DNS inventory.
+*.zone

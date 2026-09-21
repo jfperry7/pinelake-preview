@@ -1,0 +1,20 @@
+;; Records requested by Northstar (Eleazer Noman, ticket #996907, 21 Sept 2026
+;; 17:46) to verify the members.pinelakecc.com custom hostname in their
+;; Cloudflare for SaaS account, after the club's zone moved onto Cloudflare.
+;;
+;; Import: Cloudflare -> DNS -> Records -> Import, "Proxy imported records" OFF.
+;;
+;; NOT in this file, done by hand because the existing CNAME at `members`
+;; must be deleted first:  A  members -> 104.24.9.63  (DNS only)
+;;
+;; NOT in this file, deliberately: their 4th record, "CNAME clubnow.members ->
+;; member-pinelakecc-com.northstar-connect.com". The target does not resolve
+;; and the name would create clubnow.members.pinelakecc.com. Almost certainly
+;; a typo. Queried in the reply rather than applied.
+
+;; Hostname ownership verification for the custom hostname.
+_cf-custom-hostname.members.pinelakecc.com.	300	IN	TXT	"8b03768f-10a5-4e60-990b-50fd22c1effc"
+
+;; Delegated DCV so their certificate can renew. Same delegation ID as the
+;; apex record that was already in the zone.
+_acme-challenge.members.pinelakecc.com.	300	IN	CNAME	members.pinelakecc.com.911c093aa0273216.dcv.cloudflare.com.
