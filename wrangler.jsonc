@@ -13,5 +13,31 @@
   },
   "observability": {
     "enabled": true
+  },
+
+  // Mail settings for the contact form.
+  //
+  // THESE MUST LIVE HERE, NOT IN THE DASHBOARD. The build runs
+  // `npx wrangler deploy`, which treats this file as the whole truth and
+  // wipes any runtime variable set through the dashboard that is not
+  // declared here. That is why variables added by hand kept disappearing.
+  //
+  // The API key is deliberately absent: secrets never belong in a config
+  // file that lives in git. RESEND_API_KEY stays a dashboard Secret, and
+  // wrangler leaves secrets alone.
+  "vars": {
+    // Resend will not send from an unverified domain. onboarding@resend.dev
+    // is their test sender and needs no DNS. Becomes a club address once
+    // pinelakecc.com is verified in Resend.
+    "MAIL_FROM": "Pine Lake Website <onboarding@resend.dev>",
+
+    // Where enquiries are meant to go, once the test switch comes off.
+    "MAIL_MEMBERSHIP": "melanie@pinelakecc.com",
+    "MAIL_EVENTS": "anna@pinelakecc.com",
+
+    // TEST SWITCH. While this is set, every submission goes here instead of
+    // the club, subject-prefixed [TEST], and the body names who it would
+    // have reached. DELETE THIS LINE TO GO LIVE - nothing else changes.
+    "MAIL_TEST_TO": "1902pinelakecc@gmail.com"
   }
 }
