@@ -1,31 +1,46 @@
 <#
   dns-check.ps1 - compare one nameserver's answers against the record
-  inventory captured from ns23.worldnic.com on 21 September 2026.
+  inventory for pinelakecc.com.
 
   The nameserver move is the one step of the cutover that can do real damage,
   and the damage is to the club's email, not the website. This checks the
-  records by machine instead of by eye, because there are fifteen of them and
-  missing one is how a domain move takes a business offline.
+  records by machine instead of by eye, because there are twenty-five of them
+  and missing one is how a domain move takes a business offline.
 
   Run it twice:
 
-    1. Against Cloudflare, BEFORE switching the nameservers at Network
-       Solutions. Everything must pass first.
-
-         .\dns-check.ps1 -Server kate.ns.cloudflare.com
-
-       (use whichever two nameservers Cloudflare actually assigns)
-
-    2. Against Network Solutions, to confirm the inventory still matches what
-       is live and nothing has been changed since it was captured.
+    1. Against Network Solutions, to confirm the inventory still matches what
+       is live:
 
          .\dns-check.ps1 -Server ns23.worldnic.com
 
-  CRITICAL rows are mail. If any of those fail, do not switch the
-  nameservers - club email will break. INFO rows are worth understanding but
-  will not take anything down.
+    2. Against Cloudflare, BEFORE switching the nameservers. Everything must
+       pass first:
+
+         .\dns-check.ps1 -Server <the nameserver Cloudflare assigned>
+
+  CRITICAL rows are mail, plus the members CNAME the portal depends on. If any
+  of those fail, do not switch the nameservers. INFO rows are worth
+  understanding but will not take anything down.
 
   Exit code is 0 when every CRITICAL check passes, 1 otherwise.
+
+  WHERE THIS INVENTORY CAME FROM, 21 September 2026
+  -------------------------------------------------
+  Two sources, because neither was complete on its own:
+
+    - Probing ns23.worldnic.com by hand found `members`, `staging` and the
+      `*` wildcard. Cloudflare's import scan MISSED all three. `members` is
+      the member portal - had that gone unnoticed, the cutover would have
+      locked every member out.
+
+    - Cloudflare's import scan found `email`, `links`, `_acme-challenge`,
+      `_cf-custom-hostname` and both Microsoft 365 SRV records. Hand-probing
+      missed them because it only tested guessed names.
+
+  Each one below was then confirmed against ns23.worldnic.com directly. The
+  lesson is in HANDOFF.md trap 6: an absent DNS answer is not evidence that a
+  record does not exist.
 #>
 
 param(
@@ -55,6 +70,7 @@ function Get-Answers([string]$name, [string]$type) {
     'TXT'   { return @($r | Where-Object { $_.Type -eq 'TXT' }   | ForEach-Object { ($_.Strings -join '') }) }
     'CNAME' { return @($r | Where-Object { $_.Type -eq 'CNAME' } | ForEach-Object { $_.NameHost }) }
     'A'     { return @($r | Where-Object { $_.Type -eq 'A' }     | ForEach-Object { $_.IPAddress }) }
+    'SRV'   { return @($r | Where-Object { $_.Type -eq 'SRV' }   | ForEach-Object { "$($_.Priority) $($_.Weight) $($_.Port) $($_.NameTarget)" }) }
     default { return @() }
   }
 }
@@ -63,26 +79,24 @@ function Check([string]$label, [string]$name, [string]$type, [string[]]$expected
   $want = Normalize $expected
   $got  = Normalize (Get-Answers $name $type)
 
-  $ok = ($want -join "`n") -eq ($got -join "`n")
-
-  if ($ok) {
+  if (($want -join "`n") -eq ($got -join "`n")) {
     Write-Host ("  PASS  " + $label)
-  } else {
-    if ($severity -eq 'CRITICAL') {
-      $script:criticalFailures++
-      Write-Host ("  FAIL  " + $label + "   [CRITICAL - do not switch nameservers]") -ForegroundColor Red
-    } else {
-      $script:infoFailures++
-      Write-Host ("  FAIL  " + $label + "   [info]") -ForegroundColor Yellow
-    }
-    Write-Host ("          expected: " + $(if ($want.Count) { $want -join ' | ' } else { '(nothing)' }))
-    Write-Host ("          got:      " + $(if ($got.Count)  { $got  -join ' | ' } else { '(nothing)' }))
+    return
   }
+
+  if ($severity -eq 'CRITICAL') {
+    $script:criticalFailures++
+    Write-Host ("  FAIL  " + $label + "   [CRITICAL - do not switch nameservers]") -ForegroundColor Red
+  } else {
+    $script:infoFailures++
+    Write-Host ("  FAIL  " + $label + "   [info]") -ForegroundColor Yellow
+  }
+  Write-Host ("          expected: " + $(if ($want.Count) { $want -join ' | ' } else { '(nothing)' }))
+  Write-Host ("          got:      " + $(if ($got.Count)  { $got  -join ' | ' } else { '(nothing)' }))
 }
 
 Write-Host ""
 Write-Host ("Checking " + $Zone + " against " + $Server)
-Write-Host ("Inventory captured from ns23.worldnic.com, 21 September 2026")
 Write-Host ""
 
 Write-Host "Mail - these are the ones that matter"
@@ -111,6 +125,21 @@ Check 'CNAME s2._domainkey (SendGrid DKIM)' ("s2._domainkey." + $Zone) 'CNAME' @
   's2.domainkey.u4668611.wl112.sendgrid.net'
 ) 'CRITICAL'
 
+Check 'CNAME email (SendGrid link branding)' ("email." + $Zone) 'CNAME' @(
+  'u4668611.wl112.sendgrid.net'
+) 'CRITICAL'
+
+Check 'CNAME links (SendGrid click tracking)' ("links." + $Zone) 'CNAME' @(
+  'sendgrid.net'
+) 'CRITICAL'
+
+Write-Host ""
+Write-Host "Member portal - members must keep working through the move"
+
+Check 'CNAME members (Northstar)' ("members." + $Zone) 'CNAME' @(
+  'pinelakecc-com.northstar-connect.com'
+) 'CRITICAL'
+
 Write-Host ""
 Write-Host "Microsoft 365 service records"
 
@@ -119,13 +148,19 @@ Check 'CNAME sip' ("sip." + $Zone) 'CNAME' @('sipdir.online.lync.com') 'INFO'
 Check 'CNAME lyncdiscover' ("lyncdiscover." + $Zone) 'CNAME' @('webdir.online.lync.com') 'INFO'
 Check 'CNAME enterpriseregistration' ("enterpriseregistration." + $Zone) 'CNAME' @('enterpriseregistration.windows.net') 'INFO'
 Check 'CNAME enterpriseenrollment' ("enterpriseenrollment." + $Zone) 'CNAME' @('enterpriseenrollment.manage.microsoft.com') 'INFO'
+Check 'SRV _sip._tls' ("_sip._tls." + $Zone) 'SRV' @('100 1 443 sipdir.online.lync.com') 'INFO'
+Check 'SRV _sipfederationtls._tcp' ("_sipfederationtls._tcp." + $Zone) 'SRV' @('100 1 5061 sipfed.online.lync.com') 'INFO'
 
 Write-Host ""
-Write-Host "Member portal - members must keep working through the move"
+Write-Host "Northstar's certificate plumbing for the old site"
 
-Check 'CNAME members (Northstar)' ("members." + $Zone) 'CNAME' @(
-  'pinelakecc-com.northstar-connect.com'
-) 'CRITICAL'
+Check 'CNAME _acme-challenge' ("_acme-challenge." + $Zone) 'CNAME' @(
+  'pinelakecc.com.911c093aa0273216.dcv.cloudflare.com'
+) 'INFO'
+
+Check 'TXT _cf-custom-hostname' ("_cf-custom-hostname." + $Zone) 'TXT' @(
+  'cee63117-fc80-457c-acde-bbb9fef59b3d'
+) 'INFO'
 
 Write-Host ""
 Write-Host "Other records present at Network Solutions"
@@ -138,7 +173,6 @@ Check 'A * wildcard' ("zzz-wildcard-probe." + $Zone) 'A' @('64.135.11.57') 'INFO
 # NODATA rather than 64.135.11.57 - but Network Solutions answers an A query
 # for it with REFUSED, so what it actually holds cannot be read over DNS.
 # Read it out of the Network Solutions control panel by eye before the move.
-# This is trap 6 in HANDOFF.md: a DNS answer is not proof of what is in a zone.
 
 Write-Host ""
 Write-Host "----------------------------------------------------------------"
@@ -155,7 +189,7 @@ if ($criticalFailures -eq 0) {
   exit 0
 } else {
   Write-Host ("$criticalFailures CRITICAL check(s) failed. DO NOT switch the nameservers.") -ForegroundColor Red
-  Write-Host "Fix the records above in Cloudflare and run this again."
+  Write-Host "Fix the records above and run this again."
   Write-Host ""
   exit 1
 }

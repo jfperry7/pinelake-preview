@@ -41,6 +41,39 @@
 > come first: Phase 2 before Phase 5.
 
 
+## CUTOVER IN PROGRESS - state as of 21 September 2026, evening
+
+The Cloudflare zone is built but the nameservers have NOT moved. Nothing about
+the live domain has changed yet.
+
+**Cloudflare nameservers assigned:** `agustin.ns.cloudflare.com` and
+`paige.ns.cloudflare.com`. Zone `pinelakecc.com`, Free plan, status `pending`.
+
+Done in Cloudflare:
+
+- Zone added, import scan run. **Bot Preference Sync was ON by default and was
+  turned off** - it prepends Cloudflare's own directives to `robots.txt`, which
+  would have fought the hostname guard in `worker.js`.
+- All 22 imported records were imported **proxied**, which would have broken
+  mail and both SendGrid DKIM keys. All 22 are now **DNS only**.
+- Added `staging` A -> `64.135.45.138` and `*` A -> `64.135.11.57`, both of
+  which the import scan missed.
+
+**STILL OUTSTANDING - the nameservers must not move until this is done:**
+
+- [ ] **`members` CNAME -> `pinelakecc-com.northstar-connect.com`, DNS only.**
+      The import scan missed it. Without it, `members.pinelakecc.com` stops
+      resolving the moment the nameservers move and **every member is locked
+      out of the portal.** `dns-check.ps1` fails CRITICAL on exactly this.
+- [ ] Read `portal` out of the Network Solutions control panel by eye and
+      recreate it if it holds anything. It cannot be read over DNS.
+
+Then, in order: run `dns-check.ps1 -Server agustin.ns.cloudflare.com` and get
+a clean pass, switch the nameservers at Network Solutions, confirm club email
+still flows, delete the apex `A` and `www` `CNAME`, attach the Worker Custom
+Domains, and push `main`.
+
+---
 ## The order
 
 The club has no website, so getting one back dominates everything else. The
