@@ -4,8 +4,8 @@
 
   The nameserver move is the one step of the cutover that can do real damage,
   and the damage is to the club's email, not the website. This checks the
-  records by machine instead of by eye, because there are twenty-five of them
-  and missing one is how a domain move takes a business offline.
+  records by machine instead of by eye, because there are forty of them and
+  missing one is how a domain move takes a business offline.
 
   Run it twice:
 
@@ -27,20 +27,32 @@
 
   WHERE THIS INVENTORY CAME FROM, 21 September 2026
   -------------------------------------------------
-  Two sources, because neither was complete on its own:
+  Three sources. The first two were each badly incomplete, and only the third
+  is authoritative:
 
-    - Probing ns23.worldnic.com by hand found `members`, `staging` and the
-      `*` wildcard. Cloudflare's import scan MISSED all three. `members` is
-      the member portal - had that gone unnoticed, the cutover would have
-      locked every member out.
+    1. Probing ns23.worldnic.com by hand found `members`, `staging` and the
+       `*` wildcard, all three of which Cloudflare's import scan missed.
+       But probing can only test names you already thought of.
 
-    - Cloudflare's import scan found `email`, `links`, `_acme-challenge`,
-      `_cf-custom-hostname` and both Microsoft 365 SRV records. Hand-probing
-      missed them because it only tested guessed names.
+    2. Cloudflare's import scan found `email`, `links`, `_acme-challenge`,
+       `_cf-custom-hostname` and the two Microsoft 365 SRV records. It found
+       22 records in total.
 
-  Each one below was then confirmed against ns23.worldnic.com directly. The
-  lesson is in HANDOFF.md trap 6: an absent DNS answer is not evidence that a
-  record does not exist.
+    3. The Network Solutions Advanced DNS panel - the actual zone - holds
+       42 records. Reading it turned up 15 more that neither of the first two
+       methods could see, including the PROOFPOINT DKIM SIGNING KEY, three
+       Amazon SES DKIM CNAMEs, and `clubnow`, a second live Northstar host.
+
+  Every record below was then confirmed to resolve against ns23.worldnic.com.
+  Two rows in the panel, `em8743pinelakecc.com.` and `url8871pinelakecc.com.`,
+  are malformed and resolve to nothing in any interpretation, so they are
+  deliberately excluded - which is why this checks 40 and not 42. `portal`
+  has no record at all; the REFUSED answer to an A query for it was a Network
+  Solutions quirk, not a hidden record.
+
+  The lesson is HANDOFF.md trap 6, and it is stronger than it was written:
+  neither an absent DNS answer nor a provider's own import scan is evidence
+  of what a zone contains. Only the zone is.
 #>
 
 param(
@@ -163,6 +175,31 @@ Check 'TXT _cf-custom-hostname' ("_cf-custom-hostname." + $Zone) 'TXT' @(
 ) 'INFO'
 
 Write-Host ""
+Write-Host "Records read out of the Network Solutions control panel, 21 Sept"
+Write-Host "  (Cloudflare's import scan missed every one of these)"
+
+Check 'TXT ppe._domainkey (PROOFPOINT DKIM SIGNING KEY)' ("ppe._domainkey." + $Zone) 'TXT' @(
+  'v=DKIM1; k=rsa; t=s; n=core; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn1rENKTy6i2tzYqsVIQpHsrjSBeO5KaD1lMN/ltm2NfLXvjD3Q6Oy97qrqlA6+ESh6FDkTdAumuCJbbGTWqW3Vpz6RkYzY0tFNP0NhZF80lxNy62ed9BrtEtVFv9KDUTwFFc1Ehwxzf8oQymsljkk2kQ1L8YnaQgTiFQ1UthVtEwrOF5/74tdTGT/8N5dcuiwSmnpq00A3Uq1ii6M0BdEBKaI+/IskS0p1Ni8QmQaZ8lkn4DKSXLo70eGPamAWhW3U6KA3HSKnOr/VjP9oSxBIaYCaW+1clI8HKVMQ7ZmgWLkm9VSkjEE/aug6xvMNa0+FF2BzM2IOKWv0Uc3WK9KwIDAQAB'
+) 'CRITICAL'
+
+Check 'CNAME SES DKIM 1 of 3' ("fgdjtutbucnhdpbjobgmx34rtb6jztwy._domainkey." + $Zone) 'CNAME' @('fgdjtutbucnhdpbjobgmx34rtb6jztwy.dkim.amazonses.com') 'CRITICAL'
+Check 'CNAME SES DKIM 2 of 3' ("lqdjysclbun6mfr7nhd4y5duon3afovp._domainkey." + $Zone) 'CNAME' @('lqdjysclbun6mfr7nhd4y5duon3afovp.dkim.amazonses.com') 'CRITICAL'
+Check 'CNAME SES DKIM 3 of 3' ("xpz24sk4bzcdhme6vtg7zk4xnhxtw7xl._domainkey." + $Zone) 'CNAME' @('xpz24sk4bzcdhme6vtg7zk4xnhxtw7xl.dkim.amazonses.com') 'CRITICAL'
+
+Check 'CNAME s2._domainkey.emails (SendGrid DKIM, emails subdomain)' ("s2._domainkey.emails." + $Zone) 'CNAME' @('s2.domainkey.u4668611.wl112.sendgrid.net') 'CRITICAL'
+Check 'CNAME clubnow (second Northstar host)' ("clubnow." + $Zone) 'CNAME' @('pinelakecc-com.northstar-connect.com') 'CRITICAL'
+Check 'CNAME 4668611 (SendGrid)' ("4668611." + $Zone) 'CNAME' @('sendgrid.net') 'CRITICAL'
+Check 'CNAME em7487.emails (SendGrid)' ("em7487.emails." + $Zone) 'CNAME' @('u4668611.wl112.sendgrid.net') 'CRITICAL'
+Check 'CNAME url305.emails (SendGrid click tracking)' ("url305.emails." + $Zone) 'CNAME' @('sendgrid.net') 'CRITICAL'
+
+Check 'A northstar' ("northstar." + $Zone) 'A' @('96.66.39.41') 'INFO'
+Check 'A testing' ("testing." + $Zone) 'A' @('64.135.11.57') 'INFO'
+
+Check 'CNAME Sectigo DCV 1 of 4' ("_0f6e4445e3229a65a7ed9dacf75612d8." + $Zone) 'CNAME' @('b95c60a448a32889ed38475bb7bcd36e.75e8955e1e830750384be46381573e7b.5har5g5fq35545qnq5f5.sectigo.com') 'INFO'
+Check 'CNAME Sectigo DCV 2 of 4' ("_7122de11939d89f968408a9df0e5cfdf.northstar." + $Zone) 'CNAME' @('a2053e87a4499c60d8ccf4e51d84e9ce.fc60d1e32f15d7ed58507c2d0aaecec1.g5fc55dv5m5vtmjs52d5.sectigo.com') 'INFO'
+Check 'CNAME Sectigo DCV 3 of 4' ("_93df93e28ac4099e438255ee8d7e6051.northstar." + $Zone) 'CNAME' @('2220b16448e1f651a284d768c295f196.45fb76926f2d8f4b988bb508bc9118e5.55ycg55o5kwg55d5555j.sectigo.com') 'INFO'
+Check 'CNAME Sectigo DCV 4 of 4' ("_e9c258168ba8dc5006aa6de5a2cba7fa.northstar." + $Zone) 'CNAME' @('24500ae904eab7b11b152e8e66e6b8c9.e8dc5bdf5cd5c74742cecbefbf6e677a.55dqn955zt55l115shv4.sectigo.com') 'INFO'
+
 Write-Host "Other records present at Network Solutions"
 
 Check 'A staging (unidentified)' ("staging." + $Zone) 'A' @('64.135.45.138') 'INFO'

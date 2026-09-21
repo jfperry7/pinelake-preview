@@ -43,6 +43,25 @@
 
 ## CUTOVER IN PROGRESS - state as of 21 September 2026, evening
 
+> ### The inventory in this document was wrong, twice. Read this first.
+>
+> The real zone at Network Solutions holds **42 records**. Cloudflare's import
+> scan found 22. Hand-probing the nameserver found 25. Neither was close.
+>
+> The gap was only found by opening the **Advanced DNS Records** panel at
+> Network Solutions and reading the zone itself:
+> Domains -> pinelakecc.com -> Advanced Tools -> Advanced DNS Records ->
+> Manage. **That panel is the only authoritative source.** Nothing else -
+> not a DNS query, not a provider's import scan - can tell you what a zone
+> contains, because both can only report names they already know to ask for.
+>
+> Among the 15 records neither method found: the **Proofpoint DKIM signing
+> key** for outbound club mail, **three Amazon SES DKIM CNAMEs**, and
+> **`clubnow`**, a second live Northstar-hosted host alongside `members`.
+> Switching the nameservers without them would have broken DKIM on the
+> club's outbound email and taken a live host offline.
+
+
 The Cloudflare zone is built but the nameservers have NOT moved. Nothing about
 the live domain has changed yet.
 
@@ -59,14 +78,20 @@ Done in Cloudflare:
 - Added `staging` A -> `64.135.45.138` and `*` A -> `64.135.11.57`, both of
   which the import scan missed.
 
+- [x] `members` CNAME added by hand, confirmed live on Cloudflare.
+- [x] `portal` resolved: **it has no record at all.** Nothing to migrate. The
+      REFUSED answer to an A query was a Network Solutions quirk.
+
 **STILL OUTSTANDING - the nameservers must not move until this is done:**
 
-- [ ] **`members` CNAME -> `pinelakecc-com.northstar-connect.com`, DNS only.**
-      The import scan missed it. Without it, `members.pinelakecc.com` stops
-      resolving the moment the nameservers move and **every member is locked
-      out of the portal.** `dns-check.ps1` fails CRITICAL on exactly this.
-- [ ] Read `portal` out of the Network Solutions control panel by eye and
-      recreate it if it holds anything. It cannot be read over DNS.
+- [ ] **Import the 15 missing records.** They are in
+      `cutover-missing-records.zone` in this repo, in BIND format, ready for
+      Cloudflare DNS -> Records -> **Import**. Leave **"Proxy imported
+      records" OFF** - every one must be DNS only, and proxying a DKIM CNAME
+      resolves it to Cloudflare Anycast and breaks signing.
+- [ ] Re-run `dns-check.ps1 -Server agustin.ns.cloudflare.com` and get a
+      clean pass. It currently reports **9 CRITICAL failures**, all of them
+      records the import scan never saw.
 
 Then, in order: run `dns-check.ps1 -Server agustin.ns.cloudflare.com` and get
 a clean pass, switch the nameservers at Network Solutions, confirm club email

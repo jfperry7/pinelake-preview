@@ -25,3 +25,6 @@ uploads
 
 # Cutover tooling. Contains the club's full DNS inventory.
 dns-check.ps1
+
+# Cutover tooling. Contains the club's full DNS inventory.
+cutover-missing-records.zone

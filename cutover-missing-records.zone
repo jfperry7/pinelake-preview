@@ -1,0 +1,51 @@
+;; pinelakecc.com - records present at Network Solutions but MISSING from
+;; the Cloudflare zone after its import scan. Captured from the Network
+;; Solutions Advanced DNS panel on 21 September 2026 and each one then
+;; confirmed to resolve against ns23.worldnic.com.
+;;
+;; Import into Cloudflare: DNS > Records > Import. Leave "Proxy imported
+;; records" OFF - every record here must be DNS only. Proxying a DKIM CNAME
+;; resolves it to Cloudflare Anycast and breaks signing.
+;;
+;; NOT included, deliberately:
+;;   em8743pinelakecc.com. and url8871pinelakecc.com. - malformed names in
+;;   the Netsol panel that resolve to nothing in any interpretation. Dead.
+;;   portal - has no record at all. The REFUSED answer to an A query was a
+;;   Network Solutions quirk, not a hidden record.
+
+;; --- Email authentication. These are the dangerous ones. ---
+
+;; Proofpoint DKIM signing key for outbound club mail.
+ppe._domainkey.pinelakecc.com.	1800	IN	TXT	( "v=DKIM1; k=rsa; t=s; n=core; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn1rENKTy6i2tzYqsVIQpHsrjSBeO5KaD1lMN/ltm2NfLXvjD3Q6Oy97qrqlA6+ESh6FDkTdAumuCJbbGTWqW3Vpz6RkYzY0tFNP0NhZF80lxNy62ed9BrtEtVFv9KDUTwFFc1Ehwxzf8oQymsljkk2kQ1L8YnaQgTiFQ1UthVtEwrOF5/74t" "dTGT/8N5dcuiwSmnpq00A3Uq1ii6M0BdEBKaI+/IskS0p1Ni8QmQaZ8lkn4DKSXLo70eGPamAWhW3U6KA3HSKnOr/VjP9oSxBIaYCaW+1clI8HKVMQ7ZmgWLkm9VSkjEE/aug6xvMNa0+FF2BzM2IOKWv0Uc3WK9KwIDAQAB" )
+
+;; Amazon SES DKIM. amazonses.com is in the apex SPF, so SES is in use.
+fgdjtutbucnhdpbjobgmx34rtb6jztwy._domainkey.pinelakecc.com.	14400	IN	CNAME	fgdjtutbucnhdpbjobgmx34rtb6jztwy.dkim.amazonses.com.
+lqdjysclbun6mfr7nhd4y5duon3afovp._domainkey.pinelakecc.com.	14400	IN	CNAME	lqdjysclbun6mfr7nhd4y5duon3afovp.dkim.amazonses.com.
+xpz24sk4bzcdhme6vtg7zk4xnhxtw7xl._domainkey.pinelakecc.com.	14400	IN	CNAME	xpz24sk4bzcdhme6vtg7zk4xnhxtw7xl.dkim.amazonses.com.
+
+;; SendGrid DKIM for the emails.pinelakecc.com sending subdomain.
+s2._domainkey.emails.pinelakecc.com.	7200	IN	CNAME	s2.domainkey.u4668611.wl112.sendgrid.net.
+
+;; --- Live hosts ---
+
+;; Another Northstar-hosted name, same target as members.
+clubnow.pinelakecc.com.	1800	IN	CNAME	pinelakecc-com.northstar-connect.com.
+
+;; 96.66.39.41 is adjacent to the ip4:96.66.39.42 in the apex SPF record,
+;; so this is real club infrastructure rather than a leftover.
+northstar.pinelakecc.com.	7200	IN	A	96.66.39.41
+testing.pinelakecc.com.	7200	IN	A	64.135.11.57
+
+;; --- SendGrid link branding and click tracking ---
+
+4668611.pinelakecc.com.	7200	IN	CNAME	sendgrid.net.
+em7487.emails.pinelakecc.com.	7200	IN	CNAME	u4668611.wl112.sendgrid.net.
+url305.emails.pinelakecc.com.	7200	IN	CNAME	sendgrid.net.
+
+;; --- Sectigo certificate validation (Northstar) ---
+
+_0f6e4445e3229a65a7ed9dacf75612d8.pinelakecc.com.	900	IN	CNAME	b95c60a448a32889ed38475bb7bcd36e.75e8955e1e830750384be46381573e7b.5har5g5fq35545qnq5f5.sectigo.com.
+_7122de11939d89f968408a9df0e5cfdf.northstar.pinelakecc.com.	3600	IN	CNAME	a2053e87a4499c60d8ccf4e51d84e9ce.fc60d1e32f15d7ed58507c2d0aaecec1.g5fc55dv5m5vtmjs52d5.sectigo.com.
+_93df93e28ac4099e438255ee8d7e6051.northstar.pinelakecc.com.	3600	IN	CNAME	2220b16448e1f651a284d768c295f196.45fb76926f2d8f4b988bb508bc9118e5.55ycg55o5kwg55d5555j.sectigo.com.
+_e9c258168ba8dc5006aa6de5a2cba7fa.northstar.pinelakecc.com.	900	IN	CNAME	24500ae904eab7b11b152e8e66e6b8c9.e8dc5bdf5cd5c74742cecbefbf6e677a.55dqn955zt55l115shv4.sectigo.com.
+
