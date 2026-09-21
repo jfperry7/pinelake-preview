@@ -22,3 +22,6 @@ vercel.json
 
 # 5MB of orphans - only the dead SiteHeader component references these.
 uploads
+
+# Cutover tooling. Contains the club's full DNS inventory.
+dns-check.ps1

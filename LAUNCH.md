@@ -41,6 +41,28 @@
 > come first: Phase 2 before Phase 5.
 
 
+## The order
+
+The club has no website, so getting one back dominates everything else. The
+forms still work today - they land in the club Gmail rather than reaching
+Melanie and Anna - so mail routing is a degraded state, not an outage, and it
+waits.
+
+| # | Do | Why here |
+|---|---|---|
+| 1 | Build the zone in Cloudflare and check it (Phase 3, steps 1-5) | Changes nothing. Entirely safe, and it is where all the care goes. |
+| 2 | Switch the nameservers (Phase 3, step 6) | The one irreversible-ish step. |
+| 3 | Confirm club email still flows (Phase 3) | Before anything else. Stop here if it does not. |
+| 4 | Attach the Worker Custom Domains (Phase 4) | |
+| 5 | Push `main` (Phase 5, step 1) | **The club has a website again.** |
+| 6 | Resend sending subdomain (Phase 2) | Easier in Cloudflare than at Network Solutions, and no longer on the critical path. |
+| 7 | Remove `MAIL_TEST_TO` (Phase 5, step 2) | Only after step 6 verifies, or every enquiry 502s. |
+| 8 | Search Console, tell members, the rest (Phase 6) | |
+
+Phase 2 is numbered before Phase 3 because it was written when the old site
+was still up and there was no hurry. Run it at step 6.
+
+---
 ## What is actually there today
 
 Checked against the authoritative nameservers and the live domain, not assumed.
@@ -92,7 +114,15 @@ it is a snapshot, not a guarantee.
 
 Cloudflare's scan on adding a zone imports most of this automatically. **Do not
 trust the scan.** It regularly misses wildcards and records it cannot classify.
-Check every line by hand against this table.
+
+`dns-check.ps1` in this repo checks the whole table against any nameserver and
+fails loudly on the mail records. Run it against Cloudflare before switching,
+and against `ns23.worldnic.com` first to confirm this snapshot still matches
+what is live:
+
+    .\dns-check.ps1 -Server ns23.worldnic.com
+
+It covers everything below except `portal`, which cannot be read over DNS.
 
 ### Apex
 
@@ -121,7 +151,7 @@ Check every line by hand against this table.
 | CNAME | `s2._domainkey` | `s2.domainkey.u4668611.wl112.sendgrid.net` | DNS only | **live SendGrid DKIM** |
 | TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:dmarc_rua@emaildefense.proofpoint.com; ruf=mailto:dmarc_ruf@emaildefense.proofpoint.com; fo=1` | - | Proofpoint reporting |
 | A | `staging` | `64.135.45.138` | DNS only | **unidentified** - find out what this is before the move |
-| A | `portal` | `162.159.26.132` | DNS only | **unidentified**, resolves into Cloudflare. Find out before the move |
+| ? | `portal` | **cannot be read over DNS** | ? | The name exists in the zone - the wildcard does not answer for it - but Network Solutions returns REFUSED for an A query. **Read it out of the control panel by eye before the move.** |
 | A | `*` | `64.135.11.57` | **DNS only** | old 365 Datacenters host, nothing known uses it. A proxied wildcard needs Enterprise, so keep it grey |
 
 `selector1`/`selector2._domainkey` are **absent** - Microsoft 365 DKIM signing
@@ -193,11 +223,13 @@ after launch without another cutover.
 
 ---
 
-## Phase 2 - Resend sending domain (do this BEFORE Phase 5)
+## Phase 2 - Resend sending domain (step 6 - after the site is back up)
 
 The forms work today, but only into the club Gmail, because `MAIL_FROM` is
 Resend's shared test sender. To reach Melanie and Anna the club needs a
-verified sending domain.
+verified sending domain. **This is step 6 in the order above** - it is not on
+the critical path to getting the site back, and it is easier to do once the
+zone is in Cloudflare.
 
 **Verify a subdomain, not the apex.** Resend
 [recommends a subdomain](https://resend.com/docs/dashboard/domains/introduction)
