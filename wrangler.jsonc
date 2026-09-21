@@ -9,7 +9,20 @@
     "directory": "./",
     "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+
+    // WITHOUT THIS, worker.js NEVER RUNS FOR A REAL PAGE.
+    //
+    // A Worker with static assets does not invoke the script for a request
+    // that matches an asset file - Cloudflare serves the file directly and
+    // the script only sees requests that miss. That is why /api/inquiry
+    // worked while the hostname guard in worker.js silently did nothing:
+    // every page and robots.txt was an asset, so the guard was skipped and
+    // the staging .workers.dev URL served the live, indexable robots.txt.
+    //
+    // Caught on 21 Sept by checking staging after the deploy rather than
+    // assuming the deploy was correct.
+    "run_worker_first": true
   },
   "observability": {
     "enabled": true
