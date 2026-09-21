@@ -41,6 +41,47 @@
 > come first: Phase 2 before Phase 5.
 
 
+> ## LIVE, BUT THE MEMBER PORTAL IS BROKEN - 21 September 2026, ~4pm ET
+>
+> `pinelakecc.com` and `www.pinelakecc.com` are serving the new site on valid
+> certificates. Verified from outside: correct pages, no `X-Robots-Tag` on
+> live, staging still `noindex` and `Disallow: /`, portal redirects firing.
+>
+> **But `members.pinelakecc.com` and `clubnow.pinelakecc.com` now return
+> HTTP 403, Cloudflare `error code: 1014` - "CNAME Cross-User Banned".**
+> Members cannot log in.
+>
+> This is a consequence of the migration, not a Northstar outage. Their
+> service is up: `pinelakecc-com.northstar-connect.com` returns 200 directly.
+> What broke is hostname authorisation. Both names are CNAMEs from our
+> Cloudflare zone into Northstar's Cloudflare account, and Cloudflare blocks
+> a cross-account CNAME unless the target account has that hostname
+> registered through Cloudflare for SaaS. While `pinelakecc.com` was not a
+> Cloudflare zone, this never came up. Now that it is one, it does.
+>
+> Timing: the portal returned 200 immediately after the nameserver switch and
+> began returning 1014 after the zone went `active` and the Worker Custom
+> Domains were attached.
+>
+> **The fix is Northstar's.** Rizwan Rizvi, `support@globalnorthstar.com`,
+> direct `rizwan.rizvi@globalnorthstar.com`, ticket #996907 is the thread.
+> They need to add `members.pinelakecc.com` and `clubnow.pinelakecc.com` as
+> **Custom Hostnames** in their Cloudflare for SaaS configuration. Now that
+> the zone is ours, we can complete any DCV they ask for immediately -
+> a `_acme-challenge.members` CNAME delegation or a TXT token, either is a
+> two-minute change on our side.
+>
+> **Do not revert the nameservers for this.** The `.com` delegation carries a
+> 48-hour TTL, it would take the new site down again, and the portal was
+> already returning 1014 while the zone was live, so a revert is not a
+> reliable undo.
+>
+> Untested but available if Northstar cannot move quickly: proxy `members`
+> through our own Cloudflare with an Origin Rule overriding the Host header
+> to `pinelakecc-com.northstar-connect.com`. **Try this only as a last
+> resort** - Liferay sets `JSESSIONID` per host, so cookies and redirects may
+> bind to the origin hostname and break login outright, which is worse than
+> a clear error page.
 ## CUTOVER IN PROGRESS - nameservers moved, one step left
 
 **Done, 21 September 2026 evening:**
