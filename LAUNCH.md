@@ -63,6 +63,34 @@
 > began returning 1014 after the zone went `active` and the Worker Custom
 > Domains were attached.
 >
+> **TESTED AND DISPROVED, same evening:** the Worker Custom Domains were not
+> the trigger. Both were removed, taking the website down, and the portal
+> still returned 1014. They were re-added and the website restored. Do not
+> repeat this test.
+>
+> What the timing points at instead is **zone activation**. The portal
+> returned 200 while the Cloudflare zone was still `pending` and began
+> failing once it went `active`. A pending zone is not authoritative, so
+> Cloudflare does not yet enforce ownership of child hostnames. Once active,
+> `members.pinelakecc.com` is a name Cloudflare knows belongs to this
+> account, and a CNAME from it into another account is refused.
+>
+> That cannot be undone except by deleting the zone and reverting the
+> nameservers, which would take the website down again, discard the whole
+> migration and carry a 48-hour tail. Not worth doing.
+>
+> Two further workarounds were eliminated by measurement, not reasoning:
+>
+> - **Host-header proxy through our own Cloudflare.** Dead. The portal is
+>   virtual-hosted on `members.pinelakecc.com` at Northstar's edge;
+>   `pinelakecc-com.northstar-connect.com/web/pages/login` returns 404 and its
+>   root serves the maintenance page. Overriding the Host proxies the wrong
+>   site.
+> - **Delegating `members` back to Network Solutions via NS records.** The
+>   cross-user check reads Cloudflare's own account database rather than which
+>   nameserver answered, and the request still arrives at their edge as
+>   `members.pinelakecc.com`.
+>
 > **The fix is Northstar's.** Rizwan Rizvi, `support@globalnorthstar.com`,
 > direct `rizwan.rizvi@globalnorthstar.com`, ticket #996907 is the thread.
 > They need to add `members.pinelakecc.com` and `clubnow.pinelakecc.com` as
