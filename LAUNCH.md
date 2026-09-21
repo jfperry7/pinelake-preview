@@ -702,3 +702,17 @@ member-pinelakecc-com.northstar-connect.com`, was NOT applied: the target does
 not resolve and the name would create a third-level hostname nothing uses.
 Queried back as a probable typo. `clubnow` still returns 1014 and still has no
 verification records; if it matters, Northstar needs to send its set too.
+**Double-checked, same evening, that nothing remains on our side.** Verified,
+not reasoned: `members` carries exactly one record (A `104.24.9.63`), no stray
+AAAA, no leftover CNAME, DNS-only (our own edge IPs appear nowhere), and the
+`_cf-custom-hostname.members` token is byte-exact on `1.1.1.1`, `8.8.8.8` and
+`9.9.9.9`. Cloudflare's error-1000 documentation lists our exact case as cause
+8 - "DNS record points to a SaaS provider using Cloudflare for SaaS ... if the
+provider has not configured a custom hostname for your domain, this error is
+returned" - with the resolution "contact the SaaS provider ... The error
+originates from the provider's Cloudflare account, not yours."
+
+If it still shows error 1000 after Northstar says they have activated the
+hostname, the one thing to try on our side is swapping the A record back to
+the original CNAME (`pinelakecc-com.northstar-connect.com`, DNS only) in case
+`104.24.9.63` is not the edge their SaaS zone uses. One-minute change.
