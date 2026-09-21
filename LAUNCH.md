@@ -667,3 +667,18 @@ the `ownership_verification` TXT values for `members.pinelakecc.com` and
 (disproved, website went down, portal still 1014), Host-header proxy (dead,
 their hostname 404s the portal), NS delegation of the subdomain, and the zone
 hold theory (hold is off).
+
+**Tested later the same evening — Orange-to-Orange.** The `members` CNAME was
+set to Proxied. DNS confirmed resolving to our Cloudflare (`104.21.34.13`,
+`172.67.167.176`) rather than Northstar's, so O2O engaged and Cloudflare
+routed our zone -> their zone. **Still 1014.** With both zones visible to
+Cloudflare it will not honour a custom hostname for `members` in Northstar's
+account, which means their custom hostname is not in an active state. That is
+the strongest evidence so far that the block is on their side. Record
+reverted to DNS only so their fix lands on the configuration that worked
+before. Live site unaffected throughout.
+
+Remaining untested lever: delegating `members` out of the zone with NS records
+to `ns23`/`ns24.worldnic.com` (which still hold the CNAME). Low odds — the
+cross-user decision appears to key off zone ownership, not the DNS path — but
+cheap and reversible.
