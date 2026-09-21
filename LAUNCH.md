@@ -82,16 +82,31 @@ Done in Cloudflare:
 - [x] `portal` resolved: **it has no record at all.** Nothing to migrate. The
       REFUSED answer to an A query was a Network Solutions quirk.
 
-**STILL OUTSTANDING - the nameservers must not move until this is done:**
+- [x] **The 15 missing records were imported** from
+      `cutover-missing-records.zone` via Cloudflare DNS -> Records -> Import,
+      with "Proxy imported records" left off. Cloudflare now holds 40.
+- [x] **Verified against BOTH Cloudflare nameservers**, 40/40 each:
 
-- [ ] **Import the 15 missing records.** They are in
-      `cutover-missing-records.zone` in this repo, in BIND format, ready for
-      Cloudflare DNS -> Records -> **Import**. Leave **"Proxy imported
-      records" OFF** - every one must be DNS only, and proxying a DKIM CNAME
-      resolves it to Cloudflare Anycast and breaks signing.
-- [ ] Re-run `dns-check.ps1 -Server agustin.ns.cloudflare.com` and get a
-      clean pass. It currently reports **9 CRITICAL failures**, all of them
-      records the import scan never saw.
+          .\dns-check.ps1 -Server agustin.ns.cloudflare.com
+          .\dns-check.ps1 -Server paige.ns.cloudflare.com
+
+      The Proofpoint DKIM TXT passes, so the 423-character key reassembled
+      byte-exact from its two-chunk BIND split. Every CNAME returns its real
+      target rather than a Cloudflare IP, which independently proves nothing
+      was proxied on import.
+
+**THE ZONE IS READY. The nameserver switch is the next action.**
+
+At Network Solutions: Domains -> pinelakecc.com -> Advanced Tools ->
+Nameservers (DNS) -> Manage. Replace `NS23.WORLDNIC.COM` and
+`NS24.WORLDNIC.COM` with:
+
+    agustin.ns.cloudflare.com
+    paige.ns.cloudflare.com
+
+**Change nothing else on that page.** Then confirm club email flows both
+directions before going anywhere near the Worker - that is the gate, and it
+is the reason the record work above mattered.
 
 Then, in order: run `dns-check.ps1 -Server agustin.ns.cloudflare.com` and get
 a clean pass, switch the nameservers at Network Solutions, confirm club email
