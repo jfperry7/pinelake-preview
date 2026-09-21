@@ -626,3 +626,44 @@ search equity behind them is lost.
 
 `/golf`, `/tennis`, `/dining` and `/membership` already match the new site and
 need no redirect.
+
+---
+
+## Member portal 1014 — what is actually known, 21 Sept 2026 evening
+
+Recorded because two earlier explanations in this document were wrong and a
+cold session should not re-run the dead ends.
+
+**Measured facts:**
+
+| Check | Result |
+|---|---|
+| `members` / `clubnow` | HTTP 403, Cloudflare `error code: 1014`, from Northstar's edge |
+| Our DNS for both | Correct, unproxied, CNAME to `pinelakecc-com.northstar-connect.com` |
+| Northstar's certificate on `members` | CN `pinelakecc.com`, SAN `pinelakecc.com` + `*.pinelakecc.com`, Google Trust Services, **reissued 21 Sept 19:17 UTC** |
+| TLS handshake | Succeeds. The failure is at HTTP routing, after the handshake |
+| Zone hold on our zone | **Off.** `hold: false, include_subdomains: false` |
+| `_cf-custom-hostname.pinelakecc.com` | Present: `cee63117-fc80-457c-acde-bbb9fef59b3d` |
+| `_cf-custom-hostname.members` / `.clubnow` | **Absent** |
+| `pinelakecc-com.northstar-connect.com/` | 200, "Site is Under Maintenance" |
+| `pinelakecc-com.northstar-connect.com/web/pages/login` | 404 — the portal is virtual-hosted on `members.pinelakecc.com` |
+
+**So Northstar's Cloudflare for SaaS setup is working** - a wildcard custom
+hostname exists and its certificate was reissued today. The hostnames were
+never "unregistered"; an earlier draft of the escalation said so and was
+wrong.
+
+**Most likely cause, not proven:** now that `pinelakecc.com` is an active
+Cloudflare zone in a different account, Cloudflare requires hostname
+ownership verification for custom hostnames on it and blocks them until the
+`_cf-custom-hostname.<hostname>` TXT is present. The apex has one. The two
+failing hostnames do not.
+
+**The ask, which holds even if that diagnosis is imperfect:** Northstar sends
+the `ownership_verification` TXT values for `members.pinelakecc.com` and
+`clubnow.pinelakecc.com`; we publish them in minutes because the zone is ours.
+
+**Tested and closed - do not repeat:** removing the Worker Custom Domains
+(disproved, website went down, portal still 1014), Host-header proxy (dead,
+their hostname 404s the portal), NS delegation of the subdomain, and the zone
+hold theory (hold is off).
