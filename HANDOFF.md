@@ -16,12 +16,20 @@ of the build can pick this up cold. Read this before touching anything.
 > | `pinelakecc.com/golf`, `/membership`, `/about`, `/dining` | **404** |
 >
 > **The one remaining task is the DNS cutover**, and it is now a recovery job,
-> not an optional migration. Everything else is finished. The procedure is in
-> `LAUNCH.md` — read its status block at the top before the phases, because the
-> phases were written assuming a working old site that needed protecting.
+> not an optional migration. Everything else is finished.
+>
+> **It is a nameserver move, not an A-record change.** A Cloudflare Worker has
+> no IP for external DNS to point at, and a Worker Custom Domain requires the
+> zone to be active in the club's own Cloudflare account. So the zone has to
+> leave Network Solutions' nameservers, which drags the club's Microsoft 365,
+> Proofpoint and SendGrid records along with it. **That, not the website, is
+> the risk.** The full record inventory and the order of operations are in
+> `LAUNCH.md` — read its status block before the phases.
 >
 > **Rollback no longer means anything.** Reverting the A record to
-> `104.24.9.63` restores a maintenance page, not the old site.
+> `104.24.9.63` restores a maintenance page, not the old site — and a
+> nameserver move does not roll back quickly either: the `.com` delegation
+> carries a 48-hour TTL. Correctness before the switch is the only safety net.
 
 | | |
 |---|---|
@@ -47,7 +55,10 @@ Cloudflare's Git integration now creates a Worker with static assets. That means
 - **`functions/` does nothing on its own.** That is a Pages convention. `worker.js`
   is the entry point and routes `/api/inquiry` to `functions/api/inquiry.js`;
   everything else goes to `env.ASSETS.fetch()`.
-- Custom domains are attached on the Worker's **Domains** tab.
+- Custom domains are attached on the Worker's **Domains** tab - and a Worker
+  Custom Domain **requires the zone to be active in this Cloudflare account**.
+  There is no IP to point external DNS at. That is why the cutover is a
+  nameserver move, not an A-record change.
 - `_redirects` and `_headers` still work as normal.
 
 ### 2. `wrangler.jsonc` wipes dashboard variables
@@ -113,14 +124,23 @@ passing. It is **not yet on the real domain** — see the block at the top.
 | Privacy | `/privacy` — newly written, **not legally reviewed** |
 | Member login | All 27 links repointed to `members.pinelakecc.com/web/pages/login` (21 Sept) |
 
-**Three switches are deliberately still ON and must come off at launch:**
+**One switch is deliberately still ON and must come off at launch:**
 
-1. `X-Robots-Tag: noindex, nofollow` in `_headers`
-2. `Disallow: /` in `robots.txt`
-3. `MAIL_TEST_TO` in `wrangler.jsonc` — while set, every form submission goes
-   to the club Gmail instead of Melanie and Anna
+`MAIL_TEST_TO` in `wrangler.jsonc` — while set, every form submission goes to
+the club Gmail instead of Melanie and Anna. **It is not a free-standing
+switch.** Resend only delivers to the account owner's own address until a
+domain is verified, and `MAIL_FROM` is still Resend's shared test sender, so
+removing this line before Phase 2 of `LAUNCH.md` makes every enquiry fail with
+a 502. Verify a Resend sending domain first.
 
-Either of the first two left in place keeps the site out of Google entirely.
+The other two switches are gone. Indexing used to be a blanket
+`X-Robots-Tag` in `_headers` plus `Disallow: /` in `robots.txt`; both are now
+a hostname guard in `worker.js`, because one deployment serves both the
+staging `.workers.dev` URL and the live domain and no blanket rule can be
+right for both. Anything that is not `pinelakecc.com` or `www.pinelakecc.com`
+gets `noindex, nofollow` and a `Disallow: /` robots.txt; the live domain gets
+neither. Nothing to remember, and staging cannot become duplicate content
+against the club's own pages after launch.
 
 ---
 
@@ -149,9 +169,9 @@ certificate `*.pinelakecc.com` from Google Trust Services, **expiring 12 Nov
 **The cost of how they did it:** they moved the instance instead of copying it,
 so the old public site went offline the same day. See the block at the top.
 
-**Still to do at cutover:** enable the commented-out portal redirects at the
-bottom of `_redirects`, so old bookmarked portal links reach the new host.
-Dynamic (splat) rules must stay last in that file.
+**Done 21 Sept:** the portal redirects at the bottom of `_redirects` are now
+enabled, so old bookmarked portal links reach the new host. The static
+`/login` rule sits above the splats and the splats stay last in the file.
 
 ---
 
@@ -166,11 +186,17 @@ Dynamic (splat) rules must stay last in that file.
 | Expiry | April 2028 |
 | Wildcard | A `*` record sends every unmatched subdomain to `64.135.11.57`, an old 365 Datacenters host nothing appears to use |
 
-**SPF is at 7 of 10 permitted DNS lookups.** Adding Resend's include is
-possible but tight, and the record already covers Microsoft 365, Proofpoint,
+**SPF is at 7 of 10 permitted DNS lookups** — counted live, with the
+arithmetic in `LAUNCH.md`. The record already covers Microsoft 365, Proofpoint,
 SendGrid and Amazon SES. SendGrid has live DKIM keys, so something is actively
 sending through it — do not remove includes without checking Proofpoint's DMARC
 reports first. **Getting SPF wrong takes down the club's email.**
+
+**So do not touch this record for Resend.** Verify a sending *subdomain*
+instead, such as `send.pinelakecc.com`. Resend recommends a subdomain anyway,
+for sending reputation, and its SPF and DKIM records then land on the
+subdomain and leave the apex record alone. That takes the riskiest remaining
+step out of the launch altogether. See Phase 2 of `LAUNCH.md`.
 
 Network Solutions' DNS form is mislabelled: **"Refers to" is the name you are
 creating; "Alias to" is the destination.** That is backwards from how the words
@@ -234,12 +260,12 @@ Claude artifacts. Ticks persist between sessions.
 ## Still open
 
 - **THE CUTOVER — the only thing that matters right now.** The club has no
-  public website until the apex A record moves off `104.24.9.63` to the
-  Cloudflare Worker. Full procedure in `LAUNCH.md`. Apex TTL is **1800s (30
-  min)**. DNS is at Network Solutions, whose form is mislabelled — see below.
-  At the same time: remove `X-Robots-Tag: noindex` from `_headers`, change
-  `Disallow: /` in `robots.txt`, delete `MAIL_TEST_TO` from `wrangler.jsonc`,
-  and uncomment the portal redirects in `_redirects`.
+  public website until `pinelakecc.com` is served by the Cloudflare Worker,
+  and that means **delegating the zone to Cloudflare**, not editing a record
+  at Network Solutions. Full procedure, DNS record inventory and ordering in
+  `LAUNCH.md`. Do Resend's sending domain (Phase 2) before removing
+  `MAIL_TEST_TO`, and confirm club email still flows before attaching the
+  Worker. Network Solutions' form is mislabelled — see below.
 - **Members need telling** that the portal moved to
   `members.pinelakecc.com/web/pages/login`. They will be logged out once, since
   `JSESSIONID` is host-only. A draft notice exists in the session history.
@@ -249,9 +275,11 @@ Claude artifacts. Ticks persist between sessions.
   `/employment-application`, `/scholarship-foundation`, `/mobile-application`,
   `/christmas-fund-form`. Listed at the bottom of `_redirects`.
 - **Resend domain verification** before launch, so forms send from a club
-  address rather than `onboarding@resend.dev`. This is the SPF change above,
-  and it is the riskiest remaining step — the record is at 7 of 10 lookups and
-  carries the club's live email.
+  address rather than `onboarding@resend.dev`. Do it on a **subdomain**, so
+  the apex SPF record is never touched. Until it is done, `MAIL_TEST_TO` must
+  stay set: Resend will not deliver to Melanie and Anna from an unverified
+  domain, so removing the switch first turns every enquiry into a 502.
+  Phase 2 of `LAUNCH.md`.
 - **GA4 custom dimensions** (`inquiry_type`, `routed_to`) need registering in
   the GA4 admin before those parameters appear in reports.
 - **Privacy notice needs a legal read.** The client has indicated he is not

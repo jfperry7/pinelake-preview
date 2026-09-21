@@ -76,17 +76,18 @@
 /submittedinfo                      /                         301
 
 # ------------------------------------------------------- member portal
-# ENABLE AT CUTOVER, not before. These are dead until Northstar confirms
-# members.pinelakecc.com resolves; pointing at a host that does not exist
-# would strand every member who follows an old link.
+# Enabled 21 Sept 2026, once members.pinelakecc.com was confirmed serving a
+# real login form on a valid certificate. These carry old bookmarked portal
+# links to the new host; without them every member link 404s after cutover.
 #
-# Dynamic (splat) rules MUST stay last — see the note at the top.
-#
-# /login          https://members.pinelakecc.com/web/pages/login  301
-# /web/*          https://members.pinelakecc.com/web/:splat       301
-# /c/*            https://members.pinelakecc.com/c/:splat         301
-# /documents/*    https://members.pinelakecc.com/documents/:splat 301
-# /o/*            https://members.pinelakecc.com/o/:splat         301
+# The static /login rule must stay ABOVE the splats, and the splats must stay
+# last in the file - Cloudflare evaluates static before dynamic, and rules
+# placed after a splat can silently stop firing.
+/login                              https://members.pinelakecc.com/web/pages/login  301
+/web/*                              https://members.pinelakecc.com/web/:splat       301
+/c/*                                https://members.pinelakecc.com/c/:splat         301
+/documents/*                        https://members.pinelakecc.com/documents/:splat 301
+/o/*                                https://members.pinelakecc.com/o/:splat         301
 
 # ------------------------------------------------------------ undecided
 # Live pages on the old site with nowhere to land yet. Leave them out

@@ -37,7 +37,18 @@
 
     // TEST SWITCH. While this is set, every submission goes here instead of
     // the club, subject-prefixed [TEST], and the body names who it would
-    // have reached. DELETE THIS LINE TO GO LIVE - nothing else changes.
+    // have reached.
+    //
+    // THIS IS NOT A FREE-STANDING SWITCH, despite how it reads. Resend will
+    // only deliver to the account owner's own address until a domain is
+    // verified, and MAIL_FROM above is still Resend's shared test sender.
+    // Delete this line before a domain is verified and every submission
+    // fails with a 502 instead of reaching Melanie and Anna - the form looks
+    // broken to the visitor and nobody at the club hears about the enquiry.
+    //
+    // The order is: verify a sending domain in Resend, point MAIL_FROM at a
+    // club address on it, confirm a real send arrives, and only then remove
+    // this line. See LAUNCH.md.
     "MAIL_TEST_TO": "1902pinelakecc@gmail.com"
   }
 }

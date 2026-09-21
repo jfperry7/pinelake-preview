@@ -1,10 +1,8 @@
-# Cloudflare Pages headers.
+# Cloudflare headers.
 
-# Keep the site out of search until launch day.
-# REMOVE THIS BLOCK AT LAUNCH, together with the Disallow in robots.txt.
-# Either one left in place on its own keeps the site unindexed.
-/*
-  X-Robots-Tag: noindex, nofollow
+# Search-engine control is NOT here. One deployment serves both the staging
+# .workers.dev URL and the live domain, so indexing has to be decided per
+# hostname - which `_headers` cannot do. It lives in `worker.js` instead.
 
 # Long cache on fingerprint-stable assets. Images are replaced by name when
 # they change, so keep this modest rather than immutable.
