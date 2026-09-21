@@ -1,5 +1,36 @@
 # Taking the new site live on pinelakecc.com
 
+> ## STATUS — 21 September 2026: the portal has moved and the old site is DOWN
+>
+> Northstar completed ticket **#996907** today. They did **not** add the new
+> hostname alongside the old one — they **moved** the instance. Verified live:
+>
+> | URL | Result |
+> |---|---|
+> | `members.pinelakecc.com/web/pages/login` | **200** — real login form |
+> | `members.pinelakecc.com/` | **200** — portal home (no password field) |
+> | `pinelakecc.com/` | **200** — *"Site is under Maintenance"* |
+> | `pinelakecc.com/golf`, `/membership`, `/about`, `/dining` | **404** |
+> | `pinelakecc.com/web/pages/login` | **404** — was 200 this morning |
+>
+> **The club's public website is currently offline.** Every old marketing page
+> 404s and the apex serves Northstar's maintenance page.
+>
+> This inverts the risk calculus in the rest of this document. The section
+> below is written around "do not break the working site." There is no longer
+> a working site to break — cutover is now recovery, not migration, and the
+> sooner the apex points at Cloudflare the sooner the club has a website again.
+>
+> **Rollback is no longer meaningful.** Reverting the A record to `104.24.9.63`
+> restores a maintenance page, not the old site.
+>
+> Also note: this document predates the move from Vercel to Cloudflare and
+> still refers to `vercel.json` and Vercel redirect ordering. The live host is
+> a **Cloudflare Worker** and redirects live in `_redirects`, where static
+> rules must come **before** dynamic ones — the opposite of Vercel. Treat the
+> redirect map below as content, not as instructions.
+
+
 ## What is actually there today
 
 Checked against the live domain, not assumed:
@@ -30,29 +61,34 @@ the moment it propagates.
 
 ---
 
-## The blocker: the member portal
+## The member portal — RESOLVED 21 September 2026
 
-This has to be solved before anything else, and it is the one item with an
-external dependency.
+This was the one item with an external dependency, and it is now done.
 
-**Ask Northstar to stand up the portal on a subdomain** — `members.pinelakecc.com`
-is the obvious choice. They host it, they issue the certificate, the club adds
-one DNS record. Then:
+Northstar moved the Liferay instance to **`members.pinelakecc.com`** under
+ticket **#996907** (contact **Rizwan Rizvi**, `support@globalnorthstar.com`,
+direct `rizwan.rizvi@globalnorthstar.com`). The CNAME
+`members` -> `pinelakecc-com.northstar-connect.com` is live at Network
+Solutions, and the wildcard certificate (`*.pinelakecc.com`, Google Trust
+Services, expires **12 Nov 2026**, Northstar's to renew) covers it.
 
-1. Northstar confirms `members.pinelakecc.com` works and members can log in.
-2. Members are told the new address — email, app notice, signage in the club.
-3. Only then does the apex domain move to Vercel.
-4. Vercel 301s the old portal paths to the new host, so old bookmarks and any
-   printed material keep working. Those redirects are in the map below.
+**The member login URL is:**
 
-If Northstar will not do it, the fallbacks are worse: run the new site at
-`www.pinelakecc.com` and leave the apex with Northstar, which splits the brand
-and confuses search engines; or ask Northstar to do the path split inside their
-own Cloudflare, which they may decline or bill for.
+    https://members.pinelakecc.com/web/pages/login
 
-**Worth asking Northstar directly:** what is the club still paying for once the
-marketing site moves? If it is only the portal, that should change the contract
-conversation.
+Rizwan asked for the root URL to be mapped to the login button. That is wrong
+for a button labelled "Member Login": the root serves a portal **home** page
+with no password field on it, and that page links onward to
+`/web/pages/login`. The deep link is also the same path members have used for
+years, so bookmarks and habit carry over. All login links on the new site
+point at the deep link.
+
+**What this cost:** Northstar moved the instance rather than copying it, so the
+old public site went down at the same moment. See the status block at the top.
+
+**Still to do at cutover:** the portal redirects at the bottom of `_redirects`
+are commented out and must be enabled, so old bookmarked portal links resolve
+to the new host. Dynamic (splat) rules must stay last in that file.
 
 ---
 
@@ -87,7 +123,7 @@ the question is a worse experience than the old page.
 - [ ] **Canonical tags** on all 13 pages, pointing at `https://pinelakecc.com/...`.
 - [ ] **Update `sitemap.xml`** to the real domain.
 - [ ] **Add the redirect map** below to `vercel.json`.
-- [ ] Re-check every `pinelakecc.com/web/pages/login` link in the new site once the portal address is settled.
+- [x] Re-check every login link in the new site. **Done 21 Sep** — all 27 links across 15 pages now point to `https://members.pinelakecc.com/web/pages/login`.
 
 ---
 
@@ -127,7 +163,7 @@ Do this on a **weekday morning**. Never a Friday, never before a club event.
 
 - [ ] `https://pinelakecc.com` and `https://www.pinelakecc.com` both load the new site
 - [ ] Certificate valid on both, no browser warning
-- [ ] A member can log in at `members.pinelakecc.com`
+- [ ] A member can log in at `members.pinelakecc.com/web/pages/login`
 - [ ] `pinelakecc.com/web/pages/login` redirects to the portal
 - [ ] Spot-check ten old URLs from the redirect map
 - [ ] Submit a form and confirm it arrives

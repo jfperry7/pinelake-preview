@@ -1,12 +1,33 @@
 # Pine Lake CC website — start here
 
-Last updated **21 September 2026**. Written so a session with no memory of the
-build can pick this up cold. Read this before touching anything.
+Last updated **21 September 2026, evening**. Written so a session with no memory
+of the build can pick this up cold. Read this before touching anything.
+
+> ## READ THIS FIRST: the club has no public website right now
+>
+> Northstar completed ticket #996907 on 21 Sept. They **moved** the Liferay
+> instance to `members.pinelakecc.com` rather than adding the hostname
+> alongside the old one — so the old public site went down with it.
+>
+> | URL | Now |
+> |---|---|
+> | `members.pinelakecc.com/web/pages/login` | 200, real login form |
+> | `pinelakecc.com/` | 200, *"Site is under Maintenance"* |
+> | `pinelakecc.com/golf`, `/membership`, `/about`, `/dining` | **404** |
+>
+> **The one remaining task is the DNS cutover**, and it is now a recovery job,
+> not an optional migration. Everything else is finished. The procedure is in
+> `LAUNCH.md` — read its status block at the top before the phases, because the
+> phases were written assuming a working old site that needed protecting.
+>
+> **Rollback no longer means anything.** Reverting the A record to
+> `104.24.9.63` restores a maintenance page, not the old site.
 
 | | |
 |---|---|
 | **Staging** | https://pinelake-preview.1902pinelakecc.workers.dev |
-| **Target** | `pinelakecc.com` — not moved yet |
+| **Target** | `pinelakecc.com` — **not moved yet; this is the one remaining task** |
+| **Member portal** | `members.pinelakecc.com/web/pages/login` — live, Northstar-hosted |
 | **Repo** | `jfperry7/pinelake-preview`, push to `main` auto-deploys |
 | **Git root** | `Pine Lake Country Club website\pinelake-review-site\` |
 | **Host** | Cloudflare **Worker** (not Pages — see below) |
@@ -78,7 +99,8 @@ anyone a record is missing.
 
 ## Current state
 
-**The site is finished and live on staging.** 14 pages, all checks passing.
+**The site is finished and live on staging,** 14 pages plus a 404, all checks
+passing. It is **not yet on the real domain** — see the block at the top.
 
 | Piece | State |
 |---|---|
@@ -89,6 +111,7 @@ anyone a record is missing.
 | Canonicals | All 14 pages, self-referential |
 | 404 page | `404.html` — *"That page has moved on."* |
 | Privacy | `/privacy` — newly written, **not legally reviewed** |
+| Member login | All 27 links repointed to `members.pinelakecc.com/web/pages/login` (21 Sept) |
 
 **Three switches are deliberately still ON and must come off at launch:**
 
@@ -101,24 +124,34 @@ Either of the first two left in place keeps the site out of Google entirely.
 
 ---
 
-## The member portal — the thing gating launch
+## The member portal — done, 21 September 2026
 
-The portal is a Liferay app run by **Northstar**, currently on the same domain
-as the public site. Pointing `pinelakecc.com` at Cloudflare would lock members
-out, so the portal moves to `members.pinelakecc.com` first.
+The portal is a Liferay app run by **Northstar**. It now lives at
+**`members.pinelakecc.com`** and works. Ticket **#996907**; contact **Rizwan
+Rizvi**, `support@globalnorthstar.com` (direct `rizwan.rizvi@globalnorthstar.com`).
 
-**Where it stands:** the CNAME is live and correct
-(`members` → `pinelakecc-com.northstar-connect.com`). Northstar's side is not
-finished — as of 21 Sept the address still serves their "Site is Under
-Maintenance" page and `/web/pages/login` 404s. Their ticket is **#996907**,
-contact **Rizwan Rizvi**, and they have confirmed they maintain the SSL
-certificate.
+**The member login URL is:**
 
-Once they finish: notify members, then move the apex. `LAUNCH.md` has the full
-procedure.
+    https://members.pinelakecc.com/web/pages/login
 
-**After cutover, the Member Login button on all 15 pages must repoint** from
-`pinelakecc.com/web/pages/login` to `members.pinelakecc.com/web/pages/login`.
+Use the deep link, not the root. Rizwan asked for the root URL to be mapped to
+the login button, but the root serves a portal **home** page with no password
+field on it — it links onward to `/web/pages/login`. The deep link is also the
+path members have used for years, so bookmarks carry over. **All 27 login links
+across the 15 pages were repointed on 21 Sept** and no longer need touching at
+cutover.
+
+DNS and certificate are both settled: CNAME `members` ->
+`pinelakecc-com.northstar-connect.com` at Network Solutions, wildcard
+certificate `*.pinelakecc.com` from Google Trust Services, **expiring 12 Nov
+2026** and Northstar's to renew.
+
+**The cost of how they did it:** they moved the instance instead of copying it,
+so the old public site went offline the same day. See the block at the top.
+
+**Still to do at cutover:** enable the commented-out portal redirects at the
+bottom of `_redirects`, so old bookmarked portal links reach the new host.
+Dynamic (splat) rules must stay last in that file.
 
 ---
 
@@ -191,7 +224,7 @@ widths, load the page in an iframe of the width you want.
 | `LAUNCH.md` | Full cutover procedure, DNS values, redirect map, rollback |
 | `ENHANCEMENTS.md` | Deferred work and what the club must supply for each |
 | `COMMITTEE-NOTE.md` | Draft note to the committee — **stale**, still mentions Formspree |
-| `../old-site-archive-2026-09-21/` | The old site, captured before cutover. Outside the repo so it is never served — **and therefore not in git and not backed up** |
+| `../old-site-archive-2026-09-21/` | The old site, captured 21 Sept. **Now the only copy that exists** — Northstar took the live pages down the same day, and the Wayback Machine never captured them. Outside the repo so it is never served, which also means **it is not in git and lives on Josh's machine alone.** |
 
 There is also a live checklist artifact, "Pine Lake Launch Runbook", in Josh's
 Claude artifacts. Ticks persist between sessions.
@@ -200,14 +233,29 @@ Claude artifacts. Ticks persist between sessions.
 
 ## Still open
 
+- **THE CUTOVER — the only thing that matters right now.** The club has no
+  public website until the apex A record moves off `104.24.9.63` to the
+  Cloudflare Worker. Full procedure in `LAUNCH.md`. Apex TTL is **1800s (30
+  min)**. DNS is at Network Solutions, whose form is mislabelled — see below.
+  At the same time: remove `X-Robots-Tag: noindex` from `_headers`, change
+  `Disallow: /` in `robots.txt`, delete `MAIL_TEST_TO` from `wrangler.jsonc`,
+  and uncomment the portal redirects in `_redirects`.
+- **Members need telling** that the portal moved to
+  `members.pinelakecc.com/web/pages/login`. They will be logged out once, since
+  `JSESSIONID` is host-only. A draft notice exists in the session history.
+- **Back up the archive off this machine.** See the table above. One disk
+  failure and the club's old site is gone for good.
 - **Four old pages have nowhere to land** and will 404 after cutover:
   `/employment-application`, `/scholarship-foundation`, `/mobile-application`,
   `/christmas-fund-form`. Listed at the bottom of `_redirects`.
-- **Privacy notice needs a legal read.** The client has indicated he is not
-  pursuing this; it is recorded here as a known risk, not a task to chase.
 - **Resend domain verification** before launch, so forms send from a club
-  address rather than `onboarding@resend.dev`. This is the SPF change above.
+  address rather than `onboarding@resend.dev`. This is the SPF change above,
+  and it is the riskiest remaining step — the record is at 7 of 10 lookups and
+  carries the club's live email.
 - **GA4 custom dimensions** (`inquiry_type`, `routed_to`) need registering in
   the GA4 admin before those parameters appear in reports.
+- **Privacy notice needs a legal read.** The client has indicated he is not
+  pursuing this; it is recorded here as a known risk, **not a task to raise
+  again.**
 - **Enhancements** — Meet the Pro sections, wedding gallery. See
   `ENHANCEMENTS.md`; both are blocked on photography the club does not have.

@@ -28,7 +28,7 @@
     </sc-for>
   </nav>
   <div style="display:flex;gap:10px;align-items:center">
-    <a href="https://members.pinelakecc.com" target="_blank" rel="noopener" style="color:#5C6A3A;padding:9px 6px;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase" style-hover="color:#C4A45A">Member Login</a>
+    <a href="https://members.pinelakecc.com/web/pages/login" target="_blank" rel="noopener" style="color:#5C6A3A;padding:9px 6px;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase" style-hover="color:#C4A45A">Member Login</a>
     <a href="#inquire" style="border:1px solid #5C6A3A;color:#1E2B14;padding:9px 16px;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:2px" style-hover="background:#5C6A3A;color:#F0EDE6">Request Info</a>
     <a href="#inquire" style="background:#C4A45A;color:#1E2B14;padding:10px 16px;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:2px" style-hover="background:#E8D090">Schedule a Private Tour</a>
   </div>
@@ -46,7 +46,7 @@
     <sc-for list="{{ links }}" as="l" hint-placeholder-count="8">
       <a href="{{ l.href }}" style="color:{{ l.color }};padding:11px 4px;font-size:14px;font-weight:{{ l.weight }};border-bottom:1px solid rgba(30,43,20,.07)">{{ l.label }}</a>
     </sc-for>
-    <a href="https://members.pinelakecc.com" target="_blank" rel="noopener" style="color:#5C6A3A;padding:11px 4px;font-size:14px;font-weight:600;border-bottom:1px solid rgba(30,43,20,.07)">Member Login ↗</a>
+    <a href="https://members.pinelakecc.com/web/pages/login" target="_blank" rel="noopener" style="color:#5C6A3A;padding:11px 4px;font-size:14px;font-weight:600;border-bottom:1px solid rgba(30,43,20,.07)">Member Login ↗</a>
     <a href="#inquire" onClick="{{ closeMenu }}" style="margin-top:12px;background:#C4A45A;color:#1E2B14;padding:14px;text-align:center;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:2px">Schedule a Private Tour</a>
   </nav>
 </sc-if>
