@@ -148,8 +148,18 @@ Check 'CNAME links (SendGrid click tracking)' ("links." + $Zone) 'CNAME' @(
 Write-Host ""
 Write-Host "Member portal - members must keep working through the move"
 
-Check 'CNAME members (Northstar)' ("members." + $Zone) 'CNAME' @(
-  'pinelakecc-com.northstar-connect.com'
+# Changed 21 Sept evening at Northstar's request (ticket #996907): the CNAME
+# to pinelakecc-com.northstar-connect.com was replaced by an A record to their
+# Cloudflare edge, plus two verification records, so Cloudflare will honour
+# their custom hostname now that the zone is on Cloudflare in our account.
+Check 'A members (Northstar edge, per their instruction)' ("members." + $Zone) 'A' @(
+  '104.24.9.63'
+) 'CRITICAL'
+Check 'TXT _cf-custom-hostname.members (ownership token from Northstar)' ("_cf-custom-hostname.members." + $Zone) 'TXT' @(
+  '8b03768f-10a5-4e60-990b-50fd22c1effc'
+) 'CRITICAL'
+Check 'CNAME _acme-challenge.members (delegated DCV)' ("_acme-challenge.members." + $Zone) 'CNAME' @(
+  'members.pinelakecc.com.911c093aa0273216.dcv.cloudflare.com'
 ) 'CRITICAL'
 
 Write-Host ""

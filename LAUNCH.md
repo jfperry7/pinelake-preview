@@ -682,3 +682,23 @@ Remaining untested lever: delegating `members` out of the zone with NS records
 to `ns23`/`ns24.worldnic.com` (which still hold the CNAME). Low odds — the
 cross-user decision appears to key off zone ownership, not the DNS path — but
 cheap and reversible.
+
+**21 Sept, ~6pm ET - Northstar replied and their records are in.** Eleazer
+Noman (Northstar) asked for: A `members` -> `104.24.9.63`, TXT
+`_cf-custom-hostname.members` -> `8b03768f-10a5-4e60-990b-50fd22c1effc`, CNAME
+`_acme-challenge.members` -> `members.pinelakecc.com.911c093aa0273216.dcv.cloudflare.com`.
+All three added (the old `members` CNAME deleted first, since a CNAME cannot
+coexist with an A) and verified on both Cloudflare nameservers and via
+`1.1.1.1`. Zone is at 42 records.
+
+The portal error changed from 1014 to **1000 "DNS points to prohibited IP"**.
+That is expected: the cross-account CNAME is gone, so 1014 cannot fire; what
+remains is that the custom hostname is not yet active in Northstar's account.
+Northstar said they would "proceed with the setup" once the records were in
+place. Waiting on them. Nothing further to do on our side.
+
+Their fourth requested record, `CNAME clubnow.members ->
+member-pinelakecc-com.northstar-connect.com`, was NOT applied: the target does
+not resolve and the name would create a third-level hostname nothing uses.
+Queried back as a probable typo. `clubnow` still returns 1014 and still has no
+verification records; if it matters, Northstar needs to send its set too.
