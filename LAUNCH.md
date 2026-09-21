@@ -41,7 +41,47 @@
 > come first: Phase 2 before Phase 5.
 
 
-## CUTOVER IN PROGRESS - state as of 21 September 2026, evening
+## CUTOVER IN PROGRESS - nameservers moved, one step left
+
+**Done, 21 September 2026 evening:**
+
+- Cloudflare zone built and verified at **40 records**, matching the real zone
+  at Network Solutions. See the warning block below - the inventory was wrong
+  twice before it was right.
+- **Nameservers switched** to `agustin.ns.cloudflare.com` and
+  `paige.ns.cloudflare.com`. Delegation propagated within minutes and all 40
+  records verify through public recursion on `1.1.1.1` and `8.8.8.8`.
+- **Club email confirmed working in both directions** after the switch. This
+  was the gate and it passed.
+- `members.pinelakecc.com/web/pages/login` returns 200 on a valid certificate.
+  Members were never locked out.
+- **`main` pushed**, seven commits. The Worker is deployed and the hostname
+  guard is confirmed working on staging.
+
+**A bug was found and fixed during this, worth knowing about:**
+
+`worker.js` was never running. A Worker with static assets does not invoke the
+script for a request that matches an asset file, so the hostname guard was
+dead code while `/api/inquiry` kept working and hid it. The result was the
+staging URL serving an indexable `robots.txt` with no noindex header - exactly
+what the guard existed to prevent. Fixed with `assets.run_worker_first: true`
+in `wrangler.jsonc`, and verified against a real deploy rather than assumed.
+
+**THE ONE REMAINING STEP - attach the Worker Custom Domains:**
+
+Workers & Pages -> `pinelake-preview` -> **Domains** tab -> **Add Domain**.
+
+1. Add `pinelakecc.com`. An apex `A` record to `104.24.9.63` still exists, so
+   Cloudflare will warn about the conflict and offer to replace it. Accept.
+2. Add `www.pinelakecc.com`. Same, against the `www` CNAME to `pinelakecc.com`.
+3. Cloudflare issues the certificates itself, usually within a few minutes.
+
+If Cloudflare refuses rather than offering to replace, delete those two
+records first in DNS -> Records. Their current values are `104.24.9.63` and
+`pinelakecc.com`, both DNS only, so they are trivially recreatable.
+
+That is the last action. The moment it completes, the club has a website.
+## Context for the record
 
 > ### The inventory in this document was wrong, twice. Read this first.
 >
