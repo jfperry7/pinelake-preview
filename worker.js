@@ -30,12 +30,18 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
-    // Plain http never serves a page. 301 to https before anything else, so
-    // this holds even if the zone-level "Always Use HTTPS" toggle is off.
-    if (url.protocol === 'http:') {
-      url.protocol = 'https:';
-      return Response.redirect(url.toString(), 301);
+    // One address per page. Plain http never serves a page (so this holds even
+    // if the zone toggle "Always Use HTTPS" is off), www is the apex, and paths
+    // are case-insensitive: /Golf is /golf. All three fold into a single 301.
+    // Only reads are redirected - a POST is never bounced.
+    let canonical = false;
+    if (url.protocol === 'http:') { url.protocol = 'https:'; canonical = true; }
+    if (request.method === 'GET' || request.method === 'HEAD') {
+      if (url.hostname === 'www.pinelakecc.com') { url.hostname = 'pinelakecc.com'; canonical = true; }
+      const lower = url.pathname.toLowerCase();
+      if (lower !== url.pathname) { url.pathname = lower; canonical = true; }
     }
+    if (canonical) return Response.redirect(url.toString(), 301);
 
     if (url.pathname === '/api/inquiry') {
       return inquiry({ request, env, ctx });

@@ -167,22 +167,22 @@ header nav a[style*="background:#C4A45A"]{padding:8px 8px !important;letter-spac
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:clamp(20px,3vw,30px);margin-top:clamp(28px,4vw,48px)">
       <div class="rv">
-        <div class="kb" style="aspect-ratio:3/2"><img src="img/golf-green.jpg" alt="A green along the lake" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div class="kb" style="aspect-ratio:3/2"><img src="img/golf-green.jpg" alt="A green along the lake" style="width:100%;height:100%;object-fit:cover" loading="lazy" decoding="async" /></div>
         <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:20px;line-height:1.2;margin-top:16px">Eighteen Holes</h3>
         <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:9px">A classic Park routing that follows the land along the lake.</p>
       </div>
       <div class="rv">
-        <div class="kb" style="aspect-ratio:3/2"><img src="img/flagstick.jpg" alt="The club flag on the green" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div class="kb" style="aspect-ratio:3/2"><img src="img/flagstick.jpg" alt="The club flag on the green" style="width:100%;height:100%;object-fit:cover" loading="lazy" decoding="async" /></div>
         <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:20px;line-height:1.2;margin-top:16px">A Champion's Design</h3>
         <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:9px">Willie Park Jr., among the most celebrated architects of golf's golden age.</p>
       </div>
       <div class="rv">
-        <div class="kb" style="aspect-ratio:3/2"><img src="img/golf-junior-group.jpg" alt="A junior clinic" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div class="kb" style="aspect-ratio:3/2"><img src="img/golf-junior-group.jpg" alt="A junior clinic" style="width:100%;height:100%;object-fit:cover" loading="lazy" decoding="async" /></div>
         <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:20px;line-height:1.2;margin-top:16px">A Full Calendar</h3>
         <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:9px">Member-guests, couples' nights, junior tournaments — golf from age 3 up.</p>
       </div>
       <div class="rv">
-        <div class="kb" style="aspect-ratio:3/2"><img src="img/golf-range.jpg" alt="The practice range" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div class="kb" style="aspect-ratio:3/2"><img src="img/golf-range.jpg" alt="The practice range" style="width:100%;height:100%;object-fit:cover" loading="lazy" decoding="async" /></div>
         <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:20px;line-height:1.2;margin-top:16px">Practice Year-Round</h3>
         <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:9px">Driving range and practice areas all season; two TrackMan simulators all winter.</p>
       </div>
@@ -275,8 +275,8 @@ header nav a[style*="background:#C4A45A"]{padding:8px 8px !important;letter-spac
     <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
       <form onSubmit="{{ onSubmit }}" style="display:flex;flex-direction:column;gap:16px"><input name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" />
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
-          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Name</span><input value="{{ name }}" onChange="{{ onName }}" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" /></label>
-          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Email</span><input value="{{ email }}" onChange="{{ onEmail }}" type="email" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" /></label>
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Name</span><input value="{{ name }}" onChange="{{ onName }}" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" required /></label>
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Email</span><input value="{{ email }}" onChange="{{ onEmail }}" type="email" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" required /></label>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
           <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Phone</span><input value="{{ phone }}" onChange="{{ onPhone }}" type="tel" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" /></label>

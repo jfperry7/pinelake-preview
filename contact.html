@@ -281,8 +281,8 @@ header nav a[style*="background:#C4A45A"]{padding:8px 8px !important;letter-spac
     <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
       <form onSubmit="{{ onSubmit }}" style="display:flex;flex-direction:column;gap:16px"><input name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" />
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
-          <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">Name</span><input class="fld" value="{{ name }}" onChange="{{ onName }}" /></label>
-          <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">Email</span><input class="fld" value="{{ email }}" onChange="{{ onEmail }}" type="email" /></label>
+          <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">Name</span><input class="fld" value="{{ name }}" onChange="{{ onName }}" required /></label>
+          <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">Email</span><input class="fld" value="{{ email }}" onChange="{{ onEmail }}" type="email" required /></label>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
           <label style="display:flex;flex-direction:column;gap:8px"><span class="lbl">Phone</span><input class="fld" value="{{ phone }}" onChange="{{ onPhone }}" type="tel" /></label>
@@ -315,22 +315,22 @@ header nav a[style*="background:#C4A45A"]{padding:8px 8px !important;letter-spac
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:clamp(16px,2.4vw,26px);margin-top:clamp(26px,4vw,42px)">
       <a href="/membership" class="rv" style="display:block;color:#1E2B14">
-        <div class="kb" style="aspect-ratio:4/3"><img src="img/golf-junior-group.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div class="kb" style="aspect-ratio:4/3"><img src="img/golf-junior-group.jpg" alt="" style="width:100%;height:100%;object-fit:cover" loading="lazy" decoding="async" /></div>
         <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Membership</div>
         <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">How joining works</div>
       </a>
       <a href="/golf" class="rv" style="display:block;color:#1E2B14">
-        <div class="kb" style="aspect-ratio:4/3"><img src="img/golf-green.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div class="kb" style="aspect-ratio:4/3"><img src="img/golf-green.jpg" alt="" style="width:100%;height:100%;object-fit:cover" loading="lazy" decoding="async" /></div>
         <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Golf</div>
         <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">A Willie Park Jr. masterpiece</div>
       </a>
       <a href="/events" class="rv" style="display:block;color:#1E2B14">
-        <div class="kb" style="aspect-ratio:4/3"><img src="img/events-setup.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div class="kb" style="aspect-ratio:4/3"><img src="img/events-setup.jpg" alt="" style="width:100%;height:100%;object-fit:cover" loading="lazy" decoding="async" /></div>
         <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">Events &amp; Weddings</div>
         <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">The moments that deserve the lake</div>
       </a>
       <a href="/about" class="rv" style="display:block;color:#1E2B14">
-        <div class="kb" style="aspect-ratio:4/3"><img src="img/entrance-sign.jpg" alt="" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div class="kb" style="aspect-ratio:4/3"><img src="img/entrance-sign.jpg" alt="" style="width:100%;height:100%;object-fit:cover" loading="lazy" decoding="async" /></div>
         <div style="font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:#5C6A3A;margin-top:14px">About &amp; Heritage</div>
         <div style="font-family:'Playfair Display',serif;font-size:19px;line-height:1.25;margin-top:6px">Our story since 1902</div>
       </a>

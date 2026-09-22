@@ -166,17 +166,17 @@ header nav a[style*="background:#C4A45A"]{padding:8px 8px !important;letter-spac
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:clamp(20px,3vw,32px);margin-top:clamp(28px,4vw,48px)">
       <div class="rv">
-        <div class="kb" style="aspect-ratio:3/2;position:relative"><img src="img/pool.jpg" alt="The Olympic-sized pool" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div class="kb" style="aspect-ratio:3/2;position:relative"><img src="img/pool.jpg" alt="The Olympic-sized pool" style="width:100%;height:100%;object-fit:cover" loading="lazy" decoding="async" /></div>
         <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:20px;line-height:1.2;margin-top:16px">The Olympic-Sized Pool</h3>
         <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:9px">Lap lanes, lessons, swim team, and long afternoons — steps from the lake beach and floating platform.</p>
       </div>
       <div class="rv">
-        <div class="kb" style="aspect-ratio:3/2;position:relative"><img src="img/tennis-outdoor2.jpg" alt="Har-Tru clay courts" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div class="kb" style="aspect-ratio:3/2;position:relative"><img src="img/tennis-outdoor2.jpg" alt="Har-Tru clay courts" style="width:100%;height:100%;object-fit:cover" loading="lazy" decoding="async" /></div>
         <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:20px;line-height:1.2;margin-top:16px">Har-Tru Clay &amp; Pickleball</h3>
         <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:9px">Har-Tru clay outdoors all summer — plus pickleball, leagues, and clinics for every level.</p>
       </div>
       <div class="rv">
-        <div class="kb" style="aspect-ratio:3/2"><img src="img/tennis-indoor.jpg" alt="The indoor Deco-Turf courts" style="width:100%;height:100%;object-fit:cover" /></div>
+        <div class="kb" style="aspect-ratio:3/2"><img src="img/tennis-indoor.jpg" alt="The indoor Deco-Turf courts" style="width:100%;height:100%;object-fit:cover" loading="lazy" decoding="async" /></div>
         <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:20px;line-height:1.2;margin-top:16px">Indoor Deco-Turf</h3>
         <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.72);margin-top:9px">The US Open surface, under a roof — tennis every month of the year.</p>
       </div>
@@ -271,8 +271,8 @@ header nav a[style*="background:#C4A45A"]{padding:8px 8px !important;letter-spac
     <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
       <form onSubmit="{{ onSubmit }}" style="display:flex;flex-direction:column;gap:16px"><input name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" />
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
-          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Name</span><input value="{{ name }}" onChange="{{ onName }}" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" /></label>
-          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Email</span><input value="{{ email }}" onChange="{{ onEmail }}" type="email" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" /></label>
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Name</span><input value="{{ name }}" onChange="{{ onName }}" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" required /></label>
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Email</span><input value="{{ email }}" onChange="{{ onEmail }}" type="email" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" required /></label>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
           <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:rgba(30,43,20,.6)">Phone</span><input value="{{ phone }}" onChange="{{ onPhone }}" type="tel" style="border:1px solid rgba(30,43,20,.18);border-radius:2px;padding:12px;font-size:14.5px;font-weight:300;color:#1E2B14;background:#FFF;outline:none" /></label>
