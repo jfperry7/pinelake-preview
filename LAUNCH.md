@@ -1235,3 +1235,17 @@ So Northstar fixed the app and left the portal's own links untouched. Those
   pushed to the new private GitHub repo `jfperry7/pinelake-old-site-archive-2026-09-21`
   (193 files, remote HEAD matches local). Created in Josh's logged-in GitHub;
   no GitHub CLI on this PC, so plain `git push` with his stored credentials.
+
+**~3:45pm - Phase 2 step 6 done, both routes.** With Josh's go-ahead, two
+labelled test submissions were made through the real forms on the live site
+(values set and events dispatched in the page, then `requestSubmit()`, so the
+runtime, validation, fetch and success panel all ran):
+
+    /contact  "Membership inquiry"  -> Resend: To melanie@pinelakecc.com, Delivered
+    /events   "Events & weddings"   -> Resend: To anna@pinelakecc.com,   Delivered
+
+Both from `Pine Lake Website <forms@send.pinelakecc.com>`, Reply-To the
+submitter, subject `Website inquiry - <interest> - <name>` (no [TEST] prefix
+now the switch is off). Both pages showed the "your note is on its way"
+panel. The events page form has no message field; that is by design. Forms
+are fully live end to end. No `MAIL_ARCHIVE` BCC is configured.
