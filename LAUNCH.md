@@ -966,11 +966,11 @@ accessibility basics. Everything passed except the items below.
   return 429 rather than falling back to static serving. Measured 12,224
   requests in the 24h around launch (~12%). Same fix as above removes most of
   the exposure. Otherwise the Workers Paid plan is the answer.
-- **Homepage weighs 11.2 MB**, 7.2 MB of it the video, loaded unconditionally
+- **RESOLVED 22 Sept (44dfc65).** Homepage weighed 11.2 MB, 7.2 MB of it the video, loaded unconditionally
   on every device. None of the 113 images use `loading="lazy"`. Proposed:
   lazy-load below-the-fold images; do not load the video under ~768px (the
   poster is already there).
-- **Nice-to-haves:** `www` serves rather than redirecting to the apex
+- **Nice-to-haves - www, case and `required` RESOLVED 22 Sept (44dfc65); empty `alt` left as is:** `www` served rather than redirecting to the apex
   (canonicals make it harmless); paths are case-sensitive (`/Golf` 404s);
   form fields have no `required` attributes so validation feedback is
   server-side only; 32 images carry empty `alt=""` - fine if decorative.
@@ -1107,3 +1107,41 @@ setting. The fix is Northstar's: re-point the app configuration (base URL /
 web-view URLs) to `members.pinelakecc.com`. Redirect kept for old bookmarks
 and the five stale nav links; it makes the app show a login page rather than
 a 404, neither of which is the fix.
+
+## Second QA pass shipped (22 Sept, late afternoon - commit 44dfc65)
+
+Four open items from the morning's QA, one deploy.
+
+- **Lazy loading.** 95 images across 13 pages now carry `loading="lazy"
+  decoding="async"`. Left eager on purpose: the header logo on every page and
+  each page's first content image, which is its hero. `index.html` lazy-loads
+  every image except the logo because its hero is the video.
+- **No hero video on phones.** The `<video>` ships with no `<source>` and
+  `preload="none"`. An inline script right after it adds the source, loads and
+  plays only when the viewport is at least 768px wide and `prefers-reduced-
+  motion` is not set. Measured live: 375px viewport -> zero requests for
+  `hero.mp4`, poster shown; 1280px -> source attached, `readyState 4`, the
+  file fetched once at 7.4 MB with three further 206 requests of 0 bytes
+  (Chrome checking ranges, no re-download).
+- **One address per page.** `worker.js` folds http->https, www->apex and
+  uppercase->lowercase paths into a single 301, GET/HEAD only. `/Golf` ->
+  `/golf`, `www.pinelakecc.com/dining?x=1` -> apex with the query kept,
+  `http://www.../Golf` -> `https://pinelakecc.com/golf` in one hop, staging
+  case-folds on its own host. POST to `/api/inquiry` on either host is not
+  redirected (400 for an empty body, as before). `/Documents/...` case-folds
+  and then hits the portal redirect. Nothing served has an uppercase filename
+  (the two `.dc.html` components and `uploads/` are in `.assetsignore`).
+- **`required` on Name and Email** on all 13 form pages. Measured live on
+  `/contact`: `requestSubmit()` with empty fields makes no API call, focuses
+  the Name field and shows the browser's "Please fill out this field." The
+  server-side checks in `functions/api/inquiry.js` are unchanged.
+
+**Not verified:** actual playback of the hero in a visible desktop window.
+Both test browsers ran as hidden tabs, where Chrome defers media; in the
+user's Chrome the element reported `paused: false` with the source attached,
+so autoplay was accepted. A glance at the live homepage on a desktop confirms
+it.
+
+**Remaining from QA:** `MAIL_TEST_TO` (blocked on the Resend sending
+subdomain, Phase 2), the four old pages with nowhere to land, GA4 custom
+dimensions, the archive backup, the "Always Use HTTPS" zone toggle.
