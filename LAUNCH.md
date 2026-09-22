@@ -1182,3 +1182,35 @@ the sender above. The `wrangler.jsonc` comment explains how to turn test
 routing back on; it is now a pure routing switch, no longer tied to domain
 verification. Phase 5 step 2 is complete. Step 6 of Phase 2 - one genuine
 test that reaches Melanie - is Josh's call, since it lands in a real inbox.
+
+## Northstar says "changes complete" - checked 22 Sept, ~2:50pm ET
+
+Josh: app works again, but content "was there, then wasn't, then was again",
+and asked whether the Resend work caused it.
+
+**Not the Resend work.** Everything this afternoon touched `send.pinelakecc.com`
+records and the marketing-site Worker (deploys 12:04-14:21 ET, atomic). The
+app talks to `members.pinelakecc.com`, served entirely by Northstar; nothing
+we changed is on that path. Josh's portal session had also been logged out
+between the 1:00pm crawl and 2:45pm. Content vanishing and returning plus
+dropped sessions is what a Liferay restart or cache flush looks like, i.e.
+Northstar's own change landing. Cannot be proven from outside; it is the only
+explanation that fits both symptoms.
+
+**Re-crawl of all 43 portal pages, logged in (42 x 200, 1 fetch error on
+`makepayment`, unchanged from this morning):**
+
+- Section A (app config) - not visible to us. Josh reports the app working,
+  so taken as done.
+- Section B - **all five nav links still on `https://pinelakecc.com/`**:
+  Bylaws, Golf House Rules, 2025 Penguins Swim Schedule, Recipients, Donors.
+  Nav now has 44 `members.` links + these 5.
+- Section C - **all eight content references still on the old host**: the
+  Men's Priority Points PDF on golf-pro-shop1 and the seven staff photos on
+  contact-us1.
+- All six app-facing pages checked render their portlet (menus, pro shop,
+  swim team, tennis, tee times, dining).
+
+So Northstar fixed the app and left the portal's own links untouched. Those
+13 still work for members only because pinelakecc.com redirects them.
+`clubnow.pinelakecc.com` still 403.
