@@ -1041,3 +1041,54 @@ Two things to remember for next time: **test with the real binding's
 behaviour in mind** (no `Content-Length` inside the Worker), and Cloudflare's
 edge can serve a stale copy for a short while after a deploy (`CF-Cache-Status:
 HIT`), so verify with a cache-busting query string.
+
+## ClubNow app: some functions work, some do not (22 Sept, afternoon)
+
+Josh reports the app is partly working. Compared the eight portal pages he
+listed, logged in, in Chrome.
+
+| Works in app | Portlet on the portal page |
+|---|---|
+| tee-time-reservation | `teeTimePortlet_WAR_northstarportlet` (Northstar native) |
+| dining-reservation1 | `diningReservation_WAR_northstarportlet` (Northstar native) |
+| statementsummary, member-roster | Northstar native account modules |
+
+| Broken in app, fine on the portal | Portlet on the portal page |
+|---|---|
+| current-menus | `JournalContentPortlet` - Liferay web content (HTML + PDF links) |
+| golf-pro-shop1 | `JournalContentPortlet` - web content |
+| swim-team-information | `JournalContentPortlet` - web content |
+| tennis-reservations | `activities_WAR_northstarportlet` - a different Northstar module |
+
+**Measured, not inferred:**
+
+- The working functions are native modules that talk to Northstar's API. The
+  broken ones are pages the app has to open by URL (three web-content pages
+  and the activities module).
+- Northstar's own navigation data still carries **absolute URLs on the old
+  host**. Five links in the portal's drop-down menu point at
+  `https://pinelakecc.com/...` rather than `members.`: Bylaws (documents),
+  Golf House Rules (`/group/pages/house-rules-regulations`, page id 136), 2025
+  Penguins Swim Schedule, Recipients, Donors (all documents). 33 other nav
+  links already use `members.`. So their config was partly, not fully,
+  re-hosted - and the app's menu is the same kind of config.
+- Until 16:50 ET today `https://pinelakecc.com/group/pages/*` returned **our
+  404 page**: `/web`, `/c`, `/documents` and `/o` redirected to the portal but
+  `/group` - where every member page lives - was missing from `_redirects`.
+  Commit e0d3f3f adds `/group/*`, `/delegate/*`, `/image/*`, `/combo/*`,
+  `/html/*`, `/user/*` (301) and `/api/jsonws/*` (308). Verified live: each
+  returns the right Location on `members.`, query strings preserved, our own
+  `/api/inquiry` untouched (405 on GET as before).
+
+**Working theory (not proven - we cannot see the app's config):** the app's
+menu items for web-content pages and the activities module hold absolute
+`https://pinelakecc.com/group/pages/...` URLs from before the move, exactly as
+the five nav links do. Native modules do not use page URLs, so they were
+unaffected. If that is right, the redirect above may already fix the app
+(depends on whether the app's web view follows a 301 and carries its session
+to `members.`). If it does not, the fix is on Northstar's side: re-point the
+app menu and the five nav links to `members.pinelakecc.com`.
+
+**Test:** open Current Menus in the app now. Works -> theory confirmed and
+fixed on our side; still tell Northstar about the five nav links. Fails ->
+send Northstar the two tables above and the five links.
