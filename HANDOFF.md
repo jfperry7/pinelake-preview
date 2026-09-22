@@ -1,6 +1,6 @@
 # Pine Lake CC website — start here
 
-Last updated **21 September 2026, evening**. Written so a session with no memory
+Last updated **22 September 2026, afternoon**. Written so a session with no memory
 of the build can pick this up cold. Read this before touching anything.
 
 > ## STATUS, 21 September 2026, 9:30pm ET: LIVE. Website and member portal both up.
@@ -11,6 +11,11 @@ of the build can pick this up cold. Read this before touching anything.
 > RESOLVED section at the bottom of `LAUNCH.md`, and trap 7 below. Club email
 > was never affected. The block that follows is the pre-cutover picture, kept
 > for context.
+>
+> **22 Sept:** post-launch QA done and shipped (form confirmation copy,
+> http->https, `lang`, security headers) and the hero video now answers byte
+> ranges with 206 from `worker.js` - see "Post-launch QA" at the end of
+> `LAUNCH.md` for what is still open.
 >
 > **Still deliberately on:** `MAIL_TEST_TO` in `wrangler.jsonc`. Enquiries go
 > to the club Gmail until the Resend sending subdomain is done (LAUNCH.md
@@ -152,6 +157,7 @@ passing. It is **not yet on the real domain** — see the block at the top.
 | 404 page | `404.html` — *"That page has moved on."* |
 | Privacy | `/privacy` — newly written, **not legally reviewed** |
 | Member login | All 27 links repointed to `members.pinelakecc.com/web/pages/login` (21 Sept) |
+| Hero video | `worker.js` serves byte ranges for `.mp4` itself (206, 416, HEAD); Cloudflare's asset server has no Range support. Images stay native via `run_worker_first` exclusions. 22 Sept |
 
 **One switch is deliberately still ON and must come off at launch:**
 

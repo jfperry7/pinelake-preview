@@ -952,7 +952,7 @@ accessibility basics. Everything passed except the items below.
 
 **Still open, in priority order:**
 
-- **Hero video ignores byte-range requests.** Every `Range:` request gets the
+- **RESOLVED 22 Sept (see the byte-range entries below).** Hero video ignored byte-range requests. Every `Range:` request gets the
   full 7.2 MB as a 200 with no Content-Range. Chrome fetched it four times on
   one homepage load; iOS Safari generally will not play video at all without
   206 support and shows the poster instead. HANDOFF.md warned of exactly this.
@@ -1002,3 +1002,42 @@ responses for video itself: `bytes=a-b`, `bytes=a-`, `bytes=-n`, clamped ends,
 Slices are streamed through a TransformStream, not buffered. Tested in a
 browser JS engine against a fake asset streamed in 300-byte chunks: 12 of 12
 checks byte-exact before the deploy.
+
+**What that deploy actually did, and the fix that followed (d2111f6).** Commit
+4e0f19e answered every Range request for `hero.mp4` with `416 Range Not
+Satisfiable` and `Content-Range: bytes */0`. Two things the harness could not
+see: inside the Worker, the ASSETS binding's response carries **no
+`Content-Length`** (the edge adds it on the way out), and in JavaScript
+`Number(null)` is `0`, not `NaN`. So the total came out as 0 and every range
+was "past the end". The fix parses the header defensively (missing -> unknown),
+and when the size is unknown reads the body once with `arrayBuffer()` and
+slices that directly - 7 MB in memory per range request, well inside Worker
+limits, and the edge caches the binding fetch. The streaming TransformStream
+path is kept for the case where a length is known. The doc comment also
+contained the literal text `bytes */0`, whose `*/` closes a block comment and
+is a syntax error; the harness caught that before the push.
+
+Re-tested with a fake binding **both with and without `Content-Length`** (21
+checks each, all passing), then verified live after the deploy (about 30
+seconds from push to the new behaviour on staging):
+
+    GET  Range: bytes=0-1023              206  Content-Range: bytes 0-1023/7550801
+    GET  Range: bytes=-1024               206  Content-Range: bytes 7549777-7550800/7550801
+    GET  Range: bytes=1000000-1000999     206  1000 bytes
+    GET  Range: bytes=7550000-            206  801 bytes
+    HEAD Range: bytes=0-1023              206  no body
+    GET  Range: bytes=99999999-           416  Content-Range: bytes */7550801
+    HEAD (no Range)                       200  Accept-Ranges: bytes
+
+The three slices (head, middle, tail) hash identical to the same bytes of the
+local `img/hero.mp4`. Images are still served natively (no `X-Robots-Tag` on
+the staging image), pages, `robots.txt`, the http->https 301, `/login` and the
+404 are unchanged, and a homepage load in a browser now shows the video as
+206 responses that Chrome aborts once it has what it needs, instead of four
+full 200 downloads. Not yet checked on a physical iPhone; the 206 support is
+what Safari requires, so it should now play.
+
+Two things to remember for next time: **test with the real binding's
+behaviour in mind** (no `Content-Length` inside the Worker), and Cloudflare's
+edge can serve a stale copy for a short while after a deploy (`CF-Cache-Status:
+HIT`), so verify with a cache-busting query string.
