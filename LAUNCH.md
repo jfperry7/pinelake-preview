@@ -831,3 +831,33 @@ Cloudflare before. This was foreseeable from two facts known before the switch
 (the `members` CNAME resolved to Cloudflare IPs; we were moving to Cloudflare)
 and should have been raised with Northstar beforehand. It is now in HANDOFF.md
 as a trap.
+
+---
+
+## 21 September, ~9:50pm ET - the ClubNow MOBILE APP broke when clubnow was renamed
+
+Members reported the app "loading indefinitely", not loading, or demanding a
+fresh sign-in. Measured cause: **`clubnow.pinelakecc.com` is the ClubNow app's
+backend hostname** (ClubNow is Northstar's member app -
+globalnorthstar.com/club-now). At Northstar's written instruction the
+`clubnow` CNAME was deleted and replaced with `clubnow.members.pinelakecc.com`.
+The old name then fell to the zone's `*` wildcard, `64.135.11.57`, a dead
+host: TCP to it hangs and HTTPS times out. That is an app spinner.
+
+The renamed `clubnow.members.pinelakecc.com` reaches Northstar's edge but
+serves their "Site is Under Maintenance" page and 404s every app path - the
+backend is not configured there. So the rename broke the app on both ends: the
+old name went dark and the new one has nothing behind it.
+
+**Restored on our side:** `clubnow` CNAME -> `members-pinelakecc-com.northstar-connect.com`,
+DNS only. It now reaches their edge in ~0.1s and returns **1014** - a fast
+fail instead of a hang - because their account no longer holds an active
+custom hostname for `clubnow.pinelakecc.com`. That is the piece only Northstar
+can restore: re-add / re-activate `clubnow.pinelakecc.com` as a custom
+hostname (it worked that way until this evening), OR ship the app pointing at
+`clubnow.members.pinelakecc.com` AND stand the backend up there. Both
+`clubnow` records are left in place so either path works without more DNS.
+
+The "sign in again, saved login gone" reports are a separate, expected effect:
+sessions were invalidated by the outage and app credential storage is keyed to
+the backend host, which Northstar changed today. Not DNS; not ours.

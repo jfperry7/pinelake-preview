@@ -208,7 +208,13 @@ Check 'CNAME s2._domainkey.emails (SendGrid DKIM, emails subdomain)' ("s2._domai
 # it. The old clubnow.pinelakecc.com CNAME was removed at their instruction;
 # its target had stopped resolving on their side. INFO because it serves their
 # "Under Maintenance" page and nothing at the club is known to use it.
-Check 'CNAME clubnow.members (Northstar, renamed 21 Sept)' ("clubnow.members." + $Zone) 'CNAME' @('members-pinelakecc-com.northstar-connect.com') 'INFO'
+Check 'CNAME clubnow.members (Northstar, added 21 Sept at their request)' ("clubnow.members." + $Zone) 'CNAME' @('members-pinelakecc-com.northstar-connect.com') 'INFO'
+# clubnow.pinelakecc.com is the ClubNow MOBILE APP backend for this club.
+# Northstar told us to remove it on 21 Sept; the app then hung for every
+# member because the name fell to the dead wildcard host. Restored the same
+# night, pointed at their live edge. Whether it serves depends on Northstar
+# keeping an active custom hostname for it - without one it returns 1014.
+Check 'CNAME clubnow (ClubNow app backend - MUST resolve to Northstar)' ("clubnow." + $Zone) 'CNAME' @('members-pinelakecc-com.northstar-connect.com') 'CRITICAL'
 Check 'CNAME 4668611 (SendGrid)' ("4668611." + $Zone) 'CNAME' @('sendgrid.net') 'CRITICAL'
 Check 'CNAME em7487.emails (SendGrid)' ("em7487.emails." + $Zone) 'CNAME' @('u4668611.wl112.sendgrid.net') 'CRITICAL'
 Check 'CNAME url305.emails (SendGrid click tracking)' ("url305.emails." + $Zone) 'CNAME' @('sendgrid.net') 'CRITICAL'
