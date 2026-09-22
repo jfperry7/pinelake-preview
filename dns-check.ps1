@@ -209,12 +209,13 @@ Check 'CNAME s2._domainkey.emails (SendGrid DKIM, emails subdomain)' ("s2._domai
 # its target had stopped resolving on their side. INFO because it serves their
 # "Under Maintenance" page and nothing at the club is known to use it.
 Check 'CNAME clubnow.members (Northstar, added 21 Sept at their request)' ("clubnow.members." + $Zone) 'CNAME' @('members-pinelakecc-com.northstar-connect.com') 'INFO'
-# clubnow.pinelakecc.com is the ClubNow MOBILE APP backend for this club.
-# Northstar told us to remove it on 21 Sept; the app then hung for every
-# member because the name fell to the dead wildcard host. Restored the same
-# night, pointed at their live edge. Whether it serves depends on Northstar
-# keeping an active custom hostname for it - without one it returns 1014.
-Check 'CNAME clubnow (ClubNow app backend - MUST resolve to Northstar)' ("clubnow." + $Zone) 'CNAME' @('members-pinelakecc-com.northstar-connect.com') 'CRITICAL'
+# clubnow.pinelakecc.com: a Northstar host of unknown purpose. On the night of
+# 21 Sept it was wrongly assumed to be the ClubNow mobile app's backend; on the
+# morning of 22 Sept the app came back for members while this name still
+# returned Cloudflare 1014, which proves the app does not depend on it. The
+# app was down for the same reason the portal was, plus resolver caches.
+# Kept pointed at Northstar's live edge; INFO until they say what it is for.
+Check 'CNAME clubnow (Northstar host, purpose unconfirmed)' ("clubnow." + $Zone) 'CNAME' @('members-pinelakecc-com.northstar-connect.com') 'INFO'
 Check 'CNAME 4668611 (SendGrid)' ("4668611." + $Zone) 'CNAME' @('sendgrid.net') 'CRITICAL'
 Check 'CNAME em7487.emails (SendGrid)' ("em7487.emails." + $Zone) 'CNAME' @('u4668611.wl112.sendgrid.net') 'CRITICAL'
 Check 'CNAME url305.emails (SendGrid click tracking)' ("url305.emails." + $Zone) 'CNAME' @('sendgrid.net') 'CRITICAL'

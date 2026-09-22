@@ -861,3 +861,36 @@ hostname (it worked that way until this evening), OR ship the app pointing at
 The "sign in again, saved login gone" reports are a separate, expected effect:
 sessions were invalidated by the outage and app credential storage is keyed to
 the backend host, which Northstar changed today. Not DNS; not ours.
+
+---
+
+## 22 September, ~11:20am ET - the ClubNow app is BACK, and the clubnow theory was wrong
+
+Members report the app working. Measured at the same moment:
+`clubnow.pinelakecc.com` still returns Cloudflare **1014**, unchanged since last
+night. **The app therefore does not depend on `clubnow.pinelakecc.com`.** The
+attribution written into this file last night was an inference from the
+product name and the timing, and it was wrong. The app talks to
+`members.pinelakecc.com` - the same host as the portal - so it went down with
+the portal and came back with it; the stragglers overnight were phones and
+carrier resolvers holding last night's bad answers until their caches expired.
+
+What that means for the record: removing and restoring `clubnow` had no effect
+on members either way. `clubnow.pinelakecc.com` and `clubnow.members.pinelakecc.com`
+are both left in place, both reaching Northstar's edge (`clubnow.members` now
+hits a Tomcat 404 rather than the maintenance placeholder, so they are working
+on it). What `clubnow` is actually for is a question for Northstar, not an
+outage. dns-check.ps1 downgrades it to INFO.
+
+Also noted for the next reader: around 11:15am ET every *direct* DNS query
+from this PC to external nameservers (Cloudflare's, `1.1.1.1`, `8.8.8.8`)
+timed out, including for `cloudflare.com` and `google.com`, while the system
+resolver and HTTPS worked normally. That is a local firewall/VPN state on this
+machine, not a record problem. If `dns-check.ps1` suddenly fails everything,
+test a neutral name first.
+
+**Final state, all verified from outside:** website up, member portal up,
+mobile app up, email untouched throughout. Total member-facing outage: portal
+~5 hours, app ~14 hours, both on 21-22 Sept 2026, both caused by the domain
+moving onto Cloudflare while `members.pinelakecc.com` CNAMEd into Northstar's
+Cloudflare account - HANDOFF.md trap 7.
