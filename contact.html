@@ -372,6 +372,7 @@ class Component extends DCLogic {
       error: s.error, submitted: s.submitted, notSubmitted: !s.submitted,
         viaApi: s.submitted && !s.viaMail, viaMail: s.submitted && s.viaMail,
       confirmName: s.name.trim() ? s.name.trim().split(' ')[0] + ',' : '',
+      greetName: s.name.trim() ? ', ' + s.name.trim().split(' ')[0] : '',
       onSubmit: e => {
         e.preventDefault();
         if (!s.name.trim() || !validEmail) { this.setState({ error: true }); return; }
