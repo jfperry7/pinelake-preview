@@ -279,7 +279,7 @@ widths, load the page in an iframe of the width you want.
 | `LAUNCH.md` | Full cutover procedure, DNS values, redirect map, rollback |
 | `ENHANCEMENTS.md` | Deferred work and what the club must supply for each |
 | `COMMITTEE-NOTE.md` | Draft note to the committee — **stale**, still mentions Formspree |
-| `../old-site-archive-2026-09-21/` | The old site, captured 21 Sept. **Now the only copy that exists** — Northstar took the live pages down the same day, and the Wayback Machine never captured them. Outside the repo so it is never served, which also means **it is not in git and lives on Josh's machine alone.** |
+| `../../old-site-archive-2026-09-21/` (project root, two levels up - not one) | The old site, captured 21 Sept. **Now the only copy that exists** — Northstar took the live pages down the same day, and the Wayback Machine never captured them. Outside the repo so it is never served, which also means **it is not in git and lives on Josh's machine alone.** |
 
 There is also a live checklist artifact, "Pine Lake Launch Runbook", in Josh's
 Claude artifacts. Ticks persist between sessions.

@@ -894,3 +894,31 @@ mobile app up, email untouched throughout. Total member-facing outage: portal
 ~5 hours, app ~14 hours, both on 21-22 Sept 2026, both caused by the domain
 moving onto Cloudflare while `members.pinelakecc.com` CNAMEd into Northstar's
 Cloudflare account - HANDOFF.md trap 7.
+
+---
+
+## What `clubnow.pinelakecc.com` is - everything learnable without asking Northstar (22 Sept, midday)
+
+Gathered so a question to Northstar can be one line, or skipped.
+
+| Evidence | Source | What it shows |
+|---|---|---|
+| The old website (193 files, 4,726 links to `pinelakecc.com`) never once linked to `clubnow.` - or to **any** `*.pinelakecc.com` subdomain | grep of `old-site-archive-2026-09-21` | The club's own site never used it. It is Northstar-internal. |
+| Every old page carries `Liferay.ThemeDisplay.isClubNow: function() { return "false"; }` | same archive, Northstar's Liferay theme | The **ClubNow app renders the member portal's own pages** in a web view, with this server-side flag telling the theme it is inside the app. The app therefore uses the **portal host**. |
+| The app came back for members while `clubnow.pinelakecc.com` still returned 1014 | live, 22 Sept ~11am | Proof the app does not depend on `clubnow.`. |
+| No certificate in the public CT logs has **ever** explicitly named `clubnow.pinelakecc.com`; it was only ever covered by Northstar's `*.pinelakecc.com` wildcard | crt.sh | It was never a first-class custom hostname - it rode the wildcard, which is exactly why it broke when per-hostname verification became required. |
+| No Wayback Machine snapshot of it, ever | archive.org | Nothing public was ever served there. |
+| `northstar.pinelakecc.com` -> `96.66.39.41`, non-Cloudflare, once had its own Sectigo certs (the four `_xxx.northstar` DCV CNAMEs) | CT logs + live probe | **Dark.** Nothing on 80/443/8443/8080. Almost certainly the club's retired on-premises Northstar server (the SPF's `ip4:96.66.39.42` is the adjacent address at the same site). Not the app. |
+| crt.sh currently shows nothing for `members.pinelakecc.com` either, yet the live cert is `CN=members.pinelakecc.com`, GTS WE1, serial `F2BA931D634FE4550EEDA618615099B7`, issued 21 Sept 21:10 UTC | openssl vs crt.sh | crt.sh is lagging ~24h; treat its "no cert" answers for recent names as unknown, not absent. |
+
+**Best reading:** `clubnow.pinelakecc.com` is a Northstar-side alias - a per-club
+hostname their platform provisions by convention, riding the wildcard cert, that
+nothing at Pine Lake actually calls. Members never noticed it break because
+nothing depends on it. `clubnow.members.pinelakecc.com` is Northstar's attempt
+to re-home that alias under the verified `members` hostname; it now reaches a
+Tomcat 404 rather than a placeholder, so someone there is working on it, and it
+is equally unused by members.
+
+**Consequence:** no outage is open. The only question worth Northstar's time is
+housekeeping - whether either `clubnow` name should exist at all - and it can
+wait for the next scheduled contact rather than a ticket.
