@@ -1249,3 +1249,43 @@ submitter, subject `Website inquiry - <interest> - <name>` (no [TEST] prefix
 now the switch is off). Both pages showed the "your note is on its way"
 panel. The events page form has no message field; that is by design. Forms
 are fully live end to end. No `MAIL_ARCHIVE` BCC is configured.
+
+## Regression pass after the day's changes (22 Sept, ~4pm ET) - all clear
+
+Everything touched today re-checked from outside, live domain unless noted.
+
+- **Pages (15):** all 200 (404 page 404), every one `lang="en"`, self
+  canonical, title; lazy counts as shipped; `required` x2 on all 13 form
+  pages; no stray template markers; no broken images; no console errors on
+  /, /contact, /golf, /membership; the runtime renders one form per page.
+- **Sitemap:** 14 URLs, all 200.
+- **Links:** every href across all pages resolves 200 or an intended 301.
+  The only oddities are the two Google Fonts `preconnect` hosts (root 404 is
+  normal) and `*.dc.html` links that exist only in the two dead components,
+  which are not served. 30 links into the portal: 29 to the login page, 1 to
+  the portal root, all 200.
+- **Redirects:** all 55 static rules return exactly the expected Location
+  (script compared each). All 11 portal splat rules, including the 308 for
+  POST `/api/jsonws`. http->https, www->apex and case-folding all one hop,
+  query strings kept; staging case-folds on its own host.
+- **Headers:** nosniff, SAMEORIGIN, referrer-policy, HSTS on pages and
+  images, both hosts. `X-Robots-Tag` absent on live, present on staging
+  pages (staging images native, as designed). robots.txt correct on both.
+- **Video/API:** Range -> 206/1024B, HEAD 200. API: GET 405, empty POST 400
+  with the name message, bad email 400, honeypot filled -> 200 with nothing
+  sent (by design, checked in `inquiry.js`).
+- **Northstar hops:** login page 200 with a password field, portal root 200,
+  private page anon -> 302 to login, `members` CNAME still
+  `customers.northstar-connect.com`. Certificates: pinelakecc.com and
+  members.pinelakecc.com both valid to 20 Dec 2026. `clubnow` still 403.
+- **DNS inventory:** all 37 checks in `dns-check.ps1` verified over
+  DNS-over-HTTPS (`scratchpad/dohcheck.pl`; plain DNS from this PC times out
+  and the .ps1 blocks in a background job). One reported mismatch was the
+  parser splitting the two-line MX list - both MX hosts are present. The
+  three Resend records, both Cloudflare-for-SaaS tokens and the Northstar
+  DCV record all answer. MS365 DKIM selectors were never in the inventory.
+- **Mail:** live tests delivered to Melanie and Anna (above). DMARC on the
+  apex is `p=none` with Proofpoint reporting; Resend signs as
+  `send.pinelakecc.com`, aligned under relaxed DMARC.
+
+Nothing found that needs fixing.
