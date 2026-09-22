@@ -3,6 +3,18 @@
 Last updated **21 September 2026, evening**. Written so a session with no memory
 of the build can pick this up cold. Read this before touching anything.
 
+> ## STATUS, 21 September 2026, 9:30pm ET: LIVE. Website and member portal both up.
+>
+> `pinelakecc.com` serves the new site from the Cloudflare Worker on nameservers
+> `agustin`/`paige.ns.cloudflare.com`. `members.pinelakecc.com` (portal and app)
+> is back after an evening outage caused by the migration itself - see the
+> RESOLVED section at the bottom of `LAUNCH.md`, and trap 7 below. Club email
+> was never affected. The block that follows is the pre-cutover picture, kept
+> for context.
+>
+> **Still deliberately on:** `MAIL_TEST_TO` in `wrangler.jsonc`. Enquiries go
+> to the club Gmail until the Resend sending subdomain is done (LAUNCH.md
+> Phase 2). Do not remove it first.
 > ## READ THIS FIRST: the club has no public website right now
 >
 > Northstar completed ticket #996907 on 21 Sept. They **moved** the Liferay
@@ -106,6 +118,23 @@ negative answers. A lookup saying a record is absent may just be a stale cache.
 Use a resolver that has never seen the name, or flush first, before telling
 anyone a record is missing.
 
+### 7. A subdomain that CNAMEs into someone else's Cloudflare breaks when the zone moves onto Cloudflare
+
+`members.pinelakecc.com` is a CNAME into Northstar's Cloudflare account. While
+`pinelakecc.com` lived at Network Solutions, that just worked. The moment the
+zone became active in the club's own Cloudflare account, Cloudflare saw two
+accounts claiming the name and refused to route it (**error 1014**, then
+**1000**) until Northstar's custom hostname for it was ownership-verified and
+active. Members and the app were locked out for about five hours on cutover
+night.
+
+The tell is cheap to check before any DNS move: if a subdomain's CNAME target
+resolves to Cloudflare IPs and you are moving the zone onto Cloudflare, the
+target's owner must add `_cf-custom-hostname.<name>` and `_acme-challenge.<name>`
+records for you **before** the switch. Ask them for those first. Also: the
+customer-side record must be a **CNAME** to their target - an A record to a
+Cloudflare IP is documented-unsupported and yields error 1000 even when their
+side is correct.
 ---
 
 ## Current state

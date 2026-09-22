@@ -786,3 +786,48 @@ connect at all (HTTP 000), because its CNAME target
 `pinelakecc-com.northstar-connect.com` stopped resolving on their side this
 evening. Not something we changed. Needs the same treatment as `members` if
 the club uses it.
+
+---
+
+## RESOLVED - 21 September 2026, ~9:25pm ET
+
+**The member portal and mobile app are back.** `members.pinelakecc.com/web/pages/login`
+returns 200 with the real login form on Northstar's per-hostname certificate,
+verified from outside. Website 200. `/login` and `/web/pages/login` on the
+apex 301 to the portal. Members will have been logged out once (`JSESSIONID`
+is host-only) and simply sign in again; no data was ever at risk - the
+requests never reached Northstar's servers while it was down.
+
+**What fixed it, in order:**
+
+1. Northstar sent an ownership token (`_cf-custom-hostname.members` TXT) and a
+   DCV delegation (`_acme-challenge.members` CNAME). Both published; their
+   certificate for `members.pinelakecc.com` issued at 21:10 UTC.
+2. Their instruction to use an A record to `104.24.9.63` was replaced with a
+   CNAME to `customers.northstar-connect.com`, their live SaaS target - the A
+   record is a documented-unsupported shape and produced error 1000.
+3. Northstar activated the custom hostname on their side. The portal returned
+   200 within minutes of their 9:25pm message.
+
+**Final DNS shape for the portal (all DNS only):**
+
+    members                   CNAME  customers.northstar-connect.com
+    _cf-custom-hostname.members  TXT  8b03768f-10a5-4e60-990b-50fd22c1effc
+    _acme-challenge.members   CNAME  members.pinelakecc.com.911c093aa0273216.dcv.cloudflare.com
+    clubnow.members           CNAME  members-pinelakecc-com.northstar-connect.com
+
+`clubnow.pinelakecc.com` no longer exists. Northstar renamed it to
+`clubnow.members.pinelakecc.com` so their `*.members.pinelakecc.com`
+certificate covers it; the old record's target had stopped resolving on their
+side. It currently serves their "Under Maintenance" page - whatever ClubNow is,
+that is theirs to populate.
+
+**Root cause, for the record:** moving `pinelakecc.com` onto Cloudflare made
+it an active zone in the club's account. Cloudflare then refused to route
+`members.pinelakecc.com` - a name in that zone - into Northstar's Cloudflare
+account until Northstar's custom hostname for it was ownership-verified and
+active. It had never needed to be, because the domain had never been on
+Cloudflare before. This was foreseeable from two facts known before the switch
+(the `members` CNAME resolved to Cloudflare IPs; we were moving to Cloudflare)
+and should have been raised with Northstar beforehand. It is now in HANDOFF.md
+as a trap.

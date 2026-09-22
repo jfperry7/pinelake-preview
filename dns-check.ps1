@@ -203,7 +203,12 @@ Check 'CNAME SES DKIM 2 of 3' ("lqdjysclbun6mfr7nhd4y5duon3afovp._domainkey." + 
 Check 'CNAME SES DKIM 3 of 3' ("xpz24sk4bzcdhme6vtg7zk4xnhxtw7xl._domainkey." + $Zone) 'CNAME' @('xpz24sk4bzcdhme6vtg7zk4xnhxtw7xl.dkim.amazonses.com') 'CRITICAL'
 
 Check 'CNAME s2._domainkey.emails (SendGrid DKIM, emails subdomain)' ("s2._domainkey.emails." + $Zone) 'CNAME' @('s2.domainkey.u4668611.wl112.sendgrid.net') 'CRITICAL'
-Check 'CNAME clubnow (second Northstar host)' ("clubnow." + $Zone) 'CNAME' @('pinelakecc-com.northstar-connect.com') 'CRITICAL'
+# clubnow was renamed by Northstar on 21 Sept (ticket #996907) to sit under the
+# members custom hostname, so their *.members.pinelakecc.com certificate covers
+# it. The old clubnow.pinelakecc.com CNAME was removed at their instruction;
+# its target had stopped resolving on their side. INFO because it serves their
+# "Under Maintenance" page and nothing at the club is known to use it.
+Check 'CNAME clubnow.members (Northstar, renamed 21 Sept)' ("clubnow.members." + $Zone) 'CNAME' @('members-pinelakecc-com.northstar-connect.com') 'INFO'
 Check 'CNAME 4668611 (SendGrid)' ("4668611." + $Zone) 'CNAME' @('sendgrid.net') 'CRITICAL'
 Check 'CNAME em7487.emails (SendGrid)' ("em7487.emails." + $Zone) 'CNAME' @('u4668611.wl112.sendgrid.net') 'CRITICAL'
 Check 'CNAME url305.emails (SendGrid click tracking)' ("url305.emails." + $Zone) 'CNAME' @('sendgrid.net') 'CRITICAL'
