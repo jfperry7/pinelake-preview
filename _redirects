@@ -88,6 +88,19 @@
 /c/*                                https://members.pinelakecc.com/c/:splat         301
 /documents/*                        https://members.pinelakecc.com/documents/:splat 301
 /o/*                                https://members.pinelakecc.com/o/:splat         301
+# Added 22 Sept 2026. /group/pages/* is where every member-facing portal page
+# lives (menus, pro shop, tennis, swim team) and it was missing above, so those
+# URLs 404ed on the old host while /web, /c, /documents and /o redirected.
+# The ClubNow app and old bookmarks may still carry them. The rest are the
+# other Liferay path roots. /api/jsonws is Liferay web services and uses 308
+# so a POST stays a POST; our own /api/inquiry is handled in worker.js first.
+/group/*                            https://members.pinelakecc.com/group/:splat     301
+/delegate/*                         https://members.pinelakecc.com/delegate/:splat  301
+/image/*                            https://members.pinelakecc.com/image/:splat     301
+/combo/*                            https://members.pinelakecc.com/combo/:splat     301
+/html/*                             https://members.pinelakecc.com/html/:splat      301
+/user/*                             https://members.pinelakecc.com/user/:splat      301
+/api/jsonws/*                       https://members.pinelakecc.com/api/jsonws/:splat 308
 
 # ------------------------------------------------------------ undecided
 # Live pages on the old site with nowhere to land yet. Leave them out
