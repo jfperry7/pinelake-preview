@@ -11,18 +11,23 @@
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page",
 
-    // WITHOUT THIS, worker.js NEVER RUNS FOR A REAL PAGE.
+    // WHICH REQUESTS RUN worker.js FIRST.
     //
     // A Worker with static assets does not invoke the script for a request
-    // that matches an asset file - Cloudflare serves the file directly and
-    // the script only sees requests that miss. That is why /api/inquiry
-    // worked while the hostname guard in worker.js silently did nothing:
-    // every page and robots.txt was an asset, so the guard was skipped and
-    // the staging .workers.dev URL served the live, indexable robots.txt.
+    // that matches an asset file unless told to. Without this, every page and
+    // robots.txt bypassed worker.js, so the hostname guard that keeps the
+    // staging .workers.dev URL out of Google never ran (caught 21 Sept).
     //
-    // Caught on 21 Sept by checking staging after the deploy rather than
-    // assuming the deploy was correct.
-    "run_worker_first": true
+    // Pages, robots.txt and /api/* go through the Worker: hostname guard,
+    // http->https redirect, _redirects. /img/* is EXCLUDED and served natively
+    // by the asset server, for two measured reasons (QA, 22 Sept):
+    //   - through the Worker the 7 MB hero video ignored Range requests
+    //     (200 with the whole file instead of 206), so Chrome fetched it four
+    //     times per page load and iOS Safari would not play it at all;
+    //   - every asset request counted against the Workers Free 100k/day cap,
+    //     over which requests 429 rather than fall back to static serving.
+    // _headers still applies to natively served assets.
+    "run_worker_first": ["/*", "!/img/*"]
   },
   "observability": {
     "enabled": true

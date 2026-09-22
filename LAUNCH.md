@@ -977,3 +977,15 @@ accessibility basics. Everything passed except the items below.
 - **Still deliberately on:** `MAIL_TEST_TO`. Three `[TEST]` QA submissions
   and one more from the runtime test are in the club Gmail as evidence the
   delivery path works.
+
+**22 Sept, afternoon - byte-range / request-cap fix shipped (commit follows).**
+`run_worker_first` changed from `true` to `["/*", "!/img/*"]`. Pages,
+`robots.txt` and `/api/*` still run through `worker.js` (hostname guard,
+http->https, `_redirects`); `/img/*` is served natively by the asset server so
+the hero video can answer Range requests with 206 and image requests stop
+counting against the Workers Free 100k/day cap. `_headers` still applies to
+natively served assets. Side effect, accepted: images on the staging host no
+longer carry `X-Robots-Tag` (pages still do), and a plain-http request for an
+image is not redirected by the Worker - HSTS and the page-level redirect make
+that moot in practice, and the zone toggle "Always Use HTTPS" closes it fully.
+Verification below.
