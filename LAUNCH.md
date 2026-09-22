@@ -922,3 +922,58 @@ is equally unused by members.
 **Consequence:** no outage is open. The only question worth Northstar's time is
 housekeeping - whether either `clubnow` name should exist at all - and it can
 wait for the next scheduled contact rather than a ticket.
+
+---
+
+## Post-launch QA - 22 September 2026, midday
+
+Full sweep of the live site from outside: 14 pages, 54 internal and 22 external
+links, all 55 redirect rules, the form end to end (API and a real browser
+submission through the runtime), private-file exposure, indexing on live vs
+staging, console errors, phone-width render, headers, asset weights,
+accessibility basics. Everything passed except the items below.
+
+**Fixed and verified live the same day (commit 3e03c28):**
+
+1. **Wrong confirmation after a successful send.** The API accepted the note
+   but the page showed the email-app fallback wording ("Almost there... your
+   note is open in your email app, press send"). One `submitted` flag, one
+   panel, fallback copy. Now two panels keyed on which path completed:
+   "Thank you - your note is on its way. A member of our team will reach out
+   personally." for the API, the old wording for the mailto fallback. All 12
+   form pages; each page's own styling preserved. Proven by a real runtime
+   submission on the deployed build: POST 200, correct panel shown.
+2. **HTTP served the site unencrypted.** `worker.js` now 301s http to https
+   before anything else. Verified on apex and www.
+3. **No `lang` on any page.** All 15 served pages carry `lang="en"`.
+4. **No security headers.** `_headers` now sets X-Content-Type-Options,
+   X-Frame-Options, Referrer-Policy and 180-day HSTS (no includeSubDomains -
+   the subdomains are Northstar's). Verified on pages and images.
+
+**Still open, in priority order:**
+
+- **Hero video ignores byte-range requests.** Every `Range:` request gets the
+  full 7.2 MB as a 200 with no Content-Range. Chrome fetched it four times on
+  one homepage load; iOS Safari generally will not play video at all without
+  206 support and shows the poster instead. HANDOFF.md warned of exactly this.
+  Likely cause: `run_worker_first: true` sends every asset through
+  `env.ASSETS.fetch`, which does not appear to pass ranges through. Proposed
+  fix: narrow `run_worker_first` to HTML routes and `/robots.txt` so images and
+  video are served natively - then re-test with `curl -H "Range: bytes=0-1023"`
+  expecting 206, and on a real iPhone.
+- **Free-plan request cliff.** With `run_worker_first: true` every request
+  counts against the Workers Free limit of 100,000/day, and over it requests
+  return 429 rather than falling back to static serving. Measured 12,224
+  requests in the 24h around launch (~12%). Same fix as above removes most of
+  the exposure. Otherwise the Workers Paid plan is the answer.
+- **Homepage weighs 11.2 MB**, 7.2 MB of it the video, loaded unconditionally
+  on every device. None of the 113 images use `loading="lazy"`. Proposed:
+  lazy-load below-the-fold images; do not load the video under ~768px (the
+  poster is already there).
+- **Nice-to-haves:** `www` serves rather than redirecting to the apex
+  (canonicals make it harmless); paths are case-sensitive (`/Golf` 404s);
+  form fields have no `required` attributes so validation feedback is
+  server-side only; 32 images carry empty `alt=""` - fine if decorative.
+- **Still deliberately on:** `MAIL_TEST_TO`. Three `[TEST]` QA submissions
+  and one more from the runtime test are in the club Gmail as evidence the
+  delivery path works.
