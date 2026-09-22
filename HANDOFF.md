@@ -48,6 +48,12 @@ of the build can pick this up cold. Read this before touching anything.
 > `104.24.9.63` restores a maintenance page, not the old site — and a
 > nameserver move does not roll back quickly either: the `.com` delegation
 > carries a 48-hour TTL. Correctness before the switch is the only safety net.
+>
+> **The portal leans on our redirects.** 13 links inside the member portal
+> still point at `pinelakecc.com` and work only because `_redirects` forwards
+> them. Deliberately left that way (Northstar changes have broken things
+> twice). Never remove the portal block in `_redirects`; if the site ever
+> moves host again, those rules move with it. List in `NORTHSTAR-FIX-LIST.md`.
 
 | | |
 |---|---|

@@ -88,6 +88,12 @@
 /c/*                                https://members.pinelakecc.com/c/:splat         301
 /documents/*                        https://members.pinelakecc.com/documents/:splat 301
 /o/*                                https://members.pinelakecc.com/o/:splat         301
+# DO NOT REMOVE THE PORTAL RULES BELOW. As of 22 Sept 2026 the member portal
+# itself still carries 13 links on the old hostname (5 in its navigation menu,
+# 1 PDF link on golf-pro-shop1, 7 staff photos on contact-us1). They work only
+# because these rules forward them. Northstar was told and the club chose to
+# leave them rather than risk another portal change. Details: LAUNCH.md.
+#
 # Added 22 Sept 2026. /group/pages/* is where every member-facing portal page
 # lives (menus, pro shop, tennis, swim team) and it was missing above, so those
 # URLs 404ed on the old host while /web, /c, /documents and /o redirected.
