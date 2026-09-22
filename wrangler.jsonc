@@ -48,10 +48,10 @@
   // file that lives in git. RESEND_API_KEY stays a dashboard Secret, and
   // wrangler leaves secrets alone.
   "vars": {
-    // Resend will not send from an unverified domain. onboarding@resend.dev
-    // is their test sender and needs no DNS. Becomes a club address once
-    // pinelakecc.com is verified in Resend.
-    "MAIL_FROM": "Pine Lake Website <onboarding@resend.dev>",
+    // send.pinelakecc.com is the Resend sending subdomain verified 22 Sept
+    // 2026 (DKIM TXT + two SPF CNAMEs in Cloudflare). Resend refuses to send
+    // from an unverified domain, so any new domain here must be verified first.
+    "MAIL_FROM": "Pine Lake Website <forms@send.pinelakecc.com>",
 
     // Where enquiries are meant to go, once the test switch comes off.
     "MAIL_MEMBERSHIP": "melanie@pinelakecc.com",
