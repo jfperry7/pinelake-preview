@@ -152,8 +152,14 @@ Write-Host "Member portal - members must keep working through the move"
 # to pinelakecc-com.northstar-connect.com was replaced by an A record to their
 # Cloudflare edge, plus two verification records, so Cloudflare will honour
 # their custom hostname now that the zone is on Cloudflare in our account.
-Check 'A members (Northstar edge, per their instruction)' ("members." + $Zone) 'A' @(
-  '104.24.9.63'
+# Their A-record instruction (members -> 104.24.9.63) was tried and produces
+# Cloudflare error 1000: a Cloudflare zone may not hold an A record to a
+# Cloudflare IP, and Cloudflare for SaaS documents the customer record as a
+# CNAME. Replaced 21 Sept ~7:30pm ET with a CNAME to their live SaaS target,
+# which is Cloudflare's own default naming for a CNAME target and resolves to
+# the same edge pair (104.18.28.51 / .29.51) the old pinelakecc-com target did.
+Check 'CNAME members -> Northstar SaaS target' ("members." + $Zone) 'CNAME' @(
+  'customers.northstar-connect.com'
 ) 'CRITICAL'
 Check 'TXT _cf-custom-hostname.members (ownership token from Northstar)' ("_cf-custom-hostname.members." + $Zone) 'TXT' @(
   '8b03768f-10a5-4e60-990b-50fd22c1effc'

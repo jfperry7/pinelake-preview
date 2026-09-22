@@ -754,3 +754,35 @@ for the `members.pinelakecc.com` custom hostname (the "CNAME target" shown
 on their Custom Hostnames page / their fallback-origin hostname) and confirm
 it resolves. Then we replace the A record with that CNAME, DNS only - a
 one-minute change - and test.
+
+**21 Sept, ~7:30pm ET - every configuration of the `members` record has now
+been tested. Results, all with Northstar's ownership TXT and DCV in place and
+their per-hostname certificate (`CN=members.pinelakecc.com`, 21:10 UTC) issued:**
+
+| Our `members` record | Result |
+|---|---|
+| A -> `104.24.9.63`, DNS only (Northstar's instruction) | **error 1000** "DNS points to prohibited IP" - Cloudflare's documented cause 1; A records to the SaaS target are "not a supported setup" |
+| CNAME -> `customers.northstar-connect.com`, DNS only (**current**) | **error 1014** |
+| CNAME -> `pinelakecc-com.northstar-connect.com`, proxied (O2O) | error 1014 (tested earlier; that target no longer resolves at all) |
+
+`customers.northstar-connect.com` is the name Cloudflare's own SaaS guide uses
+as the example CNAME target, it lives in Northstar's SaaS zone, and it resolves
+to the same edge pair the old target did. Our side is now in the documented
+shape end to end. The remaining 1014, with their certificate already issued,
+is the signature of a custom hostname whose `ssl.status` is active but whose
+**hostname `status` is still Pending** (Cloudflare: "Hostname validation and
+certificate validation use different tokens and API fields").
+
+**What clears it, per Cloudflare's docs:** Cloudflare retries hostname
+validation on a backoff - "the first 10 checks complete within 20 minutes and
+most checks complete in the first four hours" - or the provider forces it:
+"Select **Refresh** on the dashboard" (Custom Hostnames page) or `PATCH` the
+custom hostname via API. If the hostname shows **Moved**, it is because it
+"no longer points to the fallback origin"; Refresh "will set the custom
+hostname back to Pending validation".
+
+**Side effect to raise with Northstar:** `clubnow.pinelakecc.com` now fails to
+connect at all (HTTP 000), because its CNAME target
+`pinelakecc-com.northstar-connect.com` stopped resolving on their side this
+evening. Not something we changed. Needs the same treatment as `members` if
+the club uses it.
