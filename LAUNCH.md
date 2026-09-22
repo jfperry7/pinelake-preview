@@ -989,3 +989,16 @@ longer carry `X-Robots-Tag` (pages still do), and a plain-http request for an
 image is not redirected by the Worker - HSTS and the page-level redirect make
 that moot in practice, and the zone toggle "Always Use HTTPS" closes it fully.
 Verification below.
+
+**Verification of the previous entry, and what it turned into.** With `/img/*`
+excluded from the Worker, the hero video STILL answered every Range request
+with a 200 and the whole file - and so did every image and `support.js`, with
+no `Accept-Ranges` header, cache-busted and mid-file. Cloudflare's static asset
+server does not support byte ranges at all; the Worker was never the cause.
+The exclusion is kept for the request-cap benefit, narrowed to image types so
+`.mp4` reaches the Worker, and `worker.js` now serves single-range 206
+responses for video itself: `bytes=a-b`, `bytes=a-`, `bytes=-n`, clamped ends,
+416 when unsatisfiable, HEAD, `Accept-Ranges` advertised on the plain GET.
+Slices are streamed through a TransformStream, not buffered. Tested in a
+browser JS engine against a fake asset streamed in 300-byte chunks: 12 of 12
+checks byte-exact before the deploy.

@@ -18,16 +18,20 @@
     // robots.txt bypassed worker.js, so the hostname guard that keeps the
     // staging .workers.dev URL out of Google never ran (caught 21 Sept).
     //
-    // Pages, robots.txt and /api/* go through the Worker: hostname guard,
-    // http->https redirect, _redirects. /img/* is EXCLUDED and served natively
-    // by the asset server, for two measured reasons (QA, 22 Sept):
-    //   - through the Worker the 7 MB hero video ignored Range requests
-    //     (200 with the whole file instead of 206), so Chrome fetched it four
-    //     times per page load and iOS Safari would not play it at all;
-    //   - every asset request counted against the Workers Free 100k/day cap,
-    //     over which requests 429 rather than fall back to static serving.
-    // _headers still applies to natively served assets.
-    "run_worker_first": ["/*", "!/img/*"]
+    // Pages, robots.txt, /api/* and VIDEO run through the Worker: hostname
+    // guard, http->https redirect, _redirects, and byte-range support for
+    // .mp4. Images are served natively by the asset server so they do not
+    // count against the Workers Free 100k/day cap (over which requests 429
+    // rather than fall back to static serving). _headers applies either way.
+    //
+    // Measured 22 Sept: NEITHER the asset server nor env.ASSETS.fetch honours
+    // Range requests - every asset answers 200 with the whole file. iOS Safari
+    // will not play <video> without 206, and Chrome re-fetched the 7 MB hero
+    // four times per page load. worker.js therefore serves single-range 206
+    // responses for .mp4 itself, streaming rather than buffering.
+    // Exclusions name image TYPES rather than the folder, so /img/*.mp4 still
+    // reaches the Worker - that is where byte-range support lives.
+    "run_worker_first": ["/*", "!/img/*.jpg", "!/img/*.jpeg", "!/img/*.png", "!/img/*.webp", "!/img/*.svg", "!/img/*.ico"]
   },
   "observability": {
     "enabled": true
