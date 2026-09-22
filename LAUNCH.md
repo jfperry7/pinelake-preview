@@ -1145,3 +1145,26 @@ it.
 **Remaining from QA:** `MAIL_TEST_TO` (blocked on the Resend sending
 subdomain, Phase 2), the four old pages with nowhere to land, GA4 custom
 dimensions, the archive backup, the "Always Use HTTPS" zone toggle.
+
+## Phase 2 executed - Resend sending subdomain (22 Sept, ~2pm ET)
+
+Done in Josh's logged-in Resend account (`1902pinelakecc`) and the Cloudflare
+DNS UI, with his go-ahead. Notes for whoever reads the Phase 2 plan above:
+
+- **Resend's records have changed shape.** The plan expected an MX + SPF TXT +
+  DKIM TXT. Resend now asks for a DKIM TXT plus **two CNAMEs for SPF**
+  (`rsend.send` -> `rsend.forge.rmta.net`, `send.send` -> `send.forge.rmta.net`,
+  both DNS only). The MX (`send` -> `inbound-smtp.us-east-1.amazonaws.com`) is
+  only for *receiving* on the subdomain and was deliberately skipped. "Auto
+  configure" (Resend gets API access to the Cloudflare account) was declined
+  in favour of manual records.
+- Records added: TXT `resend._domainkey.send` via the Add record dialog; the
+  two CNAMEs via **Import** of a BIND file (`resend-send-cnames.zone`, kept
+  out of the repo) because the Add record dialog kept closing mid-flow when
+  driven by clicks. Proxy left off. Zone went 43 -> 44 -> 46 records.
+- All three answer publicly (checked over DNS-over-HTTPS; plain DNS from the
+  work PC times out). The apex SPF record was not touched.
+- Resend status at 2:15pm: DKIM Pending, SPF CNAMEs Pending / Not Started,
+  "may take a few hours". `MAIL_FROM` is changed in the working tree to
+  `forms@send.pinelakecc.com` but **not pushed** until Resend reports
+  Verified - pushing early would make every enquiry 502.
