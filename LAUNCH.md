@@ -1092,3 +1092,18 @@ app menu and the five nav links to `members.pinelakecc.com`.
 **Test:** open Current Menus in the app now. Works -> theory confirmed and
 fixed on our side; still tell Northstar about the five nav links. Fails ->
 send Northstar the two tables above and the five links.
+
+**Update, same afternoon - theory confirmed by the app itself.** With the
+`/group/*` redirect live, Josh reports the broken functions in the app now
+land on the **member login page** instead of failing. That can only happen if
+the app requested `https://pinelakecc.com/group/pages/...`, followed our 301
+to `members.pinelakecc.com`, and arrived there without a session: cookies are
+per-hostname, so a login held for `pinelakecc.com` is never sent to
+`members.pinelakecc.com`, and Liferay 302s an anonymous visitor on a private
+page to login. So: the ClubNow app's menu entries for those functions are
+still configured with the old hostname. **No redirect on our side can carry
+the app's credentials across hostnames** - that is browser security, not a
+setting. The fix is Northstar's: re-point the app configuration (base URL /
+web-view URLs) to `members.pinelakecc.com`. Redirect kept for old bookmarks
+and the five stale nav links; it makes the app show a login page rather than
+a 404, neither of which is the fix.
