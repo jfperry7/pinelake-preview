@@ -1168,3 +1168,17 @@ DNS UI, with his go-ahead. Notes for whoever reads the Phase 2 plan above:
   "may take a few hours". `MAIL_FROM` is changed in the working tree to
   `forms@send.pinelakecc.com` but **not pushed** until Resend reports
   Verified - pushing early would make every enquiry 502.
+
+**2:17pm - Verified.** Resend: "DNS verified 2:16 PM, Domain verified 2:17 PM"
+(about ten minutes after the records went in, not hours). Pushed `MAIL_FROM`
+= `Pine Lake Website <forms@send.pinelakecc.com>` (8ef0228) with the test
+switch still on, posted a labelled test to `/api/inquiry`: HTTP 200, Resend
+shows it **Sent and Delivered 2:19 PM, From `forms@send.pinelakecc.com`, To
+the club Gmail, Reply-To the submitter**. Step 5 done.
+
+**2:25pm - `MAIL_TEST_TO` removed** (commit follows). From here every enquiry
+goes to Melanie (membership and general) or Anna (events and weddings) with
+the sender above. The `wrangler.jsonc` comment explains how to turn test
+routing back on; it is now a pure routing switch, no longer tied to domain
+verification. Phase 5 step 2 is complete. Step 6 of Phase 2 - one genuine
+test that reaches Melanie - is Josh's call, since it lands in a real inbox.

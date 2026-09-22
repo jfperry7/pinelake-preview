@@ -55,22 +55,14 @@
 
     // Where enquiries are meant to go, once the test switch comes off.
     "MAIL_MEMBERSHIP": "melanie@pinelakecc.com",
-    "MAIL_EVENTS": "anna@pinelakecc.com",
+    "MAIL_EVENTS": "anna@pinelakecc.com"
 
-    // TEST SWITCH. While this is set, every submission goes here instead of
-    // the club, subject-prefixed [TEST], and the body names who it would
-    // have reached.
-    //
-    // THIS IS NOT A FREE-STANDING SWITCH, despite how it reads. Resend will
-    // only deliver to the account owner's own address until a domain is
-    // verified, and MAIL_FROM above is still Resend's shared test sender.
-    // Delete this line before a domain is verified and every submission
-    // fails with a 502 instead of reaching Melanie and Anna - the form looks
-    // broken to the visitor and nobody at the club hears about the enquiry.
-    //
-    // The order is: verify a sending domain in Resend, point MAIL_FROM at a
-    // club address on it, confirm a real send arrives, and only then remove
-    // this line. See LAUNCH.md.
-    "MAIL_TEST_TO": "1902pinelakecc@gmail.com"
+    // TEST SWITCH - OFF since 22 Sept 2026, 2:25pm ET. Enquiries now reach
+    // Melanie and Anna directly. To route every submission to the club Gmail
+    // again (subject-prefixed [TEST], body names the intended recipient), add
+    // a comma after MAIL_EVENTS and restore:
+    //   "MAIL_TEST_TO": "1902pinelakecc@gmail.com"
+    // The sending domain send.pinelakecc.com is verified in Resend, so this
+    // is a pure routing switch now and safe to flip either way.
   }
 }

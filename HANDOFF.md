@@ -17,9 +17,10 @@ of the build can pick this up cold. Read this before touching anything.
 > ranges with 206 from `worker.js` - see "Post-launch QA" at the end of
 > `LAUNCH.md` for what is still open.
 >
-> **Still deliberately on:** `MAIL_TEST_TO` in `wrangler.jsonc`. Enquiries go
-> to the club Gmail until the Resend sending subdomain is done (LAUNCH.md
-> Phase 2). Do not remove it first.
+> **22 Sept, 2:25pm: `MAIL_TEST_TO` is OFF.** `send.pinelakecc.com` is verified
+> in Resend and forms send from `forms@send.pinelakecc.com` straight to
+> Melanie and Anna. The comment in `wrangler.jsonc` says how to turn the test
+> routing back on.
 > ## READ THIS FIRST: the club has no public website right now
 >
 > Northstar completed ticket #996907 on 21 Sept. They **moved** the Liferay
