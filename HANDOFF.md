@@ -313,9 +313,9 @@ Claude artifacts. Ticks persist between sessions.
   `JSESSIONID` is host-only. A draft notice exists in the session history.
 - **Archive backup - DONE 22 Sept.** Private GitHub repo
   `jfperry7/pinelake-old-site-archive-2026-09-21`, pushed from the folder itself.
-- **Four old pages have nowhere to land** and will 404 after cutover:
-  `/employment-application`, `/scholarship-foundation`, `/mobile-application`,
-  `/christmas-fund-form`. Listed at the bottom of `_redirects`.
+- **Four old pages - REDIRECTED 22 Sept** (were 404s since cutover):
+  `/employment-application` -> `/contact`, `/scholarship-foundation` -> `/about`,
+  `/mobile-application` -> portal login, `/christmas-fund-form` -> portal home.
 - **Resend domain verification** before launch, so forms send from a club
   address rather than `onboarding@resend.dev`. Do it on a **subdomain**, so
   the apex SPF record is never touched. Until it is done, `MAIL_TEST_TO` must
