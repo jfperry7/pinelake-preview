@@ -75,6 +75,14 @@
 /old-pages                          /                         301
 /submittedinfo                      /                         301
 
+# Four pages from the old site that had no equivalent on the new one. Decided
+# 22 Sept 2026 rather than leave them as 404s: the two public pages go to the
+# nearest public page, the two member-only pages go to the member portal.
+/employment-application             /contact                                        301
+/scholarship-foundation             /about                                          301
+/mobile-application                 https://members.pinelakecc.com/web/pages/login  301
+/christmas-fund-form                https://members.pinelakecc.com/group/pages/home 301
+
 # ------------------------------------------------------- member portal
 # Enabled 21 Sept 2026, once members.pinelakecc.com was confirmed serving a
 # real login form on a valid certificate. These carry old bookmarked portal
@@ -107,9 +115,3 @@
 /html/*                             https://members.pinelakecc.com/html/:splat      301
 /user/*                             https://members.pinelakecc.com/user/:splat      301
 /api/jsonws/*                       https://members.pinelakecc.com/api/jsonws/:splat 308
-
-# ------------------------------------------------------------ undecided
-# Live pages on the old site with nowhere to land yet. Leave them out
-# rather than sending someone to a page that does not answer the question:
-#   /employment-application  /scholarship-foundation
-#   /mobile-application  /christmas-fund-form
