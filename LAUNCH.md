@@ -716,3 +716,41 @@ If it still shows error 1000 after Northstar says they have activated the
 hostname, the one thing to try on our side is swapping the A record back to
 the original CNAME (`pinelakecc-com.northstar-connect.com`, DNS only) in case
 `104.24.9.63` is not the edge their SaaS zone uses. One-minute change.
+
+**21 Sept, ~7pm ET - Northstar says "complete, waiting on propagation". It is
+not propagation. Two measured facts:**
+
+1. **Their A-record instruction is the wrong shape.** Cloudflare's error-1000
+   documentation, cause 1: "An A record within your Cloudflare DNS app points
+   to a Cloudflare IP address." That is exactly `members A -> 104.24.9.63`
+   from inside our zone. `104.24.9.63` is the edge serving
+   `www.globalnorthstar.com`, Northstar's own website. Forcing the connection
+   to their SaaS zone's edge IPs (`104.18.28.51` / `.29.51`) with `--resolve`
+   gives the identical error, so the ingress IP is not the variable - the
+   trigger is our zone holding an A record to any Cloudflare IP. This cannot
+   work as instructed. The supported shape is a CNAME to the provider's target.
+   I applied their instruction without checking it against this doc; that was
+   a mistake and it cost a round trip.
+
+2. **The CNAME target they have used for years no longer resolves.**
+   `pinelakecc-com.northstar-connect.com` returned `104.18.28.51 / .29.51` at
+   ~5pm and returns NODATA at ~7pm, from both public resolvers and their own
+   authoritative nameservers (`josh` / `bella.ns.cloudflare.com`). Something in
+   their "configurations complete" step removed or renamed it. Until they give
+   a target that resolves, switching back to a CNAME would fail differently
+   (no address at all) rather than fix anything.
+
+What IS working: the custom hostname on their side is validated - Cloudflare
+issued a per-hostname certificate `CN=members.pinelakecc.com` at 21:10 UTC,
+which only happens after ownership verification succeeds. Our TXT and DCV
+records did their job.
+
+**Propagation is not a factor.** All six public resolvers tested (Cloudflare,
+Google, Quad9, OpenDNS, Verisign, Level3) return the new A record and both
+verification records. Cloudflare's own verification reads authoritative DNS.
+
+**Next action is Northstar's, and it is specific:** provide the CNAME target
+for the `members.pinelakecc.com` custom hostname (the "CNAME target" shown
+on their Custom Hostnames page / their fallback-origin hostname) and confirm
+it resolves. Then we replace the A record with that CNAME, DNS only - a
+one-minute change - and test.
