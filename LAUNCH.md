@@ -1231,5 +1231,7 @@ So Northstar fixed the app and left the portal's own links untouched. Those
   Worker's own http->https redirect is now belt-and-braces; the dashboard
   warning about redirect loops does not apply because the Worker only
   redirects when it still sees `http:`, which it never will behind the toggle.
-- **Archive backup** still open: 92 MB folder, not in git, no GitHub CLI on
-  this PC. Needs a destination from Josh.
+- **Archive backup done** (~3:25pm): the folder was turned into a git repo and
+  pushed to the new private GitHub repo `jfperry7/pinelake-old-site-archive-2026-09-21`
+  (193 files, remote HEAD matches local). Created in Josh's logged-in GitHub;
+  no GitHub CLI on this PC, so plain `git push` with his stored credentials.

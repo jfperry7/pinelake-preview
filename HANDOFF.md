@@ -292,7 +292,7 @@ widths, load the page in an iframe of the width you want.
 | `LAUNCH.md` | Full cutover procedure, DNS values, redirect map, rollback |
 | `ENHANCEMENTS.md` | Deferred work and what the club must supply for each |
 | `COMMITTEE-NOTE.md` | Draft note to the committee — **stale**, still mentions Formspree |
-| `../../old-site-archive-2026-09-21/` (project root, two levels up - not one) | The old site, captured 21 Sept. **Now the only copy that exists** — Northstar took the live pages down the same day, and the Wayback Machine never captured them. Outside the repo so it is never served, which also means **it is not in git and lives on Josh's machine alone.** |
+| `../../old-site-archive-2026-09-21/` (project root, two levels up - not one) | The old site, captured 21 Sept. **Now the only copy that exists** — Northstar took the live pages down the same day, and the Wayback Machine never captured them. Outside the website repo so it is never served. **Backed up 22 Sept 2026** to the private GitHub repo `jfperry7/pinelake-old-site-archive-2026-09-21` (193 files, all of it); the folder is now a git checkout of that repo. |
 
 There is also a live checklist artifact, "Pine Lake Launch Runbook", in Josh's
 Claude artifacts. Ticks persist between sessions.
@@ -311,8 +311,8 @@ Claude artifacts. Ticks persist between sessions.
 - **Members need telling** that the portal moved to
   `members.pinelakecc.com/web/pages/login`. They will be logged out once, since
   `JSESSIONID` is host-only. A draft notice exists in the session history.
-- **Back up the archive off this machine.** See the table above. One disk
-  failure and the club's old site is gone for good.
+- **Archive backup - DONE 22 Sept.** Private GitHub repo
+  `jfperry7/pinelake-old-site-archive-2026-09-21`, pushed from the folder itself.
 - **Four old pages have nowhere to land** and will 404 after cutover:
   `/employment-application`, `/scholarship-foundation`, `/mobile-application`,
   `/christmas-fund-form`. Listed at the bottom of `_redirects`.
