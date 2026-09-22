@@ -8,24 +8,53 @@ every corrected address was verified to load (HTTP 200) on
 **The rule for every item:** replace `https://pinelakecc.com/` with
 `https://members.pinelakecc.com/`. Nothing after the hostname changes.
 
-## A. ClubNow app - menu items that open a portal page
+## A. ClubNow app - every menu item that opens a portal page
 
-These four items fail in the app. Since 22 Sept they land members on the
+Any app item that opens a portal page by address must use
+`https://members.pinelakecc.com/...`. Native modules (tee times, dining
+reservations, statements, member roster) already work and need no change.
+
+Members have confirmed these fail in the app; since 22 Sept they land on the
 portal login page, which shows the app is still requesting the old hostname.
-Native modules (tee times, dining reservations, statements, member roster)
-work and need no change.
+They are examples, not the full set - every page-based item matters equally.
 
-| App item | Currently opens (old) | Must open |
-|---|---|---|
-| Current Menus | `https://pinelakecc.com/group/pages/current-menus` | `https://members.pinelakecc.com/group/pages/current-menus` |
-| Golf & Pro Shop | `https://pinelakecc.com/group/pages/golf-pro-shop1` | `https://members.pinelakecc.com/group/pages/golf-pro-shop1` |
-| Swim Team Information | `https://pinelakecc.com/group/pages/swim-team-information` | `https://members.pinelakecc.com/group/pages/swim-team-information` |
-| Tennis Reservations | `https://pinelakecc.com/group/pages/tennis-reservations` | `https://members.pinelakecc.com/group/pages/tennis-reservations` |
+| Example item | Must open |
+|---|---|
+| Current Menus | `https://members.pinelakecc.com/group/pages/current-menus` |
+| Golf & Pro Shop | `https://members.pinelakecc.com/group/pages/golf-pro-shop1` |
+| Swim Team Information | `https://members.pinelakecc.com/group/pages/swim-team-information` |
+| Tennis Reservations | `https://members.pinelakecc.com/group/pages/tennis-reservations` |
 
-Please also check every other page-based item in the Pine Lake app
-configuration, and the app's base/portal URL if one is stored separately, and
-apply the same rule. Members must arrive logged in, as they did before the
-move.
+For reference, these are all 43 portal pages that exist today. Any app item
+that opens one of them must use the `members.` address:
+
+    /group/pages/home                      /group/pages/club-calendar
+    /group/pages/club-calendar1            /group/pages/clubcalendar
+    /group/pages/clubcalendar-1            /group/pages/contact-us1
+    /group/pages/current-menus             /group/pages/dining
+    /group/pages/dining1                   /group/pages/dining-reservation1
+    /group/pages/fitness1                  /group/pages/golf-instruction
+    /group/pages/golf-outing               /group/pages/golf-outings
+    /group/pages/golf-pro-shop             /group/pages/golf-pro-shop1
+    /group/pages/golf-simulator            /group/pages/marina1
+    /group/pages/member-roster             /group/pages/members-roster
+    /group/pages/membership1               /group/pages/membership-information
+    /group/pages/my-reservations           /group/pages/myprofile
+    /group/pages/photo-gallery             /group/pages/photo-gallery1
+    /group/pages/plcc-employee-scholarship-foundation1
+    /group/pages/prospective-member-information
+    /group/pages/recent-charges            /group/pages/request-for-boat-well-form
+    /group/pages/request-information       /group/pages/rooms-capacity
+    /group/pages/social-media              /group/pages/statementsummary
+    /group/pages/swim                      /group/pages/swim1
+    /group/pages/swim-team-information     /group/pages/tee-time-reservation
+    /group/pages/tennis                    /group/pages/tennis-reservations
+    /group/pages/viewprofile               /group/pages/weddings-parties
+    /group/pages/makepayment
+
+If the app stores a single base or portal URL for Pine Lake, it must be
+`https://members.pinelakecc.com`. Members must arrive logged in, as they did
+before the move.
 
 ## B. Portal navigation menu - 5 links (appear on every page)
 
