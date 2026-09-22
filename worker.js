@@ -88,10 +88,17 @@ function tagNoindex(response) {
  * Byte-range support for video.
  *
  * Handles the single-range forms browsers actually send - bytes=a-b, bytes=a-,
- * bytes=-n - and streams the slice through a TransformStream rather than
- * buffering the file, so CPU time stays trivial on the Free plan. With no
- * Range header the asset is returned whole but with Accept-Ranges set, so the
- * browser asks for ranges on its next request instead of re-downloading.
+ * bytes=-n. With no Range header the asset is returned whole but with
+ * Accept-Ranges set, so the browser asks for ranges on its next request
+ * instead of re-downloading.
+ *
+ * The ASSETS binding's response carries NO Content-Length inside the Worker
+ * (the edge adds it on the way out), and Number(null) is 0, not NaN - the
+ * first deploy of this turned every range into a 416 with a Content-Range total
+ * of 0 for exactly that reason. So the length is parsed defensively, and when the size
+ * is unknown the body is read once and sliced directly. That is 7 MB in memory
+ * per range request, well inside the Worker's limits, and the edge caches the
+ * binding fetch. When a length IS known the slice is streamed instead.
  *
  * Returns null if the asset cannot be fetched (caller falls through to the
  * normal path, which will 404), and 416 for an unsatisfiable range.
@@ -100,7 +107,6 @@ async function serveVideoRange(request, env) {
   const full = await env.ASSETS.fetch(new Request(request.url, { method: 'GET' }));
   if (!full.ok || !full.body) return null;
 
-  const total = Number(full.headers.get('Content-Length'));
   const headers = new Headers(full.headers);
   headers.set('Accept-Ranges', 'bytes');
   headers.delete('Content-Encoding');
@@ -108,9 +114,18 @@ async function serveVideoRange(request, env) {
   const rangeHeader = request.headers.get('Range');
   const isHead = request.method === 'HEAD';
 
-  if (!rangeHeader || !Number.isFinite(total)) {
+  if (!rangeHeader) {
     if (isHead) { await full.body.cancel(); return new Response(null, { status: 200, headers }); }
     return new Response(full.body, { status: 200, headers });
+  }
+
+  // Known length -> stream the slice. Unknown -> buffer once, then slice.
+  const lengthHeader = full.headers.get('Content-Length');
+  let total = lengthHeader === null || lengthHeader === '' ? NaN : Number(lengthHeader);
+  let buffered = null;
+  if (!(total > 0)) {
+    buffered = new Uint8Array(await full.arrayBuffer());
+    total = buffered.byteLength;
   }
 
   const m = /^bytes=(\d*)-(\d*)$/.exec(rangeHeader.trim());
@@ -124,7 +139,7 @@ async function serveVideoRange(request, env) {
     end = total - 1;
   }
   if (!m || !(start >= 0) || !(start <= end) || start >= total) {
-    await full.body.cancel();
+    if (!buffered) await full.body.cancel();
     return new Response(null, {
       status: 416,
       headers: { 'Content-Range': 'bytes */' + total, 'Accept-Ranges': 'bytes' }
@@ -135,9 +150,13 @@ async function serveVideoRange(request, env) {
   headers.set('Content-Range', 'bytes ' + start + '-' + end + '/' + total);
   headers.set('Content-Length', String(length));
 
-  if (isHead) { await full.body.cancel(); return new Response(null, { status: 206, headers }); }
+  if (isHead) { if (!buffered) await full.body.cancel(); return new Response(null, { status: 206, headers }); }
 
-  // Skip `start` bytes, pass `length` bytes, then stop reading the source.
+  if (buffered) {
+    return new Response(buffered.subarray(start, end + 1), { status: 206, headers });
+  }
+
+  // Streaming path: skip `start` bytes, pass `length` bytes, then stop.
   let skipped = 0;
   let sent = 0;
   const slicer = new TransformStream({
