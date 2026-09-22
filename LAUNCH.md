@@ -1214,3 +1214,22 @@ explanation that fits both symptoms.
 So Northstar fixed the app and left the portal's own links untouched. Those
 13 still work for members only because pinelakecc.com redirects them.
 `clubnow.pinelakecc.com` still 403.
+
+## QA list, third pass (22 Sept, ~3:15pm ET)
+
+- **Four orphan pages redirected** (a5748a3, verified live):
+  `/employment-application` -> `/contact`, `/scholarship-foundation` ->
+  `/about`, `/mobile-application` -> portal login, `/christmas-fund-form` ->
+  portal home. The "undecided" note in `_redirects` is gone.
+- **GA4 custom dimensions registered** in property "PLCC Website"
+  (`G-SHF5ZLF3GT`, account "Pine Lake Country Club"), all event-scoped:
+  Inquiry type -> `inquiry_type`, Source page -> `source_page`, Routed to ->
+  `routed_to`. These are the three parameters `inquiry_submitted` sends. GA4
+  does not backfill: values appear in reports from now on, not for earlier
+  events. Done in Josh's logged-in Google account.
+- **Cloudflare "Always Use HTTPS"** was already ON. Nothing to do. The
+  Worker's own http->https redirect is now belt-and-braces; the dashboard
+  warning about redirect loops does not apply because the Worker only
+  redirects when it still sees `http:`, which it never will behind the toggle.
+- **Archive backup** still open: 92 MB folder, not in git, no GitHub CLI on
+  this PC. Needs a destination from Josh.
