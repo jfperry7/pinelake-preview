@@ -30,6 +30,13 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    // Plain http never serves a page. 301 to https before anything else, so
+    // this holds even if the zone-level "Always Use HTTPS" toggle is off.
+    if (url.protocol === 'http:') {
+      url.protocol = 'https:';
+      return Response.redirect(url.toString(), 301);
+    }
+
     if (url.pathname === '/api/inquiry') {
       return inquiry({ request, env, ctx });
     }

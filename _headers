@@ -4,6 +4,15 @@
 # .workers.dev URL and the live domain, so indexing has to be decided per
 # hostname - which `_headers` cannot do. It lives in `worker.js` instead.
 
+# Baseline security headers on every response. HSTS deliberately WITHOUT
+# includeSubDomains: members.pinelakecc.com and friends are Northstar's and
+# not ours to make promises about. 180 days, no preload.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=15552000
+
 # Long cache on fingerprint-stable assets. Images are replaced by name when
 # they change, so keep this modest rather than immutable.
 /img/*

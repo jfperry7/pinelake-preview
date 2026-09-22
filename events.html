@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -336,7 +336,14 @@ header nav a[style*="background:#C4A45A"]{padding:8px 8px !important;letter-spac
       <a href="tel:+12486821300" style="display:inline-block;margin-top:22px;font-family:'Playfair Display',serif;font-size:clamp(24px,2.6vw,34px);color:#1E2B14;border-bottom:1px solid #C4A45A;padding-bottom:6px">(248) 682-1300</a>
       <p style="font-size:12.5px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.6);margin-top:20px">3300 Pine Lake Road, Orchard Lake, MI 48324</p>
     </div>
-    <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+    <sc-if value="{{ viaApi }}" hint-placeholder-val="{{ false }}">
+      <div style="border:1px solid rgba(30,43,20,.14);border-radius:3px;padding:clamp(26px,3.6vw,42px);background:#F0EDE6">
+        <div style="width:52px;height:52px;border-radius:50%;border:1px solid #C4A45A;display:flex;align-items:center;justify-content:center;color:#C4A45A;font-size:23px">✓</div>
+        <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(23px,2.5vw,31px);line-height:1.2;margin-top:20px">Thank you{{ greetName }} — your note is on its way.</h3>
+        <p style="font-size:14px;line-height:1.8;font-weight:300;color:rgba(30,43,20,.7);margin-top:14px">A member of our team will reach out personally. Prefer to talk in the meantime? Call (248) 682-1300.</p>
+      </div>
+    </sc-if>
+    <sc-if value="{{ viaMail }}" hint-placeholder-val="{{ false }}">
       <div style="border:1px solid rgba(30,43,20,.14);border-radius:3px;padding:clamp(26px,3.6vw,42px);background:#F0EDE6">
         <div style="width:52px;height:52px;border-radius:50%;border:1px solid #C4A45A;display:flex;align-items:center;justify-content:center;color:#C4A45A;font-size:23px">✓</div>
         <h3 style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(23px,2.5vw,31px);line-height:1.2;margin-top:20px">Almost there{{ greetName }} — one last step.</h3>
@@ -393,7 +400,7 @@ header nav a[style*="background:#C4A45A"]{padding:8px 8px !important;letter-spac
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
 class Component extends DCLogic {
-  state = { name: '', email: '', phone: '', interest: 'events', error: false, submitted: false };
+  state = { name: '', email: '', phone: '', interest: 'events', error: false, submitted: false , viaMail: false };
   set(k) { return e => this.setState({ [k]: e.target.value, error: false }); }
   renderVals() {
     const s = this.state;
@@ -402,6 +409,7 @@ class Component extends DCLogic {
       name: s.name, email: s.email, phone: s.phone, interest: s.interest,
       onName: this.set('name'), onEmail: this.set('email'), onPhone: this.set('phone'), onInterest: this.set('interest'),
       error: s.error, submitted: s.submitted, notSubmitted: !s.submitted,
+        viaApi: s.submitted && !s.viaMail, viaMail: s.submitted && s.viaMail,
       greetName: s.name.trim() ? ', ' + s.name.trim().split(' ')[0] : '',
       onSubmit: e => {
         e.preventDefault();
@@ -433,7 +441,7 @@ class Component extends DCLogic {
           var to = /event|wedding/i.test(interest) ? 'anna@pinelakecc.com' : 'melanie@pinelakecc.com';
           var subject = 'Website inquiry - ' + interest + ' - ' + body.name;
           window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
-          self.setState({ submitted: true });
+          self.setState({ submitted: true, viaMail: true });
         }
         fetch('/api/inquiry', {
           method: 'POST',
@@ -451,7 +459,7 @@ class Component extends DCLogic {
               routed_to: /event|wedding/i.test(interest) ? 'events' : 'membership'
             });
           }
-          self.setState({ submitted: true });
+          self.setState({ submitted: true, viaMail: false });
         })['catch'](mailFallback);
       }
     };
