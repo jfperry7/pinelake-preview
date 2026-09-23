@@ -1298,3 +1298,23 @@ Nothing found that needs fixing.
   membership announcing the portal is back and the new public website.
   Traffic before this is cutover-window noise (QA, staff, Northstar);
   traffic after it is the launch. GA4 only fires on the live domain.
+
+## First analytics read (23 Sept, morning ET)
+
+**The GA4 property "PLCC Website" (G-SHF5ZLF3GT) is shared with the member
+portal.** Northstar's Liferay theme loads the same tag, so `/web/pages/login`,
+`/group/pages/...` and the portal home all report into it alongside the new
+public site. Site pages and portal pages are separable by path today
+(portal paths start /web, /group, /c, /o, /user); for clean reporting later,
+add a Hostname filter or a second data stream. Do not read the property
+totals as "website traffic".
+
+21-23 Sept (23rd partial), 1,709 views / 516 active users in the property,
+split by path roughly half and half: 847 views on the public site, 862 on
+the portal. Public site: `/` 458 views / 329 users, then membership 79,
+golf 61, events 49, dining 48, family 41, tennis 34, about 32, contact 31.
+Engagement per active user ~20-60s on section pages, 1m07s on contact.
+Channels (property-wide): Direct 71%, Organic Search 20%, Referral 1.5%,
+AI Assistant 4 sessions, Organic Social 4. Per day: 21st 411 views/145
+users, 22nd 1,000/284 (launch note ~5pm), 23rd 299/126 by mid-morning.
+Device split not pulled (Tech report would not render in the harness).
