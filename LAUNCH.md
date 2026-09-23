@@ -1289,3 +1289,12 @@ Everything touched today re-checked from outside, live domain unless noted.
   `send.pinelakecc.com`, aligned under relaxed DMARC.
 
 Nothing found that needs fixing.
+
+## Timeline for reading analytics (recorded 23 Sept)
+
+- **Mon 21 Sept, evening ET** - DNS cutover; pinelakecc.com starts serving
+  the new site. Portal outage the same evening, app back Tue morning.
+- **Tue 22 Sept, ~5:00pm ET** - formal launch: Tyler's note to the
+  membership announcing the portal is back and the new public website.
+  Traffic before this is cutover-window noise (QA, staff, Northstar);
+  traffic after it is the launch. GA4 only fires on the live domain.
