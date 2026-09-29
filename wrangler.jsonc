@@ -55,7 +55,12 @@
 
     // Where enquiries are meant to go, once the test switch comes off.
     "MAIL_MEMBERSHIP": "melanie@pinelakecc.com",
-    "MAIL_EVENTS": "anna@pinelakecc.com"
+    "MAIL_EVENTS": "anna@pinelakecc.com",
+
+    // Archive copy. Every enquiry is blind-copied here as well, so the club
+    // keeps one searchable record of everything the website has sent. Added
+    // 29 Sept 2026 at Josh's request. Ignored while MAIL_TEST_TO is set.
+    "MAIL_ARCHIVE": "1902pinelakecc@gmail.com"
 
     // TEST SWITCH - OFF since 22 Sept 2026, 2:25pm ET. Enquiries now reach
     // Melanie and Anna directly. To route every submission to the club Gmail
