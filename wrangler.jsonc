@@ -65,7 +65,7 @@
     // TEST SWITCH - OFF since 22 Sept 2026, 2:25pm ET. Enquiries now reach
     // Melanie and Anna directly. To route every submission to the club Gmail
     // again (subject-prefixed [TEST], body names the intended recipient), add
-    // a comma after MAIL_EVENTS and restore:
+    // a comma after MAIL_ARCHIVE and restore:
     //   "MAIL_TEST_TO": "1902pinelakecc@gmail.com"
     // The sending domain send.pinelakecc.com is verified in Resend, so this
     // is a pure routing switch now and safe to flip either way.
