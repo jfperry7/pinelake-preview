@@ -1318,3 +1318,21 @@ Channels (property-wide): Direct 71%, Organic Search 20%, Referral 1.5%,
 AI Assistant 4 sessions, Organic Social 4. Per day: 21st 411 views/145
 users, 22nd 1,000/284 (launch note ~5pm), 23rd 299/126 by mid-morning.
 Device split not pulled (Tech report would not render in the harness).
+
+## Enquiry archive on, and the first week's enquiries (29 Sept)
+
+Josh asked for a way to report on form submissions. Resend's Emails page is
+a delivery log with short retention, not an archive, so `MAIL_ARCHIVE` is now
+set to the club Gmail (ea560fe): every enquiry is blind-copied there as one
+searchable record, alongside delivery to Melanie or Anna. Verified 2:20pm ET
+with a labelled test: To anna@, BCC 1902pinelakecc@gmail.com, Delivered.
+GA4 remains the place for counts by topic and page (custom dimensions).
+
+Genuine enquiries since launch, from Resend (all Delivered, all to Melanie):
+
+    Thu 25 Sep  7:00am   Golf                 Shane Barry
+    Thu 25 Sep  7:18pm   General inquiry      David
+    Thu 25 Sep 11:59pm   I'd like a private tour   Emily Boyko
+
+Nothing yet on the events/weddings route apart from tests. The earlier
+[TEST] rows in Resend are the 22 Sept QA runs.

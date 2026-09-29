@@ -48,6 +48,8 @@ of the build can pick this up cold. Read this before touching anything.
 > `104.24.9.63` restores a maintenance page, not the old site — and a
 > nameserver move does not roll back quickly either: the `.com` delegation
 > carries a 48-hour TTL. Correctness before the switch is the only safety net.
+> **29 Sept:** `MAIL_ARCHIVE` is ON - every enquiry is also blind-copied to the
+> club Gmail as the permanent record. GA4 has the counts.
 >
 > **The portal leans on our redirects.** 13 links inside the member portal
 > still point at `pinelakecc.com` and work only because `_redirects` forwards
