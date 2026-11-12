@@ -1366,3 +1366,14 @@ dominated by portal logins and are not lead metrics. video_start fell
 
 Within the post period the public site ran 4,047 views in the first 25 days
 and 2,688 in the second: launch bump fading plus off-season.
+
+**GA4 set up for cleaner reads (12 Nov 2026, in Josh's Google account).**
+- Key events: `inquiry_submitted` and `tour_requested` starred in Admin >
+  Events. Key-event counts by channel accrue from now; GA4 does not backfill
+  the "key event" columns, though the raw event counts remain for old dates.
+- Saved comparisons (Admin > Data display > Comparisons): "Public website"
+  = Hostname exactly matches pinelakecc.com | www.pinelakecc.com; "Member
+  portal" = Hostname exactly matches members.pinelakecc.com. Apply either
+  from "Add comparison" at the top of any report. Only meaningful after
+  22 Sept 2026 - before that the old site and portal shared one hostname.
+  Nothing is filtered out of the property; no data is discarded.
