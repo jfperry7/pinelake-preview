@@ -1336,3 +1336,33 @@ Genuine enquiries since launch, from Resend (all Delivered, all to Melanie):
 
 Nothing yet on the events/weddings route apart from tests. The earlier
 [TEST] rows in Resend are the 22 Sept QA runs.
+
+## Before/after analytics read (12 Nov 2026)
+
+GA4 "PLCC Website", 50 days each side of launch: post = 23 Sep-11 Nov,
+pre = 2 Aug-20 Sep. No data exists for the same dates in 2025, so season
+(late summer vs. Michigan autumn) cannot be separated from the redesign.
+Property is shared with the portal; split by path (pre: public = `/` and
+`/web/pages/*` except login; post: public = everything not under a Liferay
+root).
+
+    Property total views      21,937 -> 15,620  (-29%)   users 4,477 -> 3,868
+    Public site views          7,984 ->  6,811  (-15%)
+    Portal / member views     13,915 ->  8,679  (-38%)   (rough seasonal yardstick)
+    Homepage                   3,922 ->  3,339 views, 2,627 -> 2,211 users
+    Sessions: Direct 8,085 -> 5,575, Organic Search 2,736 -> 1,964,
+              Organic Social 65 -> 233, Referral 74 -> 70
+
+Section pages, old -> new (views): membership 206 -> 632, dining 114 -> 369,
+tennis 163 -> 301, golf 489 -> 623, about 465 -> 323, contact 403 vs old
+request-information 376. Engagement per user on section pages ~18-23s ->
+~30-42s; homepage 19s -> 15s.
+
+Events (post only; nothing comparable was tracked before): inquiry_submitted
+26 events / 25 users, tour_requested (clicks on "Schedule a tour" buttons)
+54 / 39. Neither is marked as a key event yet. form_submit/form_start are
+dominated by portal logins and are not lead metrics. video_start fell
+2,614 -> 678 because the new hero is a native video GA does not auto-track.
+
+Within the post period the public site ran 4,047 views in the first 25 days
+and 2,688 in the second: launch bump fading plus off-season.
