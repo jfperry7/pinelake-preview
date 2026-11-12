@@ -1399,3 +1399,28 @@ pages. Corrected, seven weeks each side of launch: public page views 9,022
 overstated how much better the public site held up.
 
 Tracking starts mid-May 2026 (week of 11 May is partial and left out).
+
+## Year-over-year check (12 Nov 2026) - not possible in GA; Trends used instead
+
+Josh asked for a YoY comparison to test whether the autumn decline is
+seasonal. The GA account "Pine Lake Country Club" holds one property only
+(PLCC Website, data from mid-May 2026); no older property, and Search
+Console is not set up on Josh's Google login. So no prior-year site data.
+
+Substitute: Google Trends, Michigan, 5 years, monthly averages of the weekly
+index for "country club membership" + "golf membership" combined.
+Jun-Aug average vs Oct-Nov average:
+
+    2022  68 -> 19  (-72%)      2025  101 -> 39  (-62%)
+    2023  81 -> 17  (-79%)      2026  117 -> 36  (-70%)
+    2024  84 -> 14  (-84%)
+
+Our own numbers over the same span: public page views about -50% (Jun-Aug
+~1,600/wk -> Oct-Nov ~800/wk), property-wide Google sessions about -25%
+(375/wk late summer -> ~280/wk). Both fall less than statewide demand, so
+the decline is consistent with season and does not point to a site problem.
+Limits: Trends is a noisy, low-volume relative index of generic terms (the
+club's own name is too small to register) and says nothing about rankings.
+Dashboard insight and note text updated to say this (doc version 2).
+Real YoY becomes possible in GA from mid-May 2027; Search Console, if
+verified, may show up to 16 months of search history straight away.
