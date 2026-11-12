@@ -1377,3 +1377,25 @@ and 2,688 in the second: launch bump fading plus off-season.
   from "Add comparison" at the top of any report. Only meaningful after
   22 Sept 2026 - before that the old site and portal shared one hostname.
   Nothing is filtered out of the property; no data is discarded.
+
+## Web dashboard published (12 Nov 2026)
+
+https://claude.ai/artifact/Nxo3Tax3KiU7C4RK5Lr6wC - private to Josh until he
+shares it. Two sections: public interest and enquiries; member portal usage.
+The page holds no figures itself: they live in its database as one document,
+`dashboard/current` (only the owner/editors can write). To refresh, re-pull
+GA4 weekly and overwrite that document; the page redraws on its own.
+
+How the weekly pull works: Pages report with the two saved comparisons
+applied, 250 rows per page, one Monday-Sunday week at a time, changing only
+the dates in the URL. After launch, site vs portal comes from hostname.
+Before launch it comes from path: member = /group, /c, /o, /user,
+/documents, /web/pages/login, /login; everything else is public.
+
+**Correction to the 12 Nov before/after read above.** That read counted old
+friendly-URL public pages (/categories, /staff, /employment ...) as member
+pages. Corrected, seven weeks each side of launch: public page views 9,022
+-> 7,043 (-22%), portal 12,442 -> 9,174 (-26%). The earlier "-15% vs -38%"
+overstated how much better the public site held up.
+
+Tracking starts mid-May 2026 (week of 11 May is partial and left out).
